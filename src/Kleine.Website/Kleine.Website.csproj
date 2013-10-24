@@ -57,12 +57,44 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="apple-touch-icon-precomposed.png" />
+    <Content Include="apple-touch-icon.png" />
+    <Content Include="css\gumby.css" />
+    <Content Include="css\style.css" />
+    <Content Include="favicon.png" />
+    <Content Include="img\gumby_mainlogo%402x.png" />
+    <Content Include="img\gumby_mainlogo.png" />
+    <Content Include="img\img_silence_demo.jpg" />
+    <Content Include="index.html" />
+    <Content Include="js\libs\gumby.init.js" />
+    <Content Include="js\libs\gumby.js" />
+    <Content Include="js\libs\gumby.min.js" />
+    <Content Include="js\libs\jquery-1.10.1.min.js" />
+    <Content Include="js\libs\jquery-2.0.2.min.js" />
+    <Content Include="js\libs\jquery.mobile.custom.min.js" />
+    <Content Include="js\libs\modernizr-2.6.2.min.js" />
+    <Content Include="js\libs\ui\gumby.checkbox.js" />
+    <Content Include="js\libs\ui\gumby.fixed.js" />
+    <Content Include="js\libs\ui\gumby.navbar.js" />
+    <Content Include="js\libs\ui\gumby.radiobtn.js" />
+    <Content Include="js\libs\ui\gumby.retina.js" />
+    <Content Include="js\libs\ui\gumby.skiplink.js" />
+    <Content Include="js\libs\ui\gumby.tabs.js" />
+    <Content Include="js\libs\ui\gumby.toggleswitch.js" />
+    <Content Include="js\libs\ui\jquery.validation.js" />
+    <Content Include="js\main.js" />
+    <Content Include="js\plugins.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fonts\icons\entypo.eot" />
+    <Content Include="fonts\icons\entypo.ttf" />
+    <Content Include="fonts\icons\entypo.woff" />
+    <Content Include="js\libs\jquery-1.10.1.min.map" />
+    <Content Include="js\libs\jquery-2.0.2.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
