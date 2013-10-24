@@ -10,7 +10,7 @@ angular.module('Kleine', [
   'Kleine.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/', {templateUrl: 'partials/welcome.html', controller: 'Welcome'});
+  $routeProvider.when('/', {templateUrl: 'partials/basic.html', controller: 'Welcome'});
   $routeProvider.when('/guess', {templateUrl: 'partials/guess.html', controller: 'Guess'});
   $routeProvider.otherwise({redirectTo: '/'});
 }]);

@@ -1,0 +1,72 @@
+﻿body {
+  font-size: 62.5%;
+}
+h1 {
+  font-size: 2.4em;
+}
+/* =24px */
+p {
+  font-size: 1.4em;
+}
+/* =14px */
+li {
+  font-size: 1.4em;
+}
+/* =14px? */
+div {
+  border: 1px solid #ddd;
+}
+.wrapper {
+  width: 1140px;
+  margin: auto 0;
+}
+.wrapper .six {
+  display: inline-block;
+  width: 550px;
+  margin: 0 10px;
+}
+.wrapper .four {
+  display: inline-block;
+  width: 360px;
+  margin: 0 10px;
+}
+.wrapper .three {
+  display: inline-block;
+  width: 265px;
+  margin: 0 10px;
+}
+.column:first-child,
+.columns:first-child,
+.alpha {
+  margin-left: 0;
+}
+.column:last-child,
+.columns:last-child,
+.alpha {
+  margin-right: 0;
+}
+/*@width: 100%;
+@maxWidth: 1140;
+@gutterWidth: 15;
+@gutter: @gutterWidth / @maxWidth;*/
+/*.one {
+    width: @width/12;
+    margin: @gutter; 
+}
+.two {
+    width: @width/6;
+    margin: @gutter; 
+}
+.three {
+    width: @width/4;
+    margin: @gutter; 
+}
+.four {
+    width: @width/3;
+    margin: @gutter; 
+}
+.six {
+    width: @width/2;
+    margin: @gutter; 
+}*/
+/*percentage(@number);*/
