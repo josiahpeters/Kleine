@@ -4,3 +4,91 @@
         <li>Guess</li>
     </ul>
 </div>
+
+
+<ul>
+    <li><a href="#">Gender</a></li>
+    <li><a href="#">Date</a></li>
+    <li><a href="#">Time</a></li>
+    <li><a href="#">Weight</a></li>
+    <li><a href="#">Length</a></li>
+    <li><a href="#">Hair Color</a></li>
+    <li><a href="#">Name</a></li>
+</ul>
+
+<div class="wrapper">
+    <div class="row">
+        <section>
+            <div class="" id="Gender">
+                <h2>Gender</h2>
+                <div>
+                    <label for="gender">Which gender do you think Baby P. will be?</label>
+
+                    <p>
+                        <button type="button" class="btn btn-lg btn-default">Male</button>
+                        <button type="button" class="btn btn-lg btn-default">Female</button>
+                    </p>
+                    <p>
+                        <a href="#Date" class="btn btn-success section">Next</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="" id="Date">
+                <h2>Date</h2>
+                <div>
+                    <label for="gender">On what date do you think Baby P. will be born on?</label>
+
+                    <div id="calendar" class="calendar">
+                    </div>
+                    <p>
+                        <a href="#Gender" class="btn btn-primary section">Back</a>
+                        <a href="#Time" class="btn btn-success section">Next</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="" id="Time">
+                <h2>Time</h2>
+                <div>
+                    <label for="gender">What hour of the day do you think Baby P. will be born during?</label>
+
+                    <div id="hours" class="hours">
+                    </div>
+                    <p>
+                        <a href="#Date" class="btn btn-primary section">Back</a>
+                        <a href="#Weight" class="btn btn-success section">Next</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="" id="Weight">
+                <h2>Weight</h2>
+                <div>
+                    <label for="weightSlider">What weight range do you think Baby P. will be born in?</label>
+                    <p>
+                        <div id="weightSlider"></div>
+                    </p>
+                    <p>
+                        <a href="#Time" class="btn btn-primary section">Back</a>
+                        <a href="#Length" class="btn btn-success section">Next</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="id=" length">
+                <h2>Length</h2>
+                <div>
+                    <label for="lengthSlider">What length range do you think Baby P. will be born in?</label>
+                    <p>
+                        <div id="lengthSlider"></div>
+                    </p>
+                    <p>
+                        <a href="#Weight" class="btn btn-primary section">Back</a>
+                        <a href="#Date" class="btn btn-success section">Next</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
