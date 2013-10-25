@@ -1,45 +1,118 @@
-﻿body { font-size:62.5%; }
-h1 { font-size: 2.4em; } /* =24px */
-p  { font-size: 1.4em; } /* =14px */
-li { font-size: 1.4em; } /* =14px? */
+﻿body {
+    font-size: 62.5%;
+}
 
-div { border: 1px solid #ddd; }
+h1 {
+    font-size: 2.4em;
+}
+/* =24px */
+p {
+    font-size: 1.4em;
+}
+/* =14px */
+li {
+    font-size: 1.4em;
+}
+/* =14px? */
 
-@maxWidth: 1140px;
-@gutter: 10px;
+.panel {
+    border: 1px solid #ddd;
+    padding: unit(@gutter/2, px) unit(@gutter, px);
+}
+
+@singleColumnPercent: 1/12;
+
+@maxWidth: 1140;
+@singleColumnWidth: @maxWidth / 12;
+@gutter: 12;
+
+@columnWidth: @singleColumnWidth;// - @gutter/2;
+
+.column(@size) {
+    width: percentage(@size * @singleColumnPercent);
+    //width: unit(@size * @columnWidth - @gutter, px);
+    //width: unit(@size * @columnWidth - @gutter, px);
+    /*margin: unit(@gutter/2, px);*/
+    float: left;
+}
 
 .wrapper {
-    width: @maxWidth;
-    margin: auto 0;
-}
-
-.wrapper .six {
-    display: inline-block;
-    width: @maxWidth/2 - @gutter*2;
-    margin: 0 @gutter;
-}
-.wrapper .four {
-    display: inline-block;
-    width: @maxWidth/3 - @gutter*2;
-    margin: 0 @gutter;
-}
-.wrapper .three {
-    display: inline-block;
-    width: @maxWidth/4 - @gutter*2;
-    margin: 0 @gutter;
-}
-
-.column:first-child, .columns:first-child, .alpha {
-  margin-left: 0;
-}
-
-.column:last-child, .columns:last-child, .alpha {
-  margin-right: 0;
+    width: unit(@maxWidth, px);
+    margin: 0 auto;
 }
 
 
+.one {
+    .column(1);
+}
 
-//1366 
+.two {
+    .column(2);
+}
+
+.three {
+    .column(3);
+}
+
+.four {
+    .column(4);
+}
+
+.five {
+    .column(5);
+}
+
+.six {
+    .column(6);
+}
+
+.seven {
+    .column(7);
+}
+
+.eight {
+    .column(8);
+}
+
+.nine {
+    .column(9);
+}
+
+.ten {
+    .column(10);
+}
+
+.eleven {
+    .column(11);
+}
+
+.twelve {
+    width: 100%;
+    /*margin: percentage(@gutter/2) 0;*/
+    float: left;
+}
+
+.row {
+
+    clear: both;
+
+    .column {
+
+    }
+
+    .column:first-child {
+        margin-left: 0;
+    }
+
+    .column:last-child {
+        margin-right: 0;
+    }
+}
+
+
+
+
+//1366
 
 
 
@@ -69,4 +142,4 @@ div { border: 1px solid #ddd; }
     margin: @gutter; 
 }*/
 
-/*percentage(@number);*/ 
+/*percentage(@number);*/

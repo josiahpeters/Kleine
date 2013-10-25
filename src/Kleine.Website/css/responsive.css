@@ -13,36 +13,93 @@ li {
   font-size: 1.4em;
 }
 /* =14px? */
-div {
+.panel {
   border: 1px solid #ddd;
+  padding: 6px 12px;
 }
 .wrapper {
   width: 1140px;
-  margin: auto 0;
+  margin: 0 auto;
 }
-.wrapper .six {
-  display: inline-block;
-  width: 550px;
-  margin: 0 10px;
+.one {
+  width: 8.333333333333332%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
 }
-.wrapper .four {
-  display: inline-block;
-  width: 360px;
-  margin: 0 10px;
+.two {
+  width: 16.666666666666664%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
 }
-.wrapper .three {
-  display: inline-block;
-  width: 265px;
-  margin: 0 10px;
+.three {
+  width: 25%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
 }
-.column:first-child,
-.columns:first-child,
-.alpha {
+.four {
+  width: 33.33333333333333%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.five {
+  width: 41.666666666666664%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.six {
+  width: 50%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.seven {
+  width: 58.33333333333333%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.eight {
+  width: 66.66666666666666%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.nine {
+  width: 75%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.ten {
+  width: 83.33333333333333%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.eleven {
+  width: 91.66666666666666%;
+  /*margin: unit(@gutter/2, px);*/
+
+  float: left;
+}
+.twelve {
+  width: 100%;
+  /*margin: percentage(@gutter/2) 0;*/
+
+  float: left;
+}
+.row {
+  clear: both;
+}
+.row .column:first-child {
   margin-left: 0;
 }
-.column:last-child,
-.columns:last-child,
-.alpha {
+.row .column:last-child {
   margin-right: 0;
 }
 /*@width: 100%;
