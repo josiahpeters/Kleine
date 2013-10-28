@@ -347,6 +347,7 @@
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
     <Content Include="js\rangeSlider.js" />
     <Content Include="js\services.js" />
+    <Content Include="js\test.js" />
     <Content Include="partials\basic.html" />
     <Content Include="partials\guess.html" />
     <Content Include="partials\welcome.html" />

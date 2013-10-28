@@ -1,46 +1,51 @@
-﻿body {
-    font-size: 62.5%;
-}
+﻿@import "less/settings.less";
+@import "less/theme.less";
+@import "less/grid.less";
 
-h1 {
-    font-size: 2.4em;
-}
-/* =24px */
-p {
-    font-size: 1.4em;
-}
-/* =14px */
-li {
-    font-size: 1.4em;
-}
-/* =14px? */
+
+
+
 
 .panel {
     border: 1px solid #ddd;
-    padding: unit(@gutter/2, px) unit(@gutter, px);
+    /*padding: unit(@gutter/2, px) unit(@gutter, px);*/
+    padding: unit(@gutterWidthInPixels/2, px) unit(@gutterWidthInPixels, px);
+    /*margin: 10px;*/
 }
 
-@singleColumnPercent: 1/12;
+@columnCount: 12;
+//@maxWidth: 1140;
+@maxWidth: 960;
+@gutterWidthInPixels: 20;
+@singleColumnPercent: 1/@columnCount;
 
-@maxWidth: 1140;
-@singleColumnWidth: @maxWidth / 12;
-@gutter: 12;
+@gutter: 1.81818%; //percentage(@gutterWidthInPixels / 2 / @maxWidth);
 
-@columnWidth: @singleColumnWidth;// - @gutter/2;
+
+//@singleColumnWidth: @maxWidth / @columnCount;
+//@columnWidth: @singleColumnWidth; // - @gutter/2;
+
 
 .column(@size) {
+    //width: @gutter;
     width: percentage(@size * @singleColumnPercent);
+    //width: percentage(@size * @singleColumnPercent) - @gutter;
+    //width: percentage(@size * @singleColumnPercent) - @gutter;
     //width: unit(@size * @columnWidth - @gutter, px);
     //width: unit(@size * @columnWidth - @gutter, px);
-    /*margin: unit(@gutter/2, px);*/
     float: left;
 }
 
 .wrapper {
     width: unit(@maxWidth, px);
     margin: 0 auto;
+    border: 1px solid #0094ff;
 }
 
+.one, .two,.three,.four,.five,.six,.seven,.eight,.nine,.ten,.eleven {
+    margin-left: @gutter;
+    /*padding: 0 15px;*/
+}
 
 .one {
     .column(1);
@@ -93,20 +98,18 @@ li {
 }
 
 .row {
-
     clear: both;
 
     .column {
-
     }
 
-    .column:first-child {
-        margin-left: 0;
-    }
+        .column:first-child {
+            margin-left: 0;
+        }
 
-    .column:last-child {
-        margin-right: 0;
-    }
+        .column:last-child {
+            margin-right: 0;
+        }
 }
 
 

@@ -1,0 +1,100 @@
+﻿@maxWidth: 1140;
+@gutterPx: 20px;
+@numOfCols: 12;
+
+@gutter: percentage(@gutterPx / @maxWidth); // 2.1276596
+
+@oneColumn: (100 - (@gutter * (@numOfCols - 1) ) ) / @numOfCols;
+
+.calculateColumn(@number) {
+    width: (@oneColumn * @number) + (@gutter * (@number - 1)); // (One column * 'x') + (gutter * ('x' - 1)) = Column Width
+}
+
+.column {
+    margin-left: @gutter;
+    margin-bottom: @gutterPx/2;
+    float: left;
+    min-height: 1px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.one {
+    .calculateColumn(1);
+}
+
+.two {
+    .calculateColumn(2);
+}
+
+.three {
+    .calculateColumn(3);
+}
+
+.four {
+    .calculateColumn(4);
+}
+
+.five {
+    .calculateColumn(5);
+}
+
+.six {
+    .calculateColumn(6);
+}
+
+.seven {
+    .calculateColumn(7);
+}
+
+.eight {
+    .calculateColumn(8);
+}
+
+.nine {
+    .calculateColumn(9);
+}
+
+.ten {
+    .calculateColumn(10);
+}
+
+.eleven {
+    .calculateColumn(11);
+}
+
+.twelve {
+    width: 100%;
+}
+
+.panel {
+    border: 1px solid #ddd;
+    /*padding: unit(@gutter/2, px) unit(@gutter, px);*/
+    padding: @gutterPx/2 @gutterPx;
+    /*margin: 10px;*/
+}
+
+.wrapper {
+    width: unit(@maxWidth, px);
+    margin: 0 auto;
+    border: 1px solid #0094ff;
+}
+
+.row {
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+
+    .column:first-child {
+        margin-left: 0;
+    }
+}
+
+.row:before, .row:after {
+  content: "";
+  display: table;
+}
+.row:after {
+  clear: both;
+}
