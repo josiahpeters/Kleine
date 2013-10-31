@@ -5,26 +5,6 @@ using System.Text;
 
 namespace Kleine.Services
 {
-    public class DueDate
-    {
-        public DateTime ExpectedDate { get; set; }
-
-        public string BirthTitle { get; set; }
-
-        public string BirthDescription { get; set; }
-    }
-
-    public class GuessProfile
-    {
-        public int Id { get; set; }
-
-        public Guid SessionId { get; set; }
-
-        public string EmailAddress { get; set; }
-
-        public string Name { get; set; }
-    }    
-
     public class GuessGender
     {
         public Gender GuessValue { get; set; }

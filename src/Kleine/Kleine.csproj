@@ -64,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Entities\DueDate.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\GuessProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

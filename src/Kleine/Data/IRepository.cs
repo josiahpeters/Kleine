@@ -5,7 +5,11 @@ using System.Text;
 
 namespace Kleine.Data
 {
-    public class IRepository
+    public interface IRepository<T> where T : Entity
     {
+        T GetById(int Id);
+        List<T> GetAll();
+        T Create(T entity);
+        T Update(T entity);
     }
 }
