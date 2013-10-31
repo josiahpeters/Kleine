@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kleine", "Kleine\Kleine.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kleine.Services", "Kleine.Services\Kleine.Services.csproj", "{CE44B04A-45D7-45D3-98B6-FAEC07669C9E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kleine.Data.Sql", "Kleine.Data.Sql\Kleine.Data.Sql.csproj", "{A3B84F83-0720-4EAA-8B22-BCFCB6D38BA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CE44B04A-45D7-45D3-98B6-FAEC07669C9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE44B04A-45D7-45D3-98B6-FAEC07669C9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE44B04A-45D7-45D3-98B6-FAEC07669C9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B84F83-0720-4EAA-8B22-BCFCB6D38BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B84F83-0720-4EAA-8B22-BCFCB6D38BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B84F83-0720-4EAA-8B22-BCFCB6D38BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B84F83-0720-4EAA-8B22-BCFCB6D38BA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
