@@ -1,44 +1,55 @@
-﻿using System;
+﻿using Kleine.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Kleine.Services
 {
-    public class GuessGender
+    public class KleineService : IKleineService
     {
-        public Gender GuessValue { get; set; }
+        IRepositories repo = new Repositories();
+
+        public DueDateCreateResponse CreateDueDate(DueDateCreateRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DueDateUpdateResponse UpdateDueDate(DueDateUpdateRequest request)
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    public class GuessBirthDate
-    {
-        public DateTime GuessValue { get; set; }
-    }
+    //public class GuessGender
+    //{
+    //    public Gender GuessValue { get; set; }
+    //}
 
-    public class GuessBirthTime
-    {
-        public DateTime GuessValue { get; set; }
-    }
+    //public class GuessBirthDate
+    //{
+    //    public DateTime GuessValue { get; set; }
+    //}
 
-    public class GuessBirthWeight
-    {
-        public Decimal GuessValue { get; set; }
-    }
+    //public class GuessBirthTime
+    //{
+    //    public DateTime GuessValue { get; set; }
+    //}
 
-    public class GuessBirthLength
-    {
-        public Decimal GuessValue { get; set; }
-    }
+    //public class GuessBirthWeight
+    //{
+    //    public Decimal GuessValue { get; set; }
+    //}
 
-    public class GuessBirthName
-    {
-        public string GuessValue { get; set; }
-    }
+    //public class GuessBirthLength
+    //{
+    //    public Decimal GuessValue { get; set; }
+    //}
 
-    
-    
-
-    
+    //public class GuessBirthName
+    //{
+    //    public string GuessValue { get; set; }
+    //}
 
     //public abstract class GuessType
     //{

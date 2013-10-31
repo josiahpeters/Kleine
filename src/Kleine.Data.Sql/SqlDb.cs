@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Kleine.Data.Sql
 {
-    public class Class1
+    class SqlDb
     {
+        //public 
     }
 }
