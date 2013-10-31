@@ -76,12 +76,11 @@
 }
 
 .wrapper {
-    width: unit(@maxWidth, px);
-    margin: 0 auto;
-    border: 1px solid #0094ff;
 }
 
 .row {
+    width: unit(@maxWidth, px);
+    margin: 0 auto;
     min-width: 0;
     padding-left: 0;
     padding-right: 0;
@@ -91,10 +90,11 @@
     }
 }
 
-.row:before, .row:after {
-  content: "";
-  display: table;
-}
-.row:after {
-  clear: both;
-}
+    .row:before, .row:after {
+        content: "";
+        display: table;
+    }
+
+    .row:after {
+        clear: both;
+    }

@@ -1,0 +1,71 @@
+﻿.column {
+  margin-left: 1.7543859649122806%;
+  margin-bottom: 10px;
+  float: left;
+  min-height: 1px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.one {
+  width: 6.7251461988304095%;
+}
+.two {
+  width: 15.2046783625731%;
+}
+.three {
+  width: 23.68421052631579%;
+}
+.four {
+  width: 32.16374269005848%;
+}
+.five {
+  width: 40.643274853801174%;
+}
+.six {
+  width: 49.12280701754386%;
+}
+.seven {
+  width: 57.60233918128655%;
+}
+.eight {
+  width: 66.08187134502924%;
+}
+.nine {
+  width: 74.56140350877193%;
+}
+.ten {
+  width: 83.04093567251462%;
+}
+.eleven {
+  width: 91.52046783625731%;
+}
+.twelve {
+  width: 100%;
+}
+.panel {
+  border: 1px solid #ddd;
+  /*padding: unit(@gutter/2, px) unit(@gutter, px);*/
+
+  padding: 10px 20px;
+  /*margin: 10px;*/
+
+}
+.row {
+  width: 1140px;
+  margin: 0 auto;
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+.row .column:first-child {
+  margin-left: 0;
+}
+.row:before,
+.row:after {
+  content: "";
+  display: table;
+}
+.row:after {
+  clear: both;
+}

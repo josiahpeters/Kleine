@@ -59,11 +59,53 @@
   <ItemGroup>
     <Content Include="apple-touch-icon-precomposed.png" />
     <Content Include="apple-touch-icon.png" />
+    <Content Include="css\less\buttons.css">
+      <DependentUpon>buttons.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\buttons.min.css">
+      <DependentUpon>buttons.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\defaults.css">
+      <DependentUpon>defaults.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\defaults.min.css">
+      <DependentUpon>defaults.less</DependentUpon>
+    </Content>
     <Content Include="css\less\functions.css">
-      <DependentUpon>functions.less</DependentUpon>
+      <DependentUpon>grid.less</DependentUpon>
     </Content>
     <Content Include="css\less\functions.min.css">
-      <DependentUpon>functions.less</DependentUpon>
+      <DependentUpon>grid.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\grid.css">
+      <DependentUpon>grid.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\grid.min.css">
+      <DependentUpon>grid.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\lists.css">
+      <DependentUpon>lists.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\lists.min.css">
+      <DependentUpon>lists.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\navigation.css">
+      <DependentUpon>navigation.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\navigation.min.css">
+      <DependentUpon>navigation.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\settings.css">
+      <DependentUpon>settings.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\settings.min.css">
+      <DependentUpon>settings.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\theme.css">
+      <DependentUpon>theme.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\theme.min.css">
+      <DependentUpon>theme.less</DependentUpon>
     </Content>
     <Content Include="css\normalize.css" />
     <Content Include="css\responsive.css">
@@ -341,13 +383,22 @@
     <Content Include="js\libs\angular\i18n\angular-locale_zu-za.js" />
     <Content Include="js\libs\angular\i18n\angular-locale_zu.js" />
     <Content Include="js\libs\angular\version.txt" />
+    <Content Include="js\libs\Chart.min.js" />
+    <Content Include="js\libs\d3.v3.min.js" />
+    <Content Include="js\libs\excanvas.min.js" />
     <Content Include="js\libs\jquery-1.10.1.min.js" />
     <Content Include="js\libs\jquery-2.0.2.min.js" />
+    <Content Include="js\libs\jquery.flot.min.js" />
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
+    <Content Include="css\xcharts.min.css" />
+    <Content Include="js\libs\xcharts.min.js" />
     <Content Include="js\rangeSlider.js" />
     <Content Include="js\services.js" />
     <Content Include="js\test.js" />
+    <Content Include="js\test.min.js">
+      <DependentUpon>test.coffee</DependentUpon>
+    </Content>
     <Content Include="partials\basic.html" />
     <Content Include="partials\guess.html" />
     <Content Include="partials\welcome.html" />
@@ -370,7 +421,15 @@
     <Content Include="js\libs\angular\errors.json" />
     <Content Include="js\libs\angular\version.json" />
     <Content Include="css\responsive.less" />
+    <Content Include="css\less\grid.less" />
+    <Content Include="css\less\buttons.less" />
+    <Content Include="css\less\lists.less" />
+    <Content Include="css\less\theme.less" />
+    <Content Include="css\less\settings.less" />
+    <Content Include="css\less\defaults.less" />
     <Content Include="css\less\functions.less" />
+    <Content Include="css\less\navigation.less" />
+    <Content Include="js\test.coffee" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -381,6 +440,16 @@
   <ItemGroup>
     <Folder Include="fonts\" />
     <Folder Include="img\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kleine.Services\Kleine.Services.csproj">
+      <Project>{ce44b04a-45d7-45d3-98b6-faec07669c9e}</Project>
+      <Name>Kleine.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kleine\Kleine.csproj">
+      <Project>{bf23e156-50f9-4851-922e-a50b7322e42d}</Project>
+      <Name>Kleine</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

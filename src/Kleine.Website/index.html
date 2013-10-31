@@ -13,23 +13,20 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-
     <link rel="stylesheet" href="/css/normalize.css">
-    <!--<link rel="stylesheet" href="/css/responsive.css">-->
-    <link rel="stylesheet" href="/css/less/functions.css">
-
+    <link rel="stylesheet" href="/css/responsive.css">
+    <link rel="stylesheet" href="/css/xcharts.min.css">
     
 </head>
 <body class="ui-kit-feature" id="features">
-    <nav id="navbar-main-nav" class="navbar">
+    <nav class="wrapper navbar">
         <div class="row">
-            <a class="toggle" gumby-trigger="#navbar-main-nav #main-nav" href="#"><i class="icon-menu"></i></a>
-            <h1 class="four columns logo">
+            <h1 class="four column">
                 <a href="/">
                     Hello World
                 </a>
             </h1>
-            <nav class="six columns pull_right">
+            <nav class="eight column horizontal">
                 <ul id="main-nav">
                     <li><a href="/"><i class="icon-home" title="Welcome"></i><span>Welcome</span></a></li>
                     <li><a href="#"><i class="icon-flag" title="BumpStart"></i><span>BumpStart</span></a></li>
@@ -38,7 +35,14 @@
             </nav>
         </div>
     </nav>
-    <div ng-view></div>    
+    <div class="wrapper footer">
+        <div class="row">
+            <div class="twelve column">
+                <a href="#/guess" class="button">Hello World</a>
+            </div>
+        </div>
+    </div>
+    <div ng-view></div>
     <div class="wrapper footer">
         <footer class="row" id="credits">
             <div class="six columns">
@@ -59,5 +63,10 @@
     <script src="/js/controllers.js"></script>
     <script src="/js/filters.js"></script>
     <script src="/js/directives.js"></script>
-</body>          
+    <!--<script src="/js/libs/jquery.flot.min.js"></script>-->
+    <script src="/js/libs/d3.v3.min.js"></script>
+    <!--<script src="/js/test.min.js"></script>-->
+    <!--<script src="/js/libs/xcharts.min.js"></script>-->
+
+</body>
 </html>
