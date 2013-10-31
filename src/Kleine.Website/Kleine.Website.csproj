@@ -140,12 +140,13 @@
       <DependentUpon>responsive.less</DependentUpon>
     </Content>
     <Content Include="favicon.png" />
+    <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="js\app.js" />
     <Content Include="js\calendar.js" />
-    <Content Include="js\controllers.js" />
-    <Content Include="js\directives.js" />
-    <Content Include="js\filters.js" />
+    <Content Include="js\app\controllers.js" />
+    <Content Include="js\app\directives.js" />
+    <Content Include="js\app\filters.js" />
     <Content Include="js\libs\angular\angular-animate.js" />
     <Content Include="js\libs\angular\angular-animate.min.js" />
     <Content Include="js\libs\angular\angular-cookies.js" />
@@ -419,18 +420,20 @@
     <Content Include="css\xcharts.min.css" />
     <Content Include="js\libs\xcharts.min.js" />
     <Content Include="js\rangeSlider.js" />
-    <Content Include="js\services.js" />
-    <Content Include="js\test.js" />
-    <Content Include="js\test.min.js">
-      <DependentUpon>test.coffee</DependentUpon>
-    </Content>
+    <Content Include="js\app\services.js" />
+    <Content Include="js\app\services\DueDateService.js" />
     <Content Include="partials\basic.html" />
     <Content Include="partials\guess.html" />
+    <Content Include="partials\CreateDueDate.html" />
     <Content Include="partials\welcome.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KleineService.cs" />
+    <Compile Include="AppHost.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="KleineServiceApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -455,7 +458,6 @@
     <Content Include="css\less\defaults.less" />
     <Content Include="css\less\functions.less" />
     <Content Include="css\less\navigation.less" />
-    <Content Include="js\test.coffee" />
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -467,6 +469,7 @@
   <ItemGroup>
     <Folder Include="fonts\" />
     <Folder Include="img\" />
+    <Folder Include="js\app\controllers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kleine.Services\Kleine.Services.csproj">

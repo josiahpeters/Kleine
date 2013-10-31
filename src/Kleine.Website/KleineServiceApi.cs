@@ -1,4 +1,5 @@
 ﻿using Kleine.Services;
+using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,12 @@ namespace Kleine.Website
     {
         IKleineService service = new KleineService();
 
-        public object CreateDueDate(DueDateCreateRequest request)
+        public object Any(DueDateCreateRequest request)
         {
             return service.CreateDueDate(request);
         }
 
-        public object UpdateDueDate(DueDateUpdateRequest request)
+        public object Any(DueDateUpdateRequest request)
         {
             return service.UpdateDueDate(request);
         }

@@ -12,12 +12,17 @@ namespace Kleine.Services
 
         public DueDateCreateResponse CreateDueDate(DueDateCreateRequest request)
         {
-            throw new NotImplementedException();
+            var dueDate = repo.DueDates.Create(request);
+
+            return new DueDateCreateResponse { DueDate = dueDate };
         }
 
         public DueDateUpdateResponse UpdateDueDate(DueDateUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var dueDate = repo.DueDates.Update(request);
+
+
+            return new DueDateUpdateResponse { DueDate = dueDate };
         }
     }
 
