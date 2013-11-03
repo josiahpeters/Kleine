@@ -1,9 +1,8 @@
-//module
+//module 
 function greeter(person) {
     return "Hello, " + person;
 }
 
 var user = "Jane User";
 
-document.body.innerHTML = greeter(user);
-//# sourceMappingURL=Main.js.map
+document.body.innerHTML = greeter(user); 

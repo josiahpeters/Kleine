@@ -6,10 +6,6 @@ define(["controllers"], function (controllers)
           .controller('Welcome', [function ()
           {
 
-          }])
-          .controller('Welcome', [function ()
-          {
-
               var rows = getRandom(5, 10);
 
               var columnNames = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"];
