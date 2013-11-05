@@ -10,12 +10,19 @@ namespace Kleine.Services
     {
         IRepositories repo = new Repositories();
 
-        public DueDateCreateResponse CreateDueDate(DueDateCreateRequest request)
+        public DueDateGetAllResponse CreateDueDate(DueDateCreateRequest request)
         {
             var dueDate = repo.DueDates.Create(request);
 
-            return new DueDateCreateResponse { DueDate = dueDate };
+            return new DueDateGetAllResponse(null) ;// { DueDate = dueDate };
         }
+
+        //public DueDateCreateResponse CreateDueDate(DueDateCreateRequest request)
+        //{
+        //    var dueDate = repo.DueDates.Create(request);
+
+        //    return new DueDateCreateResponse { DueDate = dueDate };
+        //}
 
         public DueDateUpdateResponse UpdateDueDate(DueDateUpdateRequest request)
         {
@@ -23,6 +30,16 @@ namespace Kleine.Services
 
 
             return new DueDateUpdateResponse { DueDate = dueDate };
+        }
+
+        DueDateCreateResponse IKleineService.CreateDueDate(DueDateCreateRequest request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public DueDateGetAllResponse GetAllDueDate(DueDateGetAllRequest request)
+        {
+            throw new NotImplementedException();
         }
     }
 

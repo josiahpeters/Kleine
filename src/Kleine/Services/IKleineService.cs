@@ -10,11 +10,30 @@ namespace Kleine.Services
     {
         DueDateCreateResponse CreateDueDate(DueDateCreateRequest request);
         DueDateUpdateResponse UpdateDueDate(DueDateUpdateRequest request);
+        DueDateGetAllResponse GetAllDueDate(DueDateGetAllRequest request);        
     }
 
     public class BaseResponse
     {
         public string ErrorMessage { get; set; }
+    }
+
+    public class EnumerableBaseResponse<T> : IEnumerable<T> where T : class
+    {
+        IEnumerable<T> enumerable;
+        public EnumerableBaseResponse(IEnumerable<T> enumerable)
+        {
+            this.enumerable = enumerable;
+        }
+        public IEnumerator<T> GetEnumerator()
+        {
+            return enumerable.GetEnumerator();
+        }
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return enumerable.GetEnumerator();
+
+        }
     }
 
     public class DueDateUpdateResponse : BaseResponse
@@ -27,6 +46,21 @@ namespace Kleine.Services
     {
 
     }
+
+    public class DueDateGetAllResponse : EnumerableBaseResponse<DueDate>
+    {
+        public DueDateGetAllResponse(IEnumerable<DueDate> items)
+            : base(items)
+        {
+        }
+    }
+
+    [Route("/DueDate/")]
+    public class DueDateGetAllRequest
+    {
+
+    }
+
 
 
     public class DueDateCreateResponse : BaseResponse
@@ -41,5 +75,5 @@ namespace Kleine.Services
 
     }
 
-    
+
 }

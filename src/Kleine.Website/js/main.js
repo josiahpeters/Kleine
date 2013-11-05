@@ -15,6 +15,8 @@ var Kleine;
         function Controller($scope, $http) {
             this.httpService = $http;
 
+            $scope.newExpectedDate = new Date().toLocaleDateString();
+
             var controller = this;
 
             $scope.addNewDueDate = function () {
@@ -22,11 +24,7 @@ var Kleine;
                 newDueDate.BirthTitle = $scope.newBirthTitle;
                 newDueDate.ExpectedDate = new Date($scope.newExpectedDate);
 
-                console.log("sdf");
-
                 controller.addDueDate(newDueDate, function () {
-                    console.log(newDueDate);
-
                     controller.getAllDueDates(function (data) {
                         $scope.DueDates = data;
                     });
@@ -39,7 +37,7 @@ var Kleine;
         Controller.prototype.addDueDate = function (dueDate, successCallback) {
             console.log(dueDate);
 
-            this.httpService.post("/api/DueDate/Create", dueDate).success(function () {
+            this.httpService.post("/api/DueDate/", dueDate).success(function () {
                 successCallback();
             });
         };

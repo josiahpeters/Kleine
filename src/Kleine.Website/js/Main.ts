@@ -28,7 +28,9 @@ module Kleine
 
         constructor($scope: Scope, $http: any)
         {
-            this.httpService = $http;
+			this.httpService = $http;
+
+			$scope.newExpectedDate = new Date().toLocaleDateString();
 
             var controller = this;
             
@@ -38,13 +40,8 @@ module Kleine
                 newDueDate.BirthTitle = $scope.newBirthTitle;
                 newDueDate.ExpectedDate = new Date($scope.newExpectedDate);
 
-                console.log("sdf");
-
                 controller.addDueDate(newDueDate, function ()
                 {
-                    console.log(newDueDate);
-
-
                     controller.getAllDueDates(function (data)
                     {
                         $scope.DueDates = data;
@@ -62,7 +59,7 @@ module Kleine
         {
             console.log(dueDate);
 
-            this.httpService.post("/api/DueDate/Create", dueDate).success(function ()
+            this.httpService.post("/api/DueDate/", dueDate).success(function ()
             {
                 successCallback();
             });
