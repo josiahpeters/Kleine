@@ -143,7 +143,6 @@
     <Content Include="favicon.png" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
-    <Content Include="js\app\controllers.js" />
     <Content Include="css\xcharts.min.css" />
     <Content Include="js\libs\angular\angular-animate.js" />
     <Content Include="js\libs\angular\angular-animate.min.js" />
@@ -171,6 +170,7 @@
     <Content Include="partials\basic.html" />
     <Content Include="partials\guess.html" />
     <Content Include="partials\CreateDueDate.html" />
+    <Content Include="partials\signup.html" />
     <Content Include="partials\welcome.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -215,7 +215,6 @@
   <ItemGroup>
     <Folder Include="fonts\" />
     <Folder Include="img\" />
-    <Folder Include="js\app\controllers\" />
     <Folder Include="js\app\models\" />
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +232,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="js\app\app.ts" />
+    <TypeScriptCompile Include="js\app\controllers\MyController.ts" />
+    <TypeScriptCompile Include="js\app\directives.ts" />
+    <TypeScriptCompile Include="js\app\filters.ts" />
+    <TypeScriptCompile Include="js\app\services.ts" />
     <TypeScriptCompile Include="js\Main.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
@@ -241,6 +245,7 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
