@@ -172,6 +172,7 @@
     <Content Include="partials\CreateDueDate.html" />
     <Content Include="partials\signup.html" />
     <Content Include="partials\welcome.html" />
+    <Content Include="test.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

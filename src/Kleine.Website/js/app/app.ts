@@ -2,88 +2,119 @@
 /// <reference path='../../Scripts/typings/angularjs/angular-resource.d.ts' />
 /// <reference path='../../Scripts/typings/angularjs/angular-route.d.ts' />
 
-'use strict';
+module kleine
+{
+	'use strict';
 
-// Create and register modules
-var modules = ['Kleine.controllers', 'Kleine.directives', 'Kleine.filters', 'Kleine.services'];
-modules.forEach((module) => angular.module(module, []));
-angular.module('Kleine', modules);
+	//var modules = ['app.controllers'];
+	//modules.forEach((module) => angular.module(module, []));
 
-// Url routing
-angular.module('Kleine').config(['$routeProvider',
-    //function routes($routeProvider: ng.IRouteProvider) {
-    //    $routeProvider
-    //        .when('/', {
-    //            templateUrl: 'partials/Welcome.html',
-	//			controller: 'Kleine.controllers.MyController'
-    //        })
-    //        .otherwise({
-    //            redirectTo: '/'
-    //        });
-    //}
-]);
+	var app = angular.module('app', [])
+		.config(['$routeProvider', function ($routeProvider: ng.route.IRouteProvider)
+		{
+			$routeProvider
+				.when('/', { templateUrl: '/partials/welcome.html', controller: 'kleine.controllers.welcome' })
+				.when('/signup', { templateUrl: '/partials/signup.html', controller: 'kleine.controllers.signup' })
+				.otherwise({ redirectTo: '/' });
+		}]).controller('controllers.signup', []);
 
-module Kleine {
-    export module controllers {}
-    export module directives {}
-    export module filters {}
-    export module services {}
-
-    export interface IController {}
-    export interface IDirective {
-        restrict: string;
-        link($scope: ng.IScope, element: JQuery, attrs: ng.IAttributes): any;
-    }
-    export interface IFilter {
-        filter (input: any, ...args: any[]): any;
-    }
-    export interface IService {}
-
-    /**
-     * Register new controller.
-     *
-     * @param className
-     * @param services
-     */
-    export function registerController (className: string, services = []) {
-		var controller = 'Kleine.controllers.' + className;
-		services.push(Kleine.controllers[className]);
-		angular.module('Kleine.controllers').controller(controller, services);
-    }
-
-    /**
-     * Register new filter.
-     *
-     * @param className
-     * @param services
-     */
-    export function registerFilter (className: string, services = []) {
-        var filter = className.toLowerCase();
-        services.push(() => (new Kleine.filters[className]()).filter);
-        angular.module('Kleine.filters').filter(filter, services);
-    }
-
-    /**
-     * Register new directive.
-     *
-     * @param className
-     * @param services
-     */
-    export function registerDirective (className: string, services = []) {
-        var directive = className[0].toLowerCase() + className.slice(1);
-        services.push(() => new Kleine.directives[className]());
-        angular.module('Kleine.directives').directive(directive, services);
-    }
-
-    /**
-     * Register new service.
-     *
-     * @param className
-     * @param services
-     */
-    export function registerService (className: string, services = []) {
-        var service = className[0].toLowerCase() + className.slice(1);
-        services.push(() => new Kleine.services[className]());
-        angular.module('Kleine.services').factory(service, services);
-    }
 }
+
+module kleine
+{
+	'use strict';
+
+	export module models
+	{
+		export class signup
+		{
+			emailAddress: string;
+		}
+	}
+
+	export module controllers
+	{
+		export class welcome
+		{
+			constructor($scope: any)
+			{
+
+			}
+		}
+		export class signup
+		{
+
+			constructor($scope: SignupScope)
+			{
+				var self = this;
+
+				$scope.emailAddress = "josiahpeters@gmail.com";
+
+				$scope.signup = function ()
+				{
+					var result = new models.signup();
+
+					result.emailAddress = $scope.emailAddress;
+
+					self.signup(result);
+				}
+			}
+			//signup(): void
+			//{
+			//	console.log("test");
+			//}
+			signup(result: models.signup): void
+			{
+				console.log(result);
+			}
+		}
+	}
+
+	//export interface IKScope extends ng.IScope
+	//{
+
+	//}
+	export interface SignupScope
+	{
+		emailAddress: string;
+
+		signup: Function;
+	}
+}
+
+//'use strict';
+
+
+//angular.module("Kleine", ["Kleine.controllers"])
+//	.config(['$routeProvider',
+//		function routes($routeProvider: ng.route.IRouteProvider)
+//		{
+//			$routeProvider.when('/', { templateUrl: 'partials/Welcome.html', controller: 'Kleine.controllers.MyController' })
+//				.otherwise({ redirectTo: '/' });
+//		}]);
+
+//module Kleine
+//{
+//	export interface IController { }
+
+//	export module controllers { }
+
+//	export function registerController(className: string, services = [])
+//	{
+//		angular.module('Kleine.controllers').controller('Kleine.controllers.MyController',['$scope']);
+//	}
+//}
+
+//module Kleine.controllers
+//{
+//	export class MyController implements IController
+//	{
+//		constructor(private $scope)
+//		{
+//			$scope.message = "test";
+
+//		}
+//	}
+//}
+
+//Kleine.registerController('MyController');

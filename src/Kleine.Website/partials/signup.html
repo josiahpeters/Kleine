@@ -2,6 +2,16 @@
     <div class="row">
         <div class="twelve column">
             <h2>Before You Guess</h2>
+            <p>Before you make your guess we need a way to contact you so you can find out how you did after the baby was born.</p>
+            <p>You can receive updates through email.</p>
+            <form ng-submit="signup()">
+                <div>
+                    <label>Email Address</label>
+                    <input type="text" ng-model="emailAddress" value=""/>
+                </div>
+                <!--<input type="submit" value="" />-->
+                <button class="btn" type="submit" value="Continue">Continue</button>
+            </form>
         </div>
     </div>
     <div class="row">

@@ -1,81 +1,66 @@
 /// <reference path='../../Scripts/typings/angularjs/angular.d.ts' />
 /// <reference path='../../Scripts/typings/angularjs/angular-resource.d.ts' />
 /// <reference path='../../Scripts/typings/angularjs/angular-route.d.ts' />
-'use strict';
-// Create and register modules
-var modules = ['Kleine.controllers', 'Kleine.directives', 'Kleine.filters', 'Kleine.services'];
-modules.forEach(function (module) {
-    return angular.module(module, []);
-});
-angular.module('Kleine', modules);
+var kleine;
+(function (kleine) {
+    'use strict';
 
-// Url routing
-angular.module('Kleine').config([
-    '$routeProvider'
-]);
+    //var modules = ['app.controllers'];
+    //modules.forEach((module) => angular.module(module, []));
+    var app = angular.module('app', []).config([
+        '$routeProvider',
+        function ($routeProvider) {
+            $routeProvider.when('/', { templateUrl: '/partials/welcome.html', controller: 'kleine.controllers.welcome' }).when('/signup', { templateUrl: '/partials/signup.html', controller: 'kleine.controllers.signup' }).otherwise({ redirectTo: '/' });
+        }
+    ]).controller('controllers.signup', []);
+})(kleine || (kleine = {}));
 
-var Kleine;
-(function (Kleine) {
-    /**
-    * Register new controller.
-    *
-    * @param className
-    * @param services
-    */
-    function registerController(className, services) {
-        if (typeof services === "undefined") { services = []; }
-        var controller = 'Kleine.controllers.' + className;
-        services.push(Kleine.controllers[className]);
-        angular.module('Kleine.controllers').controller(controller, services);
-    }
-    Kleine.registerController = registerController;
+var kleine;
+(function (kleine) {
+    'use strict';
 
-    /**
-    * Register new filter.
-    *
-    * @param className
-    * @param services
-    */
-    function registerFilter(className, services) {
-        if (typeof services === "undefined") { services = []; }
-        var filter = className.toLowerCase();
-        services.push(function () {
-            return (new Kleine.filters[className]()).filter;
-        });
-        angular.module('Kleine.filters').filter(filter, services);
-    }
-    Kleine.registerFilter = registerFilter;
+    (function (models) {
+        var signup = (function () {
+            function signup() {
+            }
+            return signup;
+        })();
+        models.signup = signup;
+    })(kleine.models || (kleine.models = {}));
+    var models = kleine.models;
 
-    /**
-    * Register new directive.
-    *
-    * @param className
-    * @param services
-    */
-    function registerDirective(className, services) {
-        if (typeof services === "undefined") { services = []; }
-        var directive = className[0].toLowerCase() + className.slice(1);
-        services.push(function () {
-            return new Kleine.directives[className]();
-        });
-        angular.module('Kleine.directives').directive(directive, services);
-    }
-    Kleine.registerDirective = registerDirective;
+    (function (controllers) {
+        var welcome = (function () {
+            function welcome($scope) {
+            }
+            return welcome;
+        })();
+        controllers.welcome = welcome;
+        var signup = (function () {
+            function signup($scope) {
+                var self = this;
 
-    /**
-    * Register new service.
-    *
-    * @param className
-    * @param services
-    */
-    function registerService(className, services) {
-        if (typeof services === "undefined") { services = []; }
-        var service = className[0].toLowerCase() + className.slice(1);
-        services.push(function () {
-            return new Kleine.services[className]();
-        });
-        angular.module('Kleine.services').factory(service, services);
-    }
-    Kleine.registerService = registerService;
-})(Kleine || (Kleine = {}));
+                $scope.emailAddress = "josiahpeters@gmail.com";
+
+                $scope.signup = function () {
+                    var result = new models.signup();
+
+                    result.emailAddress = $scope.emailAddress;
+
+                    self.signup(result);
+                };
+            }
+            //signup(): void
+            //{
+            //	console.log("test");
+            //}
+            signup.prototype.signup = function (result) {
+                console.log(result);
+            };
+            return signup;
+        })();
+        controllers.signup = signup;
+    })(kleine.controllers || (kleine.controllers = {}));
+    var controllers = kleine.controllers;
+})(kleine || (kleine = {}));
 //# sourceMappingURL=app.js.map
