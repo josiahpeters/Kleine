@@ -8,6 +8,7 @@ module kleine
 	{
 		export class signup
 		{
+			name: string;
 			emailAddress: string;
 		}
 	}

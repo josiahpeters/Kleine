@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 <!--<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="Kleine">-->
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="app">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="kleine">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -32,52 +32,17 @@
                     <li><a href="/"><i class="icon-home" title="Welcome"></i><span>Welcome</span></a></li>
                     <li><a href="#"><i class="icon-flag" title="BumpStart"></i><span>BumpStart</span></a></li>
                     <li><a href="#"><i class="icon-help" title="About"></i><span>About</span></a></li>
+                    <li><a href="#/signup"><i class="icon-help" title="About"></i><span>Sign Up</span></a></li>
+                    <li><a href="#/invite/1qFi3x/BabyP/josiahpeters@gmail.com"><i class="icon-help" title="About"></i><span>Invite!</span></a></li>
+                    <li><a href="#/guess/1qFi3x/BabyP"><i class="icon-help" title="About"></i><span>Guess!</span></a></li>
                 </ul>
             </nav>
         </div>
 
     </nav>
+    
+    <div ui-view></div>
     <div ng-view></div>
-    <!--<div class="wrapper" ng-controller="Kleine.Controller">
-        <form ng-submit="addNewDueDate()">
-            <div class="row">
-                <div class="twelve column">
-
-                    <label>Birth Title:</label>
-                    <input type="text" name="Title" ng-model="newBirthTitle" />
-
-                    <label>Expected Date:</label>
-                    <input type="text" name="Title" ng-model="newExpectedDate" />
-
-                </div>
-                <div class="twelve column">
-                    <input type="submit" class="button" value="Hello World" />
-                </div>
-            </div>
-            <div class="row">
-                <table class="table table-striped table-hover" style="width: 500px;">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Date</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="dueDate in DueDates">
-                            <td>{{dueDate.BirthTitle}}</td>
-                            <td>${{dueDate.ExpectedDate}}</td>
-                            <td>
-                                <button class="btn-small">
-                                    <i class="icon-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
-    </div>-->
     <div class="wrapper footer">
         <footer class="row" id="credits">
             <div class="six columns">
@@ -89,25 +54,18 @@
         </footer>
     </div>
 
-    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/require.js/2.1.5/require.min.js"></script>-->
-    <!--<script src="/js/libs/angular/angular.js"></script>
-    <script src="/js/Main.js"></script>-->
-    <!--<script src="/js/libs/angular/angular.js"></script>
-    <script src="/js/libs/angular/angular-resource.js"></script>
-    <script src="/js/libs/angular/angular-route.js"></script>-->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-resource.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-cookies.js"></script>
+    <script src="/js/libs/angular/angular-ui-router.js"></script>
 
     <script src="/js/app/app.js"></script>
     <script src="/js/app/controllers.js"></script>
     <script src="/js/app/models.js"></script>
     <script src="/js/app/scope.js"></script>
     <script src="/js/app/services.js"></script>
-    <!--<script src="/js/app/controllers/MyController.js"></script>
-    <script src="/js/app/filters.js"></script>
-    <script src="/js/app/directives.js"></script>
-    <script src="/js/app/services.js"></script>-->
-    <!--<script src="/js/Main.js"></script>-->
-    <!--<script src="/js/app/model/DueDateModel.js.js"></script>-->
+
 </body>
 </html>

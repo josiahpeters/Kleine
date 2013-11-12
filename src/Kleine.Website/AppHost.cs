@@ -10,8 +10,9 @@ namespace Kleine.Website
 {
     public class AppHost : AppHostBase
     {
-        
+
         public static IRepositories repositories;
+        public static INotification notify;
 
         // Initializes a new instance of your ServiceStack application, with the specified name and assembly containing the services.
         public AppHost() : base("Project Kleine", typeof(KleineServiceApi).Assembly) { }
@@ -20,8 +21,10 @@ namespace Kleine.Website
         public override void Configure(Container container)
         {
             repositories = new Repositories();
+            notify = new NotificationService();
 
             container.Register<IRepositories>(repositories);
+            container.Register<INotification>(notify);
             ////Configure ServiceStack Json web services to return idiomatic Json camelCase properties.
             //JsConfig.EmitCamelCaseNames = true;
 

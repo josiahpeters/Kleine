@@ -7,7 +7,15 @@ module kleine
 	export interface SignupScope
 	{
 		emailAddress: string;
+		name: string;
 
 		signup: Function;
+	}
+
+	export interface InviteScope
+	{
+		emailAddress: string;
+
+		confirm: Function;
 	}
 }
