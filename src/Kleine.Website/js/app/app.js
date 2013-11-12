@@ -5,10 +5,11 @@ var kleine;
 (function (kleine) {
     'use strict';
 
-    var modules = ['ngRoute', 'ngResource', 'ngCookies', 'ui.router', 'kleine', 'kleine.services'];
+    var modules = ['ngRoute', 'ngResource', 'ngCookies', 'ui.router', 'kleine', 'kleine.services', 'kleine.directives'];
 
     // pre-load our sub modules
     angular.module('kleine.services', []);
+    angular.module('kleine.directives', []);
 
     var app = angular.module('kleine', modules).config(function ($routeProvider, $locationProvider, $stateProvider, $urlRouterProvider) {
         //$routeProvider
@@ -73,6 +74,8 @@ var kleine;
         //}
     }).controller('controllers.signup', ['$scope', '$routeParams', 'profileService']).controller('controllers.invite', ['$scope', '$location', '$stateParams', 'profileService']).factory('profileService', function ($http, $cookieStore) {
         return new kleine.services.profileService($http, $cookieStore);
+    }).directive('slider', function () {
+        return new kleine.directives.slider();
     });
 })(kleine || (kleine = {}));
 

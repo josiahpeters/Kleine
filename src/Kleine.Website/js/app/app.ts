@@ -6,10 +6,11 @@ module kleine
 {
 	'use strict';
 
-	var modules = ['ngRoute', 'ngResource', 'ngCookies', 'ui.router', 'kleine', 'kleine.services'];
+	var modules = ['ngRoute', 'ngResource', 'ngCookies', 'ui.router', 'kleine', 'kleine.services', 'kleine.directives'];
 
 	// pre-load our sub modules
 	angular.module('kleine.services', []);
+	angular.module('kleine.directives', []);
 
 	var app = angular.module('kleine', modules)
 		.config(function ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $stateProvider: any, $urlRouterProvider: any)
@@ -85,7 +86,7 @@ module kleine
 					}
 				})
 
-			
+
 					//views: {
 					//	"guess": { template: "guess.start" },
 					//	"gender": { template: "guess.gender" },
@@ -93,9 +94,11 @@ module kleine
 		})
 		.controller('controllers.signup', ['$scope', '$routeParams', 'profileService'])
 
-		.controller('controllers.invite', ['$scope', '$location', '$stateParams',  'profileService'])
+		.controller('controllers.invite', ['$scope', '$location', '$stateParams', 'profileService'])
 
-		.factory('profileService', ($http, $cookieStore) => new services.profileService($http, $cookieStore));
+		.factory('profileService', ($http, $cookieStore) => new services.profileService($http, $cookieStore))
+
+		.directive('slider', () => new kleine.directives.slider());
 
 }
 

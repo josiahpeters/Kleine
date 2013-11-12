@@ -178,6 +178,7 @@
     <Content Include="partials\guess.html" />
     <Content Include="partials\invite.html" />
     <Content Include="partials\signup.html" />
+    <Content Include="partials\slider.html" />
     <Content Include="partials\welcome.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -240,6 +241,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="js\app\app.ts" />
     <TypeScriptCompile Include="js\app\controllers.ts" />
+    <TypeScriptCompile Include="js\app\directives.ts" />
     <TypeScriptCompile Include="js\app\models.ts" />
     <TypeScriptCompile Include="js\app\scope.ts" />
     <TypeScriptCompile Include="js\app\services.ts" />

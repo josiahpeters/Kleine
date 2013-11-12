@@ -8,7 +8,6 @@ module kleine
 	{
 		export class profileService
 		{
-
 			constructor(private $http: any, private $cookieStore: any)
 			{
 			}
@@ -22,4 +21,7 @@ module kleine
 			}
 		}
 	}
+
+
 }
+
