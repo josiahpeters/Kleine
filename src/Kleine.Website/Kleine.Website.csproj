@@ -144,6 +144,7 @@
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="css\xcharts.min.css" />
+    <Content Include="js\libs\angular\angular-ui-router.js" />
     <Content Include="js\libs\angular\angular-animate.js" />
     <Content Include="js\libs\angular\angular-animate.min.js" />
     <Content Include="js\libs\angular\angular-cookies.js" />
@@ -167,6 +168,13 @@
     <Content Include="js\libs\jquery.flot.min.js" />
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
+    <Content Include="partials\guess.start.html" />
+    <Content Include="partials\guess.length.html" />
+    <Content Include="partials\guess.finish.html" />
+    <Content Include="partials\guess.weight.html" />
+    <Content Include="partials\guess.time.html" />
+    <Content Include="partials\guess.date.html" />
+    <Content Include="partials\guess.gender.html" />
     <Content Include="partials\guess.html" />
     <Content Include="partials\invite.html" />
     <Content Include="partials\signup.html" />
