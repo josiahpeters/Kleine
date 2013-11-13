@@ -144,6 +144,7 @@
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="css\xcharts.min.css" />
+    <Content Include="js\app.js" />
     <Content Include="js\libs\angular\angular-ui-router.js" />
     <Content Include="js\libs\angular\angular-animate.js" />
     <Content Include="js\libs\angular\angular-animate.min.js" />
