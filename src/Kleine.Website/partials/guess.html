@@ -9,8 +9,7 @@
             <!--<li><a ui-sref="guess.hair">Hair Color</a></li>
             <li><a ui-sref="guess.name">Name</a></li>-->
         </ul>
-        <div slider label="lbs" min="3" max="4">f</div>
-
+        <div slider label="lbs" min="16" max="208" conversion="(value / 16).toFixed(1)">f</div>
         <div class="eight column" ui-view="guess">
         </div>
     </div>

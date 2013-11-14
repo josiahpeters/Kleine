@@ -1,0 +1,104 @@
+﻿
+@size: 30px;
+@margin: 38px;
+@handleOffset: 4px;
+
+@borderColor: #dddddd;
+
+@handleBackgroundColor: #357ebd;
+@handleBorderColor: #428bca;
+
+@rangeBackgroundColor: #5cb85c;
+@rangeBorderColor: #4cae4c;
+
+@labelWidth: 60px;
+@arrowSize: 8px;
+
+.range-slider {
+    height: @size;
+    border: 1px solid @borderColor;
+    border-radius: 4px;
+    margin: @margin 0;
+    position: relative;
+    cursor: pointer;
+    background-color: #f5f5f5;
+
+    .slider {
+        width: @size * 5;
+        height: @size + @handleOffset;
+        border-radius: 4px;
+        position: absolute;
+        border: 1px solid @rangeBorderColor;
+        left: 0;
+        top: -3px;
+        background-color: @rangeBackgroundColor;
+
+        .handle {
+            width: @size + @handleOffset;
+            height: @size + @handleOffset;
+            border-radius: 4px;
+            position: absolute;
+            border: 1px solid @handleBackgroundColor;
+            top: -@handleOffset + 1;
+            background-color: @handleBorderColor;
+        }
+
+            .handle.left {
+                left: 0;
+            }
+
+            .handle.right {
+                right: 0;
+            }
+
+        label {
+            position: absolute;
+            width: 60px;
+            border-radius: 4px;
+            /*border: 1px solid @handleBackgroundColor;*/
+            background-color: @handleBorderColor;
+            color: #fff;
+            .font-size(12px);
+            line-height: 2rem;
+            text-align: center;
+        }
+
+            label.min {
+                left: (-@labelWidth - @arrowSize/2)/2;
+                top: -@size + @handleOffset / 2;
+            }
+
+            label.min:after
+                    {
+                    content: "";
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    border-left: @arrowSize solid transparent;
+                    border-right: @arrowSize solid transparent;
+                    border-top: @arrowSize solid @handleBorderColor;
+                    bottom: -@arrowSize;
+                    left: 50%;
+                    margin-left: -@arrowSize;
+                }
+
+            label.max {
+                right: (-@labelWidth - @arrowSize/2) / 2;
+                top: @size + @handleOffset * 3; 
+            }
+
+            label.max:after
+                    {
+                    content: "";
+                    position: absolute;
+                    width: 0;
+                    height: 0;
+                    border-left: @arrowSize solid transparent;
+                    border-right: @arrowSize solid transparent;
+                    border-bottom: @arrowSize solid @handleBorderColor;
+                    top: -@arrowSize;
+                    right: 50%;
+                    margin-right: -@arrowSize;
+                }
+    }
+}

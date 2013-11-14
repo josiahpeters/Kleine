@@ -127,6 +127,12 @@
     <Content Include="css\less\settings.min.css">
       <DependentUpon>settings.less</DependentUpon>
     </Content>
+    <Content Include="css\less\slider.css">
+      <DependentUpon>slider.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\slider.min.css">
+      <DependentUpon>slider.less</DependentUpon>
+    </Content>
     <Content Include="css\less\theme.css">
       <DependentUpon>theme.less</DependentUpon>
     </Content>
@@ -214,6 +220,7 @@
     <Content Include="js\libs\angular\version.json" />
     <Content Include="js\libs\jquery-1.10.1.min.map" />
     <Content Include="js\libs\jquery-2.0.2.min.map" />
+    <Content Include="css\less\slider.less" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

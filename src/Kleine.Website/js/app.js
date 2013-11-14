@@ -72,71 +72,150 @@ angular.module('kleine.controllers', [])
 
     }]);
 
+//angular.module('kleine.directives', []).
+//  directive('slider', function ()
+//  {
+//      return { 
+//          restrict: 'AE', 
+//          //templateUrl: 'partials/slider.html',
+//template: '<div class="range-slider">' +
+//'    <input type="hidden" ng-model="value" />' +
+//'      slide' +
+//'    <div class="slider">' +
+//'        <label class="min">{{ minValue + " " + label }}</label>' +
+//'        <label class="max">{{ minValue + " " + label }}</label>' +
+//'    </div>' +
+//'</div>',
+//          scope: {
+//              label: '=label',
+//              min: '=minValue',
+//              max: '=maxValue',
+//              //maxLabel: "Max"
+//          },
+//          link: function(scope, element, attrs)
+//          {
+
+//          }
+//      };
+//  });
+
 angular.module('kleine.directives', []).
-  directive('slider', function ()
+  directive('slider', function ($document, $window)
   {
-      return { 
-          restrict: 'AE', 
+      return {
+          restrict: 'AE',
           //templateUrl: 'partials/slider.html',
-template: '<div class="range-slider">' +
-'    <input type="hidden" ng-model="value" />' +
-'      slide' +
-'    <div class="slider">' +
-'        <label class="min">{{ minValue + " " + label }}</label>' +
-'        <label class="max">{{ minValue + " " + label }}</label>' +
-'    </div>' +
-'</div>',
+          template: '    <input type="hidden" ng-model="value" />' +
+          '      slide' +
+          '    <div class="slider">' +
+          '        <label class="min">{{ minValue + " " + label }}</label>' +
+          '        <label class="max">{{ maxValue + " " + label }}</label>' +
+          '    </div>',
           scope: {
-              label: '=label',
-              min: '=minValue',
-              max: '=maxValue',
+              //'&'
               //maxLabel: "Max"
           },
-          link: function(scope, element, attrs)
+          link: function (scope, element, attr)
           {
+              var startX = 0, startY = 0, x = 0, y = 0;
 
+              element.addClass('range-slider');
+
+              var minValue = parseFloat(attr.min);
+              var maxValue = parseFloat(attr.max);
+
+              scope.label = attr.label || "lbs";
+
+              scope.minValue = "2";
+              scope.maxValue = "34";
+
+              console.log(scope);
+              console.log(attr);
+
+              console.log(scope.$eval(attr.conversion));
+
+
+              element.css({
+                  position: 'relative',
+                  cursor: 'pointer'
+              });              
+
+              var sliderElement = angular.element(element.children()[1]);
+
+              var sliderMaxPx = 1140;
+              var pixelPerValue = 100;
+
+              var w = angular.element($window);
+
+              w.bind('resize', resize);
+              resize();
+
+              sliderElement.css({
+                  position: 'absolute',
+                  cursor: 'pointer',
+                  left: '0px'
+              });
+
+              sliderElement.on('mousedown', function (event)
+              {
+                  // Prevent default dragging of selected content
+                  event.preventDefault();
+                  startX = event.pageX - x;
+                  $document.on('mousemove', mousemove);
+                  $document.on('mouseup', mouseup);
+              });
+
+              function mousemove(event)
+              {
+                  x = event.pageX - startX;
+
+                  if (x < 0)
+                      x = 0;                  
+                  if (x > sliderMaxPx)
+                      x = sliderMaxPx;
+
+                  sliderElement.css({
+                      left: x + 'px'
+                  });
+
+                  calculateValue();
+              }
+
+              function calculateValue()
+              {
+                  //var range = $(this);
+
+                  var left = parseFloat(sliderElement.css("left"));
+
+                  //console.log(left);
+
+                  scope.minValue = left / pixelPerValue + minValue;
+                  scope.maxValue = left / pixelPerValue + minValue + maxValue;
+
+                  scope.$apply();
+
+
+                  //var rangeMinValue = self.options.unitConversion(left / self.pixelPerValue + self.options.min);
+                  //var rangeMaxValue = self.options.unitConversion(left / self.pixelPerValue + self.options.min + self.options.range);
+                  //range.find(".label.min").text(rangeMinValue);
+                  //range.find(".label.max").text(rangeMaxValue);
+
+                  //self.element.find("input").val('{min: "' + rangeMinValue + '", max: "' + rangeMaxValue + '"}');
+              }
+
+              function resize(event)
+              {
+                  sliderMaxPx = element[0].offsetWidth - sliderElement[0].offsetWidth;
+
+                  pixelPerValue = sliderElement[0].offsetWidth / sliderMaxPx;
+              }
+
+              function mouseup()
+              {
+                  $document.unbind('mousemove', mousemove);
+                  $document.unbind('mouseup', mouseup);
+              }
           }
       };
-  });
 
-angular.module('dragModule', []).
-  directive('myDraggable', function ($document)
-  {
-      return function (scope, element, attr)
-      {
-          var startX = 0, startY = 0, x = 0, y = 0;
-
-          element.css({
-              position: 'relative',
-              border: '1px solid red',
-              backgroundColor: 'lightgrey',
-              cursor: 'pointer'
-          });
-
-          element.on('mousedown', function (event)
-          {
-              // Prevent default dragging of selected content
-              event.preventDefault();
-              startX = event.pageX - x;
-              startY = event.pageY - y;
-              $document.on('mousemove', mousemove);
-              $document.on('mouseup', mouseup);
-          });
-
-          function mousemove(event)
-          {
-              y = event.pageY - startY;
-              x = event.pageX - startX;
-              element.css({
-                  top: y + 'px',
-                  left: x + 'px'
-              });
-          }
-
-          function mouseup()
-          {
-              $document.unbind('mousemove', mousemove);
-              $document.unbind('mouseup', mouseup);
-          }
-      }
   });
