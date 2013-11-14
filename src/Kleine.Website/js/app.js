@@ -19,41 +19,73 @@ var app = angular.module('kleine', modules)
             .state('guess', {
                 url: '/guess/:id/:name',
                 templateUrl: 'partials/guess.html',
-                controller: 'guess',
+                controller: function($scope)
+                {
+                    $scope.$on("sliderChange", function (e)
+                    {
+                        console.log(e.targetScope.value);
+                        console.log(e.targetScope);
+                    });
+                }
             })
             .state('guess.gender', {
-                url: '/gender',
-                controller: 'guess',
+                url: '/gender',                
                 views: {
-                    'guess': { templateUrl: 'partials/guess.gender.html' }
+                    'guess': {
+                        templateUrl: 'partials/guess.gender.html', controller: 'guess' ,
+                    }
                 }
             })
             .state('guess.date', {
                 url: '/date',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.date.html' }
+                    'guess': { templateUrl: 'partials/guess.date.html', controller: 'guess' }
                 }
             })
             .state('guess.time', {
                 url: '/time',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.time.html' }
+                    'guess': { templateUrl: 'partials/guess.time.html', controller: 'guess' }
                 }
             })
             .state('guess.weight', {
                 url: '/weight',
-                controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.weight.html' }
+                    'guess': {
+                        templateUrl: 'partials/guess.weight.html',
+                        controller: 'guess'
+                        //controller: function ($scope, $state)
+                        //{
+                        //    //console.log($scope);
+                        //    //console.log($scope.value);
+                        //    //$scope.$watch('value', function ()
+                        //    //{
+                        //    //    $scope.$parent.gender = $scope.value;
+                        //    //});
+                        //},
+                    }
                 }
             })
             .state('guess.length', {
                 url: '/length',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.length.html' }
+                    'guess': {
+                        templateUrl: 'partials/guess.length.html',
+                        controller: 'guess'
+                        //controller: function ($scope, $state)
+                        //{
+                        //    $scope.length = 0;
+                        //    console.log($scope);
+                        //    $scope.$watch('value', function ()
+                        //    {
+                        //        //$scope.$parent.gender = $scope.value;
+                        //        console.log("change");
+                        //    });
+                        //},
+                    }
                 }
             })
             .state('guess.finish', {
@@ -63,98 +95,97 @@ var app = angular.module('kleine', modules)
                     'guess': { templateUrl: 'partials/guess.finish.html' }
                 }
             });
-    }]);
+    }])
+    .run(function ($rootScope, $state, $stateParams)
+    {
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+    });
 //.controller('controllers.invite', ['$scope', '$location', '$stateParams'])
 
 angular.module('kleine.controllers', [])
-    .controller('guess', [function ()
+    .controller('guess', ['$scope', '$state', function ($scope, $state)
     {
+        $scope.length = 0;
+        console.log($scope);
 
+
+        //function ($scope, $state)
+        //{
+            
+        //    console.log($scope);
+        //    $scope.$watch('value', function ()
+        //    {
+        //        //$scope.$parent.gender = $scope.value;
+        //        console.log("change");
+        //    });
+        //},
+        //console.log($scope);
+        //console.log($state);
+
+        //$scope.slider
+
+        //$scope.toOunces(value)
+        //{
+        //    return 
+        //}
     }]);
-
-//angular.module('kleine.directives', []).
-//  directive('slider', function ()
-//  {
-//      return { 
-//          restrict: 'AE', 
-//          //templateUrl: 'partials/slider.html',
-//template: '<div class="range-slider">' +
-//'    <input type="hidden" ng-model="value" />' +
-//'      slide' +
-//'    <div class="slider">' +
-//'        <label class="min">{{ minValue + " " + label }}</label>' +
-//'        <label class="max">{{ minValue + " " + label }}</label>' +
-//'    </div>' +
-//'</div>',
-//          scope: {
-//              label: '=label',
-//              min: '=minValue',
-//              max: '=maxValue',
-//              //maxLabel: "Max"
-//          },
-//          link: function(scope, element, attrs)
-//          {
-
-//          }
-//      };
-//  });
+angular.module('myApp.filters', []).
+  filter('lbsToOunces', ['version', function (version)
+  {
+      return function (value)
+      {
+          return (value / 16).toFixed(1);
+      }
+  }]);
 
 angular.module('kleine.directives', []).
-  directive('slider', function ($document, $window)
+  directive('slider', function ($document, $window, $parse)
   {
       return {
-          restrict: 'AE',
+          restrict: 'E',
           //templateUrl: 'partials/slider.html',
-          template: '    <input type="hidden" ng-model="value" />' +
-          '      slide' +
-          '    <div class="slider">' +
-          '        <label class="min">{{ minValue + " " + label }}</label>' +
-          '        <label class="max">{{ maxValue + " " + label }}</label>' +
-          '    </div>',
+          template: '<div class="range-slider"><input type="hidden" ng-model="value" />' +
+          '    <div class="slider">{{ value }}' +
+          '        <label class="min">{{ minValue.toFixed(1) + " " + label }}</label>' +
+          '        <label class="max">{{ maxValue.toFixed(1) + " " + label }}</label>' +
+          '    </div></div>',
           scope: {
-              //'&'
-              //maxLabel: "Max"
+              name: '='
           },
           link: function (scope, element, attr)
           {
+              //element.addClass('range-slider');
+              element = angular.element(element.children()[0]);
+
+              //console.log(scope)
+
               var startX = 0, startY = 0, x = 0, y = 0;
-
-              element.addClass('range-slider');
-
               var minValue = parseFloat(attr.min);
               var maxValue = parseFloat(attr.max);
-
-              scope.label = attr.label || "lbs";
-
-              scope.minValue = "2";
-              scope.maxValue = "34";
-
-              console.log(scope);
-              console.log(attr);
-
-              console.log(scope.$eval(attr.conversion));
-
-
-              element.css({
-                  position: 'relative',
-                  cursor: 'pointer'
-              });              
-
-              var sliderElement = angular.element(element.children()[1]);
-
               var sliderMaxPx = 1140;
               var pixelPerValue = 100;
+              var range = parseFloat(attr.range);
+              var sliderElement = angular.element(element.children()[1]);
 
-              var w = angular.element($window);
+              angular.element($window).bind('resize', resize);
 
-              w.bind('resize', resize);
-              resize();
 
               sliderElement.css({
                   position: 'absolute',
                   cursor: 'pointer',
                   left: '0px'
               });
+
+              scope.name = attr.name;
+
+              scope.label = attr.label || "lbs";
+
+              element.css({
+                  position: 'relative',
+                  cursor: 'pointer'
+              });
+
 
               sliderElement.on('mousedown', function (event)
               {
@@ -164,6 +195,15 @@ angular.module('kleine.directives', []).
                   $document.on('mousemove', mousemove);
                   $document.on('mouseup', mouseup);
               });
+
+              // call setup with a delay to prevent conflicting scope.$apply race condition
+              setTimeout(setup, 1);
+              // setup function
+              function setup()
+              {
+                  resize();
+                  scope.$apply(calculateValue());
+              }
 
               function mousemove(event)
               {
@@ -178,36 +218,34 @@ angular.module('kleine.directives', []).
                       left: x + 'px'
                   });
 
-                  calculateValue();
+                  scope.$apply(calculateValue());
               }
 
               function calculateValue()
               {
-                  //var range = $(this);
-
                   var left = parseFloat(sliderElement.css("left"));
-
-                  //console.log(left);
+                  
+                  if (left == 0)
+                      left = 1;
 
                   scope.minValue = left / pixelPerValue + minValue;
-                  scope.maxValue = left / pixelPerValue + minValue + maxValue;
+                  scope.maxValue = left / pixelPerValue + minValue + range;
 
-                  scope.$apply();
+                  scope.value = scope.minValue;
 
-
-                  //var rangeMinValue = self.options.unitConversion(left / self.pixelPerValue + self.options.min);
-                  //var rangeMaxValue = self.options.unitConversion(left / self.pixelPerValue + self.options.min + self.options.range);
-                  //range.find(".label.min").text(rangeMinValue);
-                  //range.find(".label.max").text(rangeMaxValue);
-
-                  //self.element.find("input").val('{min: "' + rangeMinValue + '", max: "' + rangeMaxValue + '"}');
+                  scope.$emit("sliderChange");
               }
 
               function resize(event)
               {
+
+                  var width = range/(maxValue-minValue);
+
+                  sliderElement.css({ width: element[0].offsetWidth * width + 'px' });
+
                   sliderMaxPx = element[0].offsetWidth - sliderElement[0].offsetWidth;
 
-                  pixelPerValue = sliderElement[0].offsetWidth / sliderMaxPx;
+                  pixelPerValue = sliderMaxPx / (maxValue - minValue);
               }
 
               function mouseup()

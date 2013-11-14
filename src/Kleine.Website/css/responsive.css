@@ -232,3 +232,9 @@ button:hover {
   right: 50%;
   margin-right: -8px;
 }
+.active {
+  background-color: #3085d6;
+}
+.active a {
+  color: #fff;
+}
