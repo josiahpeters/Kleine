@@ -19,21 +19,54 @@ var app = angular.module('kleine', modules)
             .state('guess', {
                 url: '/guess/:id/:name',
                 templateUrl: 'partials/guess.html',
-                controller: function($scope)
+                controller: function ($scope)
                 {
                     $scope.$on("sliderChange", function (e)
                     {
-                        console.log(e.targetScope.value);
-                        console.log(e.targetScope);
+                        if (e.targetScope.name == "weight")
+                            $scope.weight = e.targetScope.value;
+                        else if (e.targetScope.name == "length")
+                            $scope.length = e.targetScope.value;
+                        //console.log(e.targetScope.value);
+                        //console.log(e.targetScope);
                     });
+                },
+                resolve: {
+                    guesses: ['guess',
+                      function( guesses){
+                          return guesses.all();
+                      }]
+                },
+                function (contacts)
+                {
+                    return contacts.all();
+                }],
+                abstract: true,
+                data:
+                {
+                    weight: 0,
+                    length: 0,
+                    date: 0,
+                    gender: 0,
+                    time: 0,
+                }
+            })
+            .state('guess.start', {
+                url: '/start',
+                templateUrl: 'partials/guess.html',
+                data:
+                {
                 }
             })
             .state('guess.gender', {
-                url: '/gender',                
+                url: '/gender',
                 views: {
                     'guess': {
-                        templateUrl: 'partials/guess.gender.html', controller: 'guess' ,
+                        templateUrl: 'partials/guess.gender.html', controller: 'guess',
                     }
+                },
+                data:
+                {
                 }
             })
             .state('guess.date', {
@@ -108,11 +141,12 @@ angular.module('kleine.controllers', [])
     {
         $scope.length = 0;
         console.log($scope);
+        console.log($state);
 
 
         //function ($scope, $state)
         //{
-            
+
         //    console.log($scope);
         //    $scope.$watch('value', function ()
         //    {
@@ -138,6 +172,13 @@ angular.module('myApp.filters', []).
           return (value / 16).toFixed(1);
       }
   }]);
+
+angular.module('kleine.services', [])
+    .factory('guess', [function ()
+    {
+        
+    }
+    ]);
 
 angular.module('kleine.directives', []).
   directive('slider', function ($document, $window, $parse)
@@ -210,7 +251,7 @@ angular.module('kleine.directives', []).
                   x = event.pageX - startX;
 
                   if (x < 0)
-                      x = 0;                  
+                      x = 0;
                   if (x > sliderMaxPx)
                       x = sliderMaxPx;
 
@@ -224,7 +265,7 @@ angular.module('kleine.directives', []).
               function calculateValue()
               {
                   var left = parseFloat(sliderElement.css("left"));
-                  
+
                   if (left == 0)
                       left = 1;
 
@@ -239,7 +280,7 @@ angular.module('kleine.directives', []).
               function resize(event)
               {
 
-                  var width = range/(maxValue-minValue);
+                  var width = range / (maxValue - minValue);
 
                   sliderElement.css({ width: element[0].offsetWidth * width + 'px' });
 
