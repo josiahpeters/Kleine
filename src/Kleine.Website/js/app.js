@@ -21,48 +21,39 @@ var app = angular.module('kleine', modules)
                 templateUrl: 'partials/guess.html',
                 controller: function ($scope)
                 {
-                    $scope.$on("sliderChange", function (e)
-                    {
-                        if (e.targetScope.name == "weight")
-                            $scope.weight = e.targetScope.value;
-                        else if (e.targetScope.name == "length")
-                            $scope.length = e.targetScope.value;
-                        //console.log(e.targetScope.value);
-                        //console.log(e.targetScope);
-                    });
+                    $scope.results = {
+                        weight: 0,
+                        length: 0,
+                        date: 0,
+                        gender: 0,
+                        time: 0,
+                    };
+                    
                 },
-                resolve: {
-                    guesses: ['guess',
-                      function( guesses){
-                          return guesses.all();
-                      }]
-                },
-                function (contacts)
-                {
-                    return contacts.all();
-                }],
                 abstract: true,
-                data:
-                {
-                    weight: 0,
-                    length: 0,
-                    date: 0,
-                    gender: 0,
-                    time: 0,
-                }
             })
             .state('guess.start', {
                 url: '/start',
                 templateUrl: 'partials/guess.html',
-                data:
-                {
-                }
+
             })
             .state('guess.gender', {
                 url: '/gender',
                 views: {
                     'guess': {
-                        templateUrl: 'partials/guess.gender.html', controller: 'guess',
+                        templateUrl: 'partials/guess.gender.html',
+                        controller: function ($scope, $stateParams)
+                        {
+                            console.log($scope.results);
+                            $scope.chooseMale = function()
+                            {
+                                $scope.results.gender = "Male";
+                            }
+                            $scope.chooseFemale = function ()
+                            {
+                                $scope.results.gender = "Female";
+                            }
+                        }
                     }
                 },
                 data:
@@ -88,16 +79,19 @@ var app = angular.module('kleine', modules)
                 views: {
                     'guess': {
                         templateUrl: 'partials/guess.weight.html',
-                        controller: 'guess'
-                        //controller: function ($scope, $state)
-                        //{
-                        //    //console.log($scope);
-                        //    //console.log($scope.value);
-                        //    //$scope.$watch('value', function ()
-                        //    //{
-                        //    //    $scope.$parent.gender = $scope.value;
-                        //    //});
-                        //},
+                        //controller: 'guess'
+                        controller: function ($scope, $state)
+                        {
+                            //console.log($scope.results);
+                            //console.log($scope);
+                            //console.log($scope.value);
+                            console.log("weight", $scope);
+                            //$scope.$watch('value', function (e)
+                            //{
+                            //    console.log("done?", e);
+                            //    //$scope.$parent.gender = $scope.value;
+                            //});
+                        },
                     }
                 }
             })
@@ -176,7 +170,7 @@ angular.module('myApp.filters', []).
 angular.module('kleine.services', [])
     .factory('guess', [function ()
     {
-        
+
     }
     ]);
 
@@ -192,7 +186,14 @@ angular.module('kleine.directives', []).
           '        <label class="max">{{ maxValue.toFixed(1) + " " + label }}</label>' +
           '    </div></div>',
           scope: {
-              name: '='
+              name: '=',
+              test: '='
+          },
+          controller: function ($scope)
+          {
+              //$scope.$parent.results.weight = 12
+              //$scope.$parent
+              console.log();
           },
           link: function (scope, element, attr)
           {
@@ -273,8 +274,8 @@ angular.module('kleine.directives', []).
                   scope.maxValue = left / pixelPerValue + minValue + range;
 
                   scope.value = scope.minValue;
-
-                  scope.$emit("sliderChange");
+                  scope.$parent.results["weight"] = scope.value;
+                  //scope.$emit("sliderChange");
               }
 
               function resize(event)
