@@ -34,7 +34,11 @@ var app = angular.module('kleine', modules)
             })
             .state('guess.start', {
                 url: '/start',
-                templateUrl: 'partials/guess.html',
+                views: {
+                    'guess': {
+                        templateUrl: 'partials/guess.start.html',
+                    }
+                }
 
             })
             .state('guess.gender', {
@@ -44,13 +48,9 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/guess.gender.html',
                         controller: function ($scope, $stateParams)
                         {
-                            $scope.chooseMale = function ()
+                            $scope.chooseGender = function (gender)
                             {
-                                $scope.results.gender = "Male";
-                            }
-                            $scope.chooseFemale = function ()
-                            {
-                                $scope.results.gender = "Female";
+                                $scope.results.gender = gender;
                             }
                         }
                     }
@@ -81,15 +81,6 @@ var app = angular.module('kleine', modules)
                         //controller: 'guess'
                         controller: function ($scope, $state)
                         {
-                            //console.log($scope.results);
-                            //console.log($scope);
-                            //console.log($scope.value);
-                            //console.log("weight", $scope);
-                            //$scope.$watch('value', function (e)
-                            //{
-                            //    console.log("done?", e);
-                            //    //$scope.$parent.gender = $scope.value;
-                            //});
                         },
                     }
                 }
@@ -100,17 +91,7 @@ var app = angular.module('kleine', modules)
                 views: {
                     'guess': {
                         templateUrl: 'partials/guess.length.html',
-                        controller: 'guess'
-                        //controller: function ($scope, $state)
-                        //{
-                        //    $scope.length = 0;
-                        //    console.log($scope);
-                        //    $scope.$watch('value', function ()
-                        //    {
-                        //        //$scope.$parent.gender = $scope.value;
-                        //        console.log("change");
-                        //    });
-                        //},
+                        controller: 'guess'                        
                     }
                 }
             })
@@ -133,7 +114,7 @@ angular.module('kleine.controllers', [])
     .controller('guess', ['$scope', '$state', function ($scope, $state)
     {
         $scope.length = 0;
-        
+
 
 
         //function ($scope, $state)
@@ -185,13 +166,11 @@ angular.module('kleine.directives', []).
           '    </div></div>',
           scope: {
               name: '=',
-              test: '='
           },
           controller: function ($scope)
           {
               //$scope.$parent.results.weight = 12
               //$scope.$parent
-              console.log();
           },
           link: function (scope, element, attr)
           {
@@ -332,7 +311,7 @@ angular.module('kleine.directives', []).
 
                   var minutes = Math.floor((timeValue % 1) * 60);
 
-                  
+
 
                   if (minutes < 10)
                       minutes = '0' + minutes;
@@ -363,10 +342,7 @@ angular.module('kleine.directives', []).
                           minTime = value[0];
                       var date = new Date("1/1/1 " + minTime);
 
-
-
                       value = date.getHours() + date.getMinutes() / 60;
-                      console.log(date, minTime, value);
                   }
 
                   return value;
@@ -401,12 +377,31 @@ angular.module('kleine.directives', []).
       };
 
   })
-.directive('calendar', function ($document, $window, $parse)
+
+
+
+.directive('calendar', function ($document, $window, $parse, $compile)
 {
     return {
         restrict: 'E',
         //templateUrl: 'partials/slider.html',
-        template: '<div class="calendar"><input type="hidden" ng-model="value" /></div>',
+        template: '<table class="calendar">' +
+'    <thead>    ' +
+'        <tr>' +
+'            <th ng-repeat="day in weekdays">{{ day }}</th>' +
+'        </tr>' +
+'    </thead>' +
+'    <tbody>' +
+'        <tr ng-repeat="week in weeks">' +
+'            <td ng-repeat="day in week.days" class="day" ng-click="setDate(day)">' +
+'               <div  ng-class="{\'expected\':day.expected,\'active\':isSelected(day)}">' + 
+'        <span class="month">{{ getMonth(day) }}</span>' +
+'        {{ getDate(day) }}' +
+'               </div>' +
+'            </td>' +
+'        </tr>' +
+'    </tbody>' +
+'</table>',
         scope: {
             name: '=',
             test: '='
@@ -414,13 +409,11 @@ angular.module('kleine.directives', []).
         controller: function ($scope)
         {
         },
-        link: function (scope, element, attr)
+        link: function (scope, element, attr, $com)
         {
-            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var target = (attr.target || "value").split('.');
+
             var monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            var dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-            var dayNamesMin = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
             var weeksBeforeExpectedDate = 3;
             var weeksAfterExpectedDate = 3;
@@ -446,102 +439,86 @@ angular.module('kleine.directives', []).
             var month;
 
             var calendar = angular.element(element.children()[0]);
-
-            var days = angular.element('<div class="days"></div>')
-
-            for (var i = 0; i < 7; i++)
+            
+            scope.getDate = function (day)
             {
-                days.append('<div class="day">' + dayNamesShort[i] + '</div>');
+                return day.date.getDate();
+            }
+            scope.getMonth = function (day)
+            {
+                return monthNamesShort[day.date.getMonth()];
+            }
+            scope.setDate = function (day)
+            {
+                scope.selectedDate = day.date;
+
+                var value = (day.date.getMonth()+1) + '/' + day.date.getDate() + '/' + day.date.getFullYear();
+                setTargetValue(value);
             }
 
-            calendar.append(days);
+            scope.selectedDate = new Date(getTargetValue());
 
-            for (var i = 0; i < (weeksBeforeExpectedDate * 7 + weeksAfterExpectedDate * 7) ; i++)
+            scope.isSelected = function (day)
             {
-                var newDate = new Date(expectedYear, expectedMonth, calendarStartDay + i);
-                var item = angular.element('<div class="day"></div>');
-
-                var prefix = "";
-
-                if (month != newDate.getMonth())
-                {
-                    prefix = monthNamesShort[newDate.getMonth()];
-                    month = newDate.getMonth();
-                }
-
-                item.append(getHtml(prefix, newDate));
-
-                if (newDate.getTime() == expectedDate.getTime())
-                {
-                    item.addClass("expected");
-                    //angular.element(item.children()[0]).append("Expected Date");
-                }
-
-
-                if (newDate.getDay() == 0)
-                {
-                    calendar.append(week);
-                    week = angular.element('<div class="week"></div>');
-                }
-
-                week.append(item);
+                return scope.selectedDate.valueOf() == day.date.valueOf();
             }
 
-            calendar.append(week);
+            var weeks = [];
 
-            function getHtml(prefix, date)
+            var dayIndex = 0;
+
+            for (var i = 0; i < 6; i++)
             {
-                if (prefix.length > 0)
-                    return angular.element('<a href="#"><span class="prefix">' + prefix + '</span> ' + date.getDate() + '</a>');
+
+                var week = { days: [] };
+
+                for (var j = 0; j < 7; j++)
+                {
+                    var newDate = new Date(expectedYear, expectedMonth, calendarStartDay + dayIndex);
+
+                    var day = { date: newDate, expected: false };
+
+                    if (newDate.getTime() == expectedDate.getTime())
+                        day.expected = true;
+
+                    week.days.push(day);
+
+                    dayIndex++;
+                }
+
+                weeks.push(week);
+            }
+
+            scope.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            scope.weeks = weeks;
+
+            function setTargetValue(value)
+            {
+                if (target.length > 1)
+                    scope.$parent[target[0]][target[1]] = value;
                 else
-                    return angular.element('<a href="#">' + date.getDate() + '</a>');
+                    scope.$parent[target] = value;
             }
-        }
-    };
 
-})
-.directive('hours', function ($document, $window, $parse)
-{
-    return {
-        restrict: 'E',
-        //templateUrl: 'partials/slider.html',
-        template: '<div id="hours" class="hours">',
-        scope: {
-            name: '=',
-            test: '='
-        },
-        controller: function ($scope)
-        {
-        },
-        link: function (scope, element, attr)
-        {
-            var hours = angular.element(element.children()[0]);
-
-            var amHours = angular.element('<div class="am-hours list six column"><p>Morning</p></div>');
-
-            for (var i = 0; i < 12; i++)
+            function getTargetValue()
             {
-                var hour = i;
+                var value;
+                if (target.length > 1)
+                    value = scope.$parent[target[0]][target[1]];
+                else
+                    value = scope.$parent[target];
 
-                if (i == 0)
-                    hour = 12;
-                amHours.append(angular.element('<a href="#" class="hours list-item">' + hour + 'am to ' + (i + 1) + 'am</a>'));
+                return value;
             }
 
-            hours.append(amHours);
-
-            var pmHours = angular.element('<div class="pm-hours list six column"><p>Afternoon / Evening</p></div>');
-
-            for (var i = 0; i < 12; i++)
+            function get(target, properties)
             {
-                var hour = i + 1;
-
-                if (i == 0)
-                    hour = 12;
-                pmHours.append(angular.element('<a href="#" class="hours list-item">' + hour + 'pm</a>'));
+                if (properties.length > 1)
+                {
+                    return get(target[properties[0]], properties.slice(1));
+                }
+                return target[properties[0]];
             }
-
-            hours.append(pmHours);
         }
     };
 

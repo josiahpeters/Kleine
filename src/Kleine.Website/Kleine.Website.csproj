@@ -222,6 +222,7 @@
     <Content Include="js\libs\jquery-1.10.1.min.map" />
     <Content Include="js\libs\jquery-2.0.2.min.map" />
     <Content Include="css\less\slider.less" />
+    <None Include="Properties\PublishProfiles\pugna.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

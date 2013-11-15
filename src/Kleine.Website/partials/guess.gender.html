@@ -2,11 +2,10 @@
 <div class="" id="Gender">
     <h2>Gender</h2>
     <div>
-        <label for="gender">Which gender do you think Baby P. will be?</label>
-
+        <p>Which gender do you think Baby P. will be?</p>
         <p>
-            <button type="button" class="btn btn-lg btn-default" ng-click="chooseMale()">Male</button> or
-            <button type="button" class="btn btn-lg btn-default" ng-click="chooseFemale()">Female</button>
+            <button type="button" class="btn btn-lg btn-default" ng-class="{'light':results.gender != 'Male'}" ng-click="chooseGender('Male')"> Male</button> or
+            <button type="button" class="btn btn-lg btn-default" ng-class="{'light':results.gender != 'Female'}" ng-click="chooseGender('Female')"> Female</button>
         </p>
         <p>
             <a ui-sref="guess.date" class="btn btn-success section">Next</a>

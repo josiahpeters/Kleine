@@ -8,13 +8,26 @@
     color: @text-inverted;
     border: 1px solid @color-action;
 }
-.button:hover, button:hover {
-    padding: 0 18px;
-    height: 38px;
-    line-height: 38px;
-    display: inline-block;
-    background-color: @color-action-light;
-    background-color: @color-action-light;
-    text-decoration: none;
-    color: @text-inverted;
-}
+
+    .button:hover, button:hover {
+        padding: 0 18px;
+        height: 38px;
+        line-height: 38px;
+        display: inline-block;
+        background-color: @color-action-light;
+        border-color: @color-action-light;
+        text-decoration: none;
+        color: @text-inverted;
+    }
+
+    .button.light, button.light {
+        background-color: @color-inaction;
+        border: 1px solid @color-inaction;
+        color: @text-body;
+
+        &:hover {
+            background-color: @color-action;
+            border-color: @color-action-light;
+            color: @text-inverted;
+        }
+    }

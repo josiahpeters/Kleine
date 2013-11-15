@@ -1,6 +1,16 @@
 <div class="" id="Weight">
     <h2>Finish - Submit Results</h2>
-    <div>
+    <p>Here are your final choices. If you want to make changes to your guess, you can click the category name of the guess you want to change.</p>
+    <table>
         
-    </div>
+        <tr><td><a ui-sref="guess.gender">Gender </td><td>{{ results.gender }}</a></td>
+        <tr><td><a ui-sref="guess.date">Date </td><td>{{ results.date }}</a></td></tr>
+        <tr><td><a ui-sref="guess.time">Time </td><td>{{ (results.time.length > 0 ? results.time[0] + ' - ' + results.time[1] : '') }}</a></td></tr>
+        <tr><td><a ui-sref="guess.weight">Weight </td><td>{{ (results.weight.length > 0 ? results.weight[0] + ' lbs - ' + results.weight[1] + ' lbs' : '') }}</a></td></tr>
+        <tr><td><a ui-sref="guess.length">Length </td><td>{{ (results.length.length > 0 ? results.length[0] + ' in - ' + results.length[1] + ' in' : '') }}</a></td></tr>
+    </table>
+    <p>
+        <button type="button" class="btn btn-lg btn-default">Submit Guess</button>
+
+    </p>
 </div>

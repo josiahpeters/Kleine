@@ -1,15 +1,18 @@
 <div class="wrapper">
     <div class="row">
-        <ul class="four column">
-            <li ng-class="{ active: $state.includes('guess.start') }"><a ui-sref="guess.start">Start</a></li>
-            <li ng-class="{ active: $state.includes('guess.gender') }"><a ui-sref="guess.gender">Gender</a> {{ results.gender }}</li>
-            <li ng-class="{ active: $state.includes('guess.date') }"><a ui-sref="guess.date">Date</a> {{ results.date }}</li>
-            <li ng-class="{ active: $state.includes('guess.time') }"><a ui-sref="guess.time">Time</a> {{ (results.time.length > 0 ? results.time[0] + ' - ' + results.time[1] : '') }}</li>
-            <li ng-class="{ active: $state.includes('guess.weight') }"><a ui-sref="guess.weight">Weight</a> {{ (results.weight.length > 0 ? results.weight[0] + ' lbs - ' + results.weight[1] + ' lbs' : '') }}</li>
-            <li ng-class="{ active: $state.includes('guess.length') }"><a ui-sref="guess.length">Length</a> {{ (results.length.length > 0 ? results.length[0] + ' in - ' + results.length[1] + ' in' : '') }}</li>
-            <!--<li><a ui-sref="guess.hair">Hair Color</a></li>
-            <li><a ui-sref="guess.name">Name</a></li>-->
-        </ul>
+        <div class="four column">
+            <ul class="list">
+                <li class="list-item header">Prediction: Baby P</li>
+                <li class="list-item" ng-class="{ active: $state.includes('guess.gender') }"><a ui-sref="guess.gender"><i class="fa fa-user"></i> Gender <span class="result">{{ results.gender }}</span></a> </li>
+                <li class="list-item" ng-class="{ active: $state.includes('guess.date') }"><a ui-sref="guess.date"><i class="fa fa-calendar"></i> Date <span class="result">{{ results.date }}</span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('guess.time') }"><a ui-sref="guess.time"><i class="fa fa-clock-o"></i> Time <span class="result">{{ (results.time.length > 0 ? results.time[0] + ' - ' + results.time[1] : '') }}</span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('guess.weight') }"><a ui-sref="guess.weight"><i class="fa fa-anchor"></i> Weight <span class="result">{{ (results.weight.length > 0 ? results.weight[0] + ' lbs - ' + results.weight[1] + ' lbs' : '') }}</span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('guess.length') }"><a ui-sref="guess.length"><i class="fa fa-sort-amount-asc"></i> Length <span class="result">{{ (results.length.length > 0 ? results.length[0] + ' in - ' + results.length[1] + ' in' : '') }}</span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('guess.finish') }"><a ui-sref="guess.finish"><i class="fa fa-check-square"></i> Submit Guess</a></li>
+                <!--<li><a ui-sref="guess.hair">Hair Color</a></li>
+                <li><a ui-sref="guess.name">Name</a></li>-->
+            </ul>
+        </div>
 
         <div class="eight column" ui-view="guess">
 
