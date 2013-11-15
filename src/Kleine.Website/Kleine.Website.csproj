@@ -175,6 +175,7 @@
     <Content Include="js\libs\jquery.flot.min.js" />
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
+    <Content Include="partials\guess.full.html" />
     <Content Include="partials\guess.start.html" />
     <Content Include="partials\guess.length.html" />
     <Content Include="partials\guess.finish.html" />

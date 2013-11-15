@@ -44,7 +44,6 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/guess.gender.html',
                         controller: function ($scope, $stateParams)
                         {
-                            console.log($scope.results);
                             $scope.chooseMale = function ()
                             {
                                 $scope.results.gender = "Male";
@@ -85,7 +84,7 @@ var app = angular.module('kleine', modules)
                             //console.log($scope.results);
                             //console.log($scope);
                             //console.log($scope.value);
-                            console.log("weight", $scope);
+                            //console.log("weight", $scope);
                             //$scope.$watch('value', function (e)
                             //{
                             //    console.log("done?", e);
@@ -134,8 +133,7 @@ angular.module('kleine.controllers', [])
     .controller('guess', ['$scope', '$state', function ($scope, $state)
     {
         $scope.length = 0;
-        console.log($scope);
-        console.log($state);
+        
 
 
         //function ($scope, $state)
@@ -238,8 +236,6 @@ angular.module('kleine.directives', []).
                   startX = event.pageX - x;
                   $document.on('mousemove', mousemove);
                   $document.on('mouseup', mouseup);
-
-                  console.log(startX);
               });
 
               // call setup with a delay to prevent conflicting scope.$apply race condition
@@ -265,8 +261,6 @@ angular.module('kleine.directives', []).
                   if (x > sliderMaxPx)
                       x = sliderMaxPx;
 
-                  console.log(startingX, x);
-
                   sliderElement.css({
                       left: x + 'px'
                   });
@@ -286,7 +280,6 @@ angular.module('kleine.directives', []).
 
                       var leftValue = (value - minValue) * pixelPerValue;
 
-                      console.log(value, pixelPerValue, minValue, leftValue);
                       sliderElement.css({
                           left: leftValue + 'px'
                       });
@@ -351,4 +344,202 @@ angular.module('kleine.directives', []).
           }
       };
 
-  });
+  })
+.directive('calendar', function ($document, $window, $parse)
+{
+    return {
+        restrict: 'E',
+        //templateUrl: 'partials/slider.html',
+        template: '<div class="calendar"><input type="hidden" ng-model="value" /></div>',
+        scope: {
+            name: '=',
+            test: '='
+        },
+        controller: function ($scope)
+        {
+        },
+        link: function (scope, element, attr)
+        {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            var dayNamesMin = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+            var weeksBeforeExpectedDate = 3;
+            var weeksAfterExpectedDate = 3;
+
+            var expectedDate = new Date("12/16/2013");
+
+            var expectedYear = expectedDate.getFullYear();
+            var expectedMonth = expectedDate.getMonth();
+            var expectedMonthDate = expectedDate.getDate();
+            var expectedDayOfWeek = expectedDate.getDay();
+
+            var calendarStartDay = expectedMonthDate;
+
+            if (expectedDayOfWeek > 0)
+                calendarStartDay = expectedMonthDate - expectedDayOfWeek;
+
+            // start the calendar 2 weeks before the expected date
+            calendarStartDay -= weeksBeforeExpectedDate * 7;
+
+            var calendarStartDate = new Date(expectedYear, expectedMonth, calendarStartDay);
+
+            var week;
+            var month;
+
+            var calendar = angular.element(element.children()[0]);
+
+            var days = angular.element('<div class="days"></div>')
+
+            for (var i = 0; i < 7; i++)
+            {
+                days.append('<div class="day">' + dayNamesShort[i] + '</div>');
+            }
+
+            calendar.append(days);
+
+            for (var i = 0; i < (weeksBeforeExpectedDate * 7 + weeksAfterExpectedDate * 7) ; i++)
+            {
+                var newDate = new Date(expectedYear, expectedMonth, calendarStartDay + i);
+                var item = angular.element('<div class="day"></div>');
+
+                var prefix = "";
+
+                if (month != newDate.getMonth())
+                {
+                    prefix = monthNamesShort[newDate.getMonth()];
+                    month = newDate.getMonth();
+                }
+
+                item.append(getHtml(prefix, newDate));
+
+                if (newDate.getTime() == expectedDate.getTime())
+                {
+                    item.addClass("expected");
+                    //angular.element(item.children()[0]).append("Expected Date");
+                }
+
+
+                if (newDate.getDay() == 0)
+                {
+                    calendar.append(week);
+                    week = angular.element('<div class="week"></div>');
+                }
+
+                week.append(item);
+            }
+
+            calendar.append(week);
+
+            function getHtml(prefix, date)
+            {
+                if (prefix.length > 0)
+                    return angular.element('<a href="#"><span class="prefix">' + prefix + '</span> ' + date.getDate() + '</a>');
+                else
+                    return angular.element('<a href="#">' + date.getDate() + '</a>');
+            }
+        }
+    };
+
+})
+.directive('hours', function ($document, $window, $parse)
+{
+    return {
+        restrict: 'E',
+        //templateUrl: 'partials/slider.html',
+        template: '<div id="hours" class="hours">',
+        scope: {
+            name: '=',
+            test: '='
+        },
+        controller: function ($scope)
+        {
+        },
+        link: function (scope, element, attr)
+        {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var dayNamesShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            var dayNamesMin = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+            var weeksBeforeExpectedDate = 3;
+            var weeksAfterExpectedDate = 3;
+
+            var expectedDate = new Date("12/16/2013");
+
+            var expectedYear = expectedDate.getFullYear();
+            var expectedMonth = expectedDate.getMonth();
+            var expectedMonthDate = expectedDate.getDate();
+            var expectedDayOfWeek = expectedDate.getDay();
+
+            var calendarStartDay = expectedMonthDate;
+
+            if (expectedDayOfWeek > 0)
+                calendarStartDay = expectedMonthDate - expectedDayOfWeek;
+
+            // start the calendar 2 weeks before the expected date
+            calendarStartDay -= weeksBeforeExpectedDate * 7;
+
+            var calendarStartDate = new Date(expectedYear, expectedMonth, calendarStartDay);
+
+            var week;
+            var month;
+
+            var calendar = angular.element(element.children()[0]);
+
+            var days = angular.element('<div class="days"></div>')
+
+            for (var i = 0; i < 7; i++)
+            {
+                days.append('<div class="day">' + dayNamesShort[i] + '</div>');
+            }
+
+            calendar.append(days);
+
+            for (var i = 0; i < (weeksBeforeExpectedDate * 7 + weeksAfterExpectedDate * 7) ; i++)
+            {
+                var newDate = new Date(expectedYear, expectedMonth, calendarStartDay + i);
+                var item = angular.element('<div class="day"></div>');
+
+                var prefix = "";
+
+                if (month != newDate.getMonth())
+                {
+                    prefix = monthNamesShort[newDate.getMonth()];
+                    month = newDate.getMonth();
+                }
+
+                item.append(getHtml(prefix, newDate));
+
+                if (newDate.getTime() == expectedDate.getTime())
+                {
+                    item.addClass("expected");
+                    //angular.element(item.children()[0]).append("Expected Date");
+                }
+
+
+                if (newDate.getDay() == 0)
+                {
+                    calendar.append(week);
+                    week = angular.element('<div class="week"></div>');
+                }
+
+                week.append(item);
+            }
+
+            calendar.append(week);
+
+            function getHtml(prefix, date)
+            {
+                if (prefix.length > 0)
+                    return angular.element('<a href="#"><span class="prefix">' + prefix + '</span> ' + date.getDate() + '</a>');
+                else
+                    return angular.element('<a href="#">' + date.getDate() + '</a>');
+            }
+        }
+    };
+
+});

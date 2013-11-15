@@ -238,3 +238,36 @@ button:hover {
 .active a {
   color: #fff;
 }
+.calendar {
+  border-collapse: collapse;
+}
+.week {
+  min-height: 5em;
+  clear: left;
+}
+.days .day {
+  text-align: center;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #dddddd;
+}
+.day {
+  display: block;
+  float: left;
+  width: 14.1%;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+}
+.day a {
+  padding: 4px;
+  display: block;
+  height: 5em;
+}
+.week .day:first-child {
+  border-left: 1px solid #dddddd;
+}
+.day a:hover {
+  background-color: #f5f5f5;
+}
+.expected a {
+  border: 1px solid #ff6a00;
+}

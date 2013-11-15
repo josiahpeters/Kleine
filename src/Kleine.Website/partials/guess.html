@@ -5,8 +5,8 @@
             <li ng-class="{ active: $state.includes('guess.gender') }"><a ui-sref="guess.gender">Gender</a> {{ results.gender }}</li>
             <li ng-class="{ active: $state.includes('guess.date') }"><a ui-sref="guess.date">Date</a> {{ results.date }}</li>
             <li ng-class="{ active: $state.includes('guess.time') }"><a ui-sref="guess.time">Time</a> {{ results.time }}</li>
-            <li ng-class="{ active: $state.includes('guess.weight') }"><a ui-sref="guess.weight">Weight</a> {{ results.weight }}</li>
-            <li ng-class="{ active: $state.includes('guess.length') }"><a ui-sref="guess.length">Length</a> {{ results.length }}</li>
+            <li ng-class="{ active: $state.includes('guess.weight') }"><a ui-sref="guess.weight">Weight</a> {{ results.weight[0] + ' lbs - ' + results.weight[1] + ' lbs' }}</li>
+            <li ng-class="{ active: $state.includes('guess.length') }"><a ui-sref="guess.length">Length</a> {{ results.length[0] + ' in - ' + results.length[1] + ' in' }}</li>
             <!--<li><a ui-sref="guess.hair">Hair Color</a></li>
             <li><a ui-sref="guess.name">Name</a></li>-->
         </ul>
