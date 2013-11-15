@@ -22,11 +22,11 @@ var app = angular.module('kleine', modules)
                 controller: function ($scope)
                 {
                     $scope.results = {
-                        weight: 0,
-                        length: 0,
-                        date: 0,
-                        gender: 0,
-                        time: 0,
+                        weight: [],
+                        length: [],
+                        date: '',
+                        gender: '',
+                        time: [],
                     };
 
                 },
@@ -179,7 +179,7 @@ angular.module('kleine.directives', []).
           restrict: 'E',
           //templateUrl: 'partials/slider.html',
           template: '<div class="range-slider"><input type="hidden" ng-model="value" />' +
-          '    <div class="slider">{{ value }}' +
+          '    <div class="slider">' +
           '        <label class="min">{{ minValue + " " + label }}</label>' +
           '        <label class="max">{{ maxValue + " " + label }}</label>' +
           '    </div></div>',
@@ -221,7 +221,8 @@ angular.module('kleine.directives', []).
 
               scope.name = attr.name;
 
-              scope.label = attr.label || "lbs";
+              scope.label = attr.label || "";
+
 
               element.css({
                   position: 'relative',
@@ -292,12 +293,51 @@ angular.module('kleine.directives', []).
                   if (left == 0)
                       left = 1;
 
-                  scope.minValue = (left / pixelPerValue + minValue).toFixed(1);
-                  scope.maxValue = (left / pixelPerValue + minValue + range).toFixed(1);
+                  var minimumValue = (left / pixelPerValue + minValue);
+                  var maximumValue = (left / pixelPerValue + minValue + range);
+
+                  if (scope.name == "time")
+                  {
+                      if (minimumValue < .04)
+                      {
+                          minimumValue = 0;
+                          maximumValue = range;
+                      }
+                      scope.minValue = convertHoursToTimeString(minimumValue);
+                      scope.maxValue = convertHoursToTimeString(maximumValue);
+                  }
+                  else
+                  {
+                      scope.minValue = minimumValue.toFixed(1);
+                      scope.maxValue = maximumValue.toFixed(1);
+                  }
 
                   scope.value = scope.minValue;
 
                   setTargetValue([scope.minValue, scope.maxValue]);
+              }
+
+              function convertHoursToTimeString(timeValue)
+              {
+                  timeValue = timeValue % 24;
+                  var time = "am";
+
+                  if (timeValue > 12)
+                      time = "pm";
+
+                  var hour = Math.floor(timeValue % 12);
+
+                  if (hour == 0)
+                      hour = 12;
+
+                  var minutes = Math.floor((timeValue % 1) * 60);
+
+                  
+
+                  if (minutes < 10)
+                      minutes = '0' + minutes;
+
+                  return hour + ':' + minutes + ' ' + time;
               }
 
               function setTargetValue(value)
@@ -310,10 +350,26 @@ angular.module('kleine.directives', []).
 
               function getTargetValue()
               {
+                  var value;
                   if (target.length > 1)
-                      return scope.$parent[target[0]][target[1]];
+                      value = scope.$parent[target[0]][target[1]];
                   else
-                      return scope.$parent[target];
+                      value = scope.$parent[target];
+
+                  if (scope.name == "time")
+                  {
+                      var minTime = "";
+                      if (value.length > 0)
+                          minTime = value[0];
+                      var date = new Date("1/1/1 " + minTime);
+
+
+
+                      value = date.getHours() + date.getMinutes() / 60;
+                      console.log(date, minTime, value);
+                  }
+
+                  return value;
               }
 
               function get(target, properties)
@@ -459,7 +515,33 @@ angular.module('kleine.directives', []).
         },
         link: function (scope, element, attr)
         {
-            
+            var hours = angular.element(element.children()[0]);
+
+            var amHours = angular.element('<div class="am-hours list six column"><p>Morning</p></div>');
+
+            for (var i = 0; i < 12; i++)
+            {
+                var hour = i;
+
+                if (i == 0)
+                    hour = 12;
+                amHours.append(angular.element('<a href="#" class="hours list-item">' + hour + 'am to ' + (i + 1) + 'am</a>'));
+            }
+
+            hours.append(amHours);
+
+            var pmHours = angular.element('<div class="pm-hours list six column"><p>Afternoon / Evening</p></div>');
+
+            for (var i = 0; i < 12; i++)
+            {
+                var hour = i + 1;
+
+                if (i == 0)
+                    hour = 12;
+                pmHours.append(angular.element('<a href="#" class="hours list-item">' + hour + 'pm</a>'));
+            }
+
+            hours.append(pmHours);
         }
     };
 
