@@ -11,83 +11,19 @@
 }
 
 .column {
-    margin-left: @gutter;
-    margin-bottom: @gutterPx/2;
-    float: left;
-    min-height: 1px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.one {
-    .calculateColumn(1);
-}
-
-.two {
-    .calculateColumn(2);
-}
-
-.three {
-    .calculateColumn(3);
-}
-
-.four {
-    .calculateColumn(4);
-}
-
-.five {
-    .calculateColumn(5);
-}
-
-.six {
-    .calculateColumn(6);
-}
-
-.seven {
-    .calculateColumn(7);
-}
-
-.eight {
-    .calculateColumn(8);
-}
-
-.nine {
-    .calculateColumn(9);
-}
-
-.ten {
-    .calculateColumn(10);
-}
-
-.eleven {
-    .calculateColumn(11);
-}
-
-.twelve {
     width: 100%;
 }
 
-.panel {
-    border: 1px solid #ddd;
-    /*padding: unit(@gutter/2, px) unit(@gutter, px);*/
-    padding: @gutterPx/2 @gutterPx;
-    /*margin: 10px;*/
-}
-
-.wrapper {
+.one, .two, .three, .four, .five, .six, .seven, .eight, .nine, .ten, .twelve {
+    width: 100%;
+    /*display: block;*/
 }
 
 .row {
-    width: unit(@maxWidth, px);
     margin: 0 auto;
     min-width: 0;
-    padding-left: 0;
-    padding-right: 0;
-
-    .column:first-child {
-        margin-left: 0;
-    }
+    padding-left: 3%;
+    padding-right: 3%;
 }
 
     .row:before, .row:after {
@@ -98,3 +34,98 @@
     .row:after {
         clear: both;
     }
+
+@media only screen and (min-width: 600px) {
+
+    .column {
+        margin-left: @gutter;
+        margin-bottom: @gutterPx/2;
+        float: left;
+        min-height: 1px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    .one {
+        .calculateColumn(1);
+    }
+
+    .two {
+        .calculateColumn(2);
+    }
+
+    .three {
+        .calculateColumn(3);
+    }
+
+    .four {
+        .calculateColumn(4);
+    }
+
+    .five {
+        .calculateColumn(5);
+    }
+
+    .six {
+        .calculateColumn(6);
+    }
+
+    .seven {
+        .calculateColumn(7);
+    }
+
+    .eight {
+        .calculateColumn(8);
+    }
+
+    .nine {
+        .calculateColumn(9);
+    }
+
+    .ten {
+        .calculateColumn(10);
+    }
+
+    .eleven {
+        .calculateColumn(11);
+    }
+
+    .twelve {
+        width: 100%;
+    }
+
+    .row {
+        width: 590px;
+        margin: 0 auto;
+        min-width: 0;
+        padding-left: 0;
+        padding-right: 0;
+
+        .column:first-child {
+            margin-left: 0;
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .row {
+        width: 728px;
+    }
+}
+
+@media only screen and (min-width: 966px) {
+    .row {
+        width: 926px;
+    }
+}
+
+@media only screen and (min-width: 1150px) {
+    .row {
+        width: unit(@maxWidth, px);
+    }
+}
+
+
+.wrapper {
+}
