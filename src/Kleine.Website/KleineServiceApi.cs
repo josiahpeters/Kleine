@@ -2,6 +2,7 @@
 using Kleine.Services;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
+using ServiceStack.ServiceInterface.Auth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +36,7 @@ namespace Kleine.Website
                 {
                     EmailAddress = "josiahpeters@gmail.com",
                     Name = "Joey Peters",
+                    SessionId = Guid.NewGuid()
                 });
 
             var invite = this.repo.InviteCodes.Create(
@@ -117,10 +119,17 @@ namespace Kleine.Website
             {
                 var profile = repo.Profiles.GetById(invite.ProfileId);
 
+                if(this.Session["id"] == null)
+                    this.Session["id"] = profile.SessionId.ToString();
+
+                var session = this.Session["id"];
+
                 return profile;
             }
             else
                 throw new Exception("DERP!");
+
+            
             
         }
 

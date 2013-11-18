@@ -1,5 +1,6 @@
 ﻿using Funq;
 using Kleine.Data;
+using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,8 @@ namespace Kleine.Website
 
             container.Register<IRepositories>(repositories);
             container.Register<INotification>(notify);
+
+            Plugins.Add(new SessionFeature());
             ////Configure ServiceStack Json web services to return idiomatic Json camelCase properties.
             //JsConfig.EmitCamelCaseNames = true;
 
