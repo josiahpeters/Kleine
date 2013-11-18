@@ -20,6 +20,30 @@ namespace Kleine.Website
         {
             this.repo = repo;
             this.notify = notify;
+
+            var dueDate = this.repo.DueDates.Create(
+                new DueDate
+                {
+                    Name = "BabyP",
+                    Title = "BabyP",
+                    ExpectedDate = new DateTime(2013, 12, 16),
+                    Description = "Baby P is coming soon!"
+                });
+
+            var joey = this.repo.Profiles.Create(
+                new Profile
+                {
+                    EmailAddress = "josiahpeters@gmail.com",
+                    Name = "Joey Peters",
+                });
+
+            var invite = this.repo.InviteCodes.Create(
+                new InviteCode
+                {
+                    DueDateId = dueDate.Id,
+                    ProfileId = joey.Id,
+                    Code = "canada"
+                });
         }
 
         public List<DueDate> Get(DueDateGetAll request)
@@ -47,19 +71,19 @@ namespace Kleine.Website
         }
 
         // Profiles
-        public List<GuessProfile> Get(GuessProfileGetAll request)
+        public List<Profile> Get(GuessProfileGetAll request)
         {
-            return repo.GuessProfiles.GetAll();
+            return repo.Profiles.GetAll();
         }
 
-        public GuessProfile Get(GuessProfileGetById request)
+        public Profile Get(GuessProfileGetById request)
         {
-            return repo.GuessProfiles.GetById(request.Id);
+            return repo.Profiles.GetById(request.Id);
         }
 
-        public GuessProfile Post(GuessProfileCreate request)
+        public Profile Post(GuessProfileCreate request)
         {
-            var dueDate = repo.GuessProfiles.Create(request);
+            var dueDate = repo.Profiles.Create(request);
 
             StringBuilder sb = new StringBuilder();
 
@@ -71,9 +95,9 @@ namespace Kleine.Website
             return dueDate;
         }
 
-        public GuessProfile Put(GuessProfileUpdate request)
+        public Profile Put(GuessProfileUpdate request)
         {
-            var dueDate = repo.GuessProfiles.Update(request);
+            var dueDate = repo.Profiles.Update(request);
 
             return dueDate;
         }
@@ -84,7 +108,7 @@ namespace Kleine.Website
     public class DueDateGetAll : IReturn<List<DueDate>> { }
 
     [Route("/DueDate/{id}", "GET")]
-    public class DueDateGetById : IReturn<DueDate> 
+    public class DueDateGetById : IReturn<DueDate>
     {
         public int Id { get; set; }
     }
@@ -98,19 +122,19 @@ namespace Kleine.Website
 
     // Guess Profiles
     [Route("/GuessProfile/", "GET")]
-    public class GuessProfileGetAll : IReturn<List<GuessProfile>> { }
+    public class GuessProfileGetAll : IReturn<List<Profile>> { }
 
     [Route("/GuessProfile/{id}", "GET")]
-    public class GuessProfileGetById : IReturn<GuessProfile>
+    public class GuessProfileGetById : IReturn<Profile>
     {
         public int Id { get; set; }
     }
 
     [Route("/GuessProfile/", "POST")]
-    public class GuessProfileCreate : GuessProfile, IReturn<GuessProfile> { }
+    public class GuessProfileCreate : Profile, IReturn<Profile> { }
 
     [Route("/GuessProfile/{id}", "PATCH")]
-    public class GuessProfileUpdate : GuessProfile, IReturn<GuessProfile> { }
+    public class GuessProfileUpdate : Profile, IReturn<Profile> { }
 
 
 }

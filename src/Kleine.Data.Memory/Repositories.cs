@@ -8,8 +8,10 @@ namespace Kleine.Data
     public class Repositories : IRepositories
     {
         private IRepository<DueDate> dueDates = new BaseRepository<DueDate>();
-        private IRepository<GuessProfile> guessProfile = new BaseRepository<GuessProfile>();
-
+        private IRepository<Profile> profile = new BaseRepository<Profile>();
+        private IRepository<Guess> guesses = new BaseRepository<Guess>();
+        private IRepository<InviteCode> inviteCodes = new BaseRepository<InviteCode>();
+        
         public IRepository<DueDate> DueDates
         {
             get
@@ -22,15 +24,41 @@ namespace Kleine.Data
             }
         }
 
-        public IRepository<GuessProfile> GuessProfiles
+        public IRepository<Profile> Profiles
         {
             get
             {
-                return guessProfile;
+                return profile;
             }
             set
             {
-                guessProfile = value;
+                profile = value;
+            }
+        }
+
+
+        public IRepository<Guess> Guesses
+        {
+            get
+            {
+                return guesses;
+            }
+            set
+            {
+                guesses = value;
+            }
+        }
+
+
+        public IRepository<InviteCode> InviteCodes
+        {
+            get
+            {
+                return inviteCodes;
+            }
+            set
+            {
+                inviteCodes = value;
             }
         }
     }

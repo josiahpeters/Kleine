@@ -9,8 +9,10 @@ namespace Kleine
     {
         public DateTime ExpectedDate { get; set; }
 
-        public string BirthTitle { get; set; }
+        public string Name { get; set; }
 
-        public string BirthDescription { get; set; }
+        public string Title { get; set; }
+
+        public string Description { get; set; }
     }
 }

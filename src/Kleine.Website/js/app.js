@@ -12,9 +12,14 @@ var app = angular.module('kleine', modules)
                 templateUrl: 'partials/welcome.html'
             })
             .state('invite', {
-                url: '/invite/:id/:name/:email',
+                url: '/invite/:id/:name',
                 templateUrl: 'partials/invite.html',
-                controller: 'invite'
+                controller: 'inviteGeneric'
+            })
+            .state('invite', {
+                url: '/invite/:id/:name/:code',
+                templateUrl: 'partials/invite.html',
+                controller: 'inviteCode'
             })
             .state('guess', {
                 url: '/guess/:id/:name',

@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Kleine
 {
-    public class GuessProfile : Entity
+    public class Profile : Entity
     {
-        public Guid SessionId { get; set; }
+        public Guid SessionId { get; set; }        
 
         public string EmailAddress { get; set; }
 

@@ -67,7 +67,9 @@
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Entities\DueDate.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\GuessProfile.cs" />
+    <Compile Include="Entities\Guess.cs" />
+    <Compile Include="Entities\InviteCode.cs" />
+    <Compile Include="Entities\Profile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IKleineService.cs" />
     <Compile Include="Services\INotification.cs" />

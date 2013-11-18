@@ -8,6 +8,8 @@ namespace Kleine.Data
     public interface IRepositories
     {
         IRepository<DueDate> DueDates { get; set; }
-        IRepository<GuessProfile> GuessProfiles { get; set; }
+        IRepository<Profile> Profiles { get; set; }
+        IRepository<Guess> Guesses { get; set; }
+        IRepository<InviteCode> InviteCodes { get; set; }
     }
 }
