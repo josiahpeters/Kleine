@@ -12,18 +12,100 @@ var app = angular.module('kleine', modules)
                 templateUrl: 'partials/welcome.html'
             })
             .state('invite', {
-                url: '/invite/:id/:name',
-                templateUrl: 'partials/invite.html',
-                controller: 'inviteGeneric'
+                //url: '/{name}/{id}/invite',
+                url: '/invite',
+                templateUrl: 'partials/invite/invite.html',
+                controller: function ($scope)
+                {
+                    $scope.theme = {
+                        title: "Invitation"
+                    };
+                    $scope.invitation = {
+                        Name: "a",
+                        EmailAddress: "a"
+                    };
+                },
+                abstract: true,
             })
-            .state('invite', {
-                url: '/invite/:id/:name/:code',
-                templateUrl: 'partials/invite.html',
-                controller: 'inviteCode'
+            .state('invite.organic', {
+                url: '',
+                views: {
+                    'invite': {
+                        templateUrl: 'partials/invite/invite.organic.html',
+                        controller: function ($scope, $state, $http, $stateParams)
+                        {
+                            $scope.theme.title = "You are Invited!";
+
+                            $scope.Name = "Joey Peters";
+                            $scope.EmailAddress = "josiahpeters@gmail.com";
+
+                            $scope.confirm = function ()
+                            {
+                                $scope.invitation.Name = $scope.Name;
+                                $scope.invitation.EmailAddress = $scope.EmailAddress;
+
+                                var promise = $http.post('/api/profile/', $scope.invitation).then(function (response)
+                                {
+                                    $state.go('invite.confirmation', { email: response.data.EmailAddress });
+                                });
+                            }
+                        }
+                    }
+                }
+            })
+            .state('invite.confirmation', {
+                url: '/confirmation?email&code',
+                views: {
+                    'invite': {
+                        templateUrl: 'partials/invite/invite.confirmation.html',
+                        controller: function ($scope, $state, $http, $stateParams)
+                        {
+                            $scope.theme.title = "Confirmation Code Sent";
+                            
+                            if ($stateParams.email == null && $stateParams.code == null)
+                            {
+                                $state.go('invite.organic');
+                            }
+                             
+
+                            $scope.confirm = function ()
+                            {
+                                var promise = $http.post('/api/profile/confirmation', { confirmationCode: $stateParams.code }).then(function (response)
+                                {
+                                    console.log(response);
+
+                                    $state.go('invite.finish', { email: response.data.EmailAddress });
+                                });
+                            }
+
+
+                            if ($stateParams.code != null)
+                                $scope.confirm();
+                        }
+                    }
+                }
+            })
+            .state('invite.finish', {
+                url: '/start-guessing?code',
+                views: {
+                    'invite': {
+                        templateUrl: 'partials/invite/invite.finish.html',
+                        controller: function ($scope, $state, $stateParams)
+                        {
+                            $scope.theme.title = "Welcome " + "name" + ",";
+
+                            $scope.startGuessing = function ()
+                            {
+                                $state.go('guess.start', { id: $stateParams.id, name: $stateParams.name });
+                            }
+                        }
+                    }
+                }
             })
             .state('guess', {
-                url: '/guess/:id/:name',
-                templateUrl: 'partials/guess.html',
+                //url: '/{name}/{id}/guess',
+                url: '/guess',
+                templateUrl: 'partials/guess/guess.html',
                 controller: function ($scope)
                 {
                     $scope.results = {
@@ -41,7 +123,7 @@ var app = angular.module('kleine', modules)
                 url: '/start',
                 views: {
                     'guess': {
-                        templateUrl: 'partials/guess.start.html',
+                        templateUrl: 'partials/guess/guess.start.html',
                     }
                 }
 
@@ -50,7 +132,7 @@ var app = angular.module('kleine', modules)
                 url: '/gender',
                 views: {
                     'guess': {
-                        templateUrl: 'partials/guess.gender.html',
+                        templateUrl: 'partials/guess/guess.gender.html',
                         controller: function ($scope, $stateParams)
                         {
                             $scope.chooseGender = function (gender)
@@ -59,30 +141,27 @@ var app = angular.module('kleine', modules)
                             }
                         }
                     }
-                },
-                data:
-                {
                 }
             })
             .state('guess.date', {
                 url: '/date',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.date.html', controller: 'guess' }
+                    'guess': { templateUrl: 'partials/guess/guess.date.html', controller: 'guess' }
                 }
             })
             .state('guess.time', {
                 url: '/time',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.time.html', controller: 'guess' }
+                    'guess': { templateUrl: 'partials/guess/guess.time.html', controller: 'guess' }
                 }
             })
             .state('guess.weight', {
                 url: '/weight',
                 views: {
                     'guess': {
-                        templateUrl: 'partials/guess.weight.html',
+                        templateUrl: 'partials/guess/guess.weight.html',
                         //controller: 'guess'
                         controller: function ($scope, $state)
                         {
@@ -95,8 +174,8 @@ var app = angular.module('kleine', modules)
                 controller: 'guess',
                 views: {
                     'guess': {
-                        templateUrl: 'partials/guess.length.html',
-                        controller: 'guess'                        
+                        templateUrl: 'partials/guess/guess.length.html',
+                        controller: 'guess'
                     }
                 }
             })
@@ -104,7 +183,7 @@ var app = angular.module('kleine', modules)
                 url: '/finish',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess.finish.html' }
+                    'guess': { templateUrl: 'partials/guess/guess.finish.html' }
                 }
             });
     }])
@@ -399,7 +478,7 @@ angular.module('kleine.directives', []).
 '    <tbody>' +
 '        <tr ng-repeat="week in weeks">' +
 '            <td ng-repeat="day in week.days" class="day" ng-click="setDate(day)">' +
-'               <div  ng-class="{\'expected\':day.expected,\'active\':isSelected(day)}">' + 
+'               <div  ng-class="{\'expected\':day.expected,\'active\':isSelected(day)}">' +
 '        <span class="month">{{ getMonth(day) }}</span>' +
 '        {{ getDate(day) }}' +
 '               </div>' +
@@ -444,7 +523,7 @@ angular.module('kleine.directives', []).
             var month;
 
             var calendar = angular.element(element.children()[0]);
-            
+
             scope.getDate = function (day)
             {
                 return day.date.getDate();
@@ -457,7 +536,7 @@ angular.module('kleine.directives', []).
             {
                 scope.selectedDate = day.date;
 
-                var value = (day.date.getMonth()+1) + '/' + day.date.getDate() + '/' + day.date.getFullYear();
+                var value = (day.date.getMonth() + 1) + '/' + day.date.getDate() + '/' + day.date.getFullYear();
                 setTargetValue(value);
             }
 

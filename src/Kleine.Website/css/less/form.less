@@ -1,0 +1,54 @@
+﻿form {
+    line-height: 1.5em;
+
+
+    p {
+        vertical-align: middle;
+        display: block;
+        /*margin: 0;*/
+        & label {
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        & > input, & > textarea { /*, dd > select {*/
+            display: block;
+            font-family: Helvetica, arial;
+            padding: 7px 8px;
+            color: #000;
+            background-color: #fff;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+            box-sizing: border-box;
+            width: 100%;
+            -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+            -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+            font-size: .875em;
+        }
+
+            & > input[type=password] {
+            }
+
+            & > input[disabled=disabled], & > textarea[disabled=disabled] {
+                color: #aaa;
+            }
+
+            & > input:focus, & > textarea:focus {
+                border: 1px solid #5897fb;
+                outline: none;
+            }
+
+
+        & > textarea {
+            min-height: 75px;
+        }
+
+        & > span {
+            color: #555;
+            display: block;
+            min-height: 1em;
+        }
+    }
+}

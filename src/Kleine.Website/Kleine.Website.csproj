@@ -97,6 +97,12 @@
     <Content Include="css\less\defaults.min.css">
       <DependentUpon>defaults.less</DependentUpon>
     </Content>
+    <Content Include="css\less\form.css">
+      <DependentUpon>form.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\form.min.css">
+      <DependentUpon>form.less</DependentUpon>
+    </Content>
     <Content Include="css\less\functions.css">
       <DependentUpon>grid.less</DependentUpon>
     </Content>
@@ -148,6 +154,10 @@
     </Content>
     <Content Include="favicon.png" />
     <Content Include="Global.asax" />
+    <Content Include="img\kim-and-joey-babyp-banner-blur.jpg" />
+    <Content Include="img\kim-and-joey-babyp-banner.jpg" />
+    <Content Include="img\kim-and-joey-babyp-photo.jpg" />
+    <Content Include="img\kim-and-joey-blessed.jpg" />
     <Content Include="index.html" />
     <Content Include="css\xcharts.min.css" />
     <Content Include="js\app.js" />
@@ -175,18 +185,19 @@
     <Content Include="js\libs\jquery.flot.min.js" />
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
-    <Content Include="partials\guess.full.html" />
-    <Content Include="partials\guess.start.html" />
-    <Content Include="partials\guess.length.html" />
-    <Content Include="partials\guess.finish.html" />
-    <Content Include="partials\guess.weight.html" />
-    <Content Include="partials\guess.time.html" />
-    <Content Include="partials\guess.date.html" />
-    <Content Include="partials\guess.gender.html" />
-    <Content Include="partials\guess.html" />
-    <Content Include="partials\invite.html" />
-    <Content Include="partials\signup.html" />
-    <Content Include="partials\slider.html" />
+    <Content Include="partials\guess\guess.start.html" />
+    <Content Include="partials\guess\guess.length.html" />
+    <Content Include="partials\guess\guess.finish.html" />
+    <Content Include="partials\guess\guess.weight.html" />
+    <Content Include="partials\guess\guess.time.html" />
+    <Content Include="partials\guess\guess.date.html" />
+    <Content Include="partials\guess\guess.gender.html" />
+    <Content Include="partials\guess\guess.html" />
+    <Content Include="partials\invite\invite.finish.html" />
+    <Content Include="partials\invite\invite.organic.html" />
+    <Content Include="partials\invite\invite.confirmation.html" />
+    <Content Include="partials\invite\invite.html" />
+    <Content Include="partials\invite\signup.html" />
     <Content Include="partials\welcome.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -222,6 +233,7 @@
     <Content Include="js\libs\jquery-1.10.1.min.map" />
     <Content Include="js\libs\jquery-2.0.2.min.map" />
     <Content Include="css\less\slider.less" />
+    <Content Include="css\less\form.less" />
     <None Include="Properties\PublishProfiles\pugna.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -232,7 +244,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="fonts\" />
-    <Folder Include="img\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kleine.Data.Memory\Kleine.Data.Memory.csproj">

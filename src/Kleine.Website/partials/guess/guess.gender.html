@@ -4,11 +4,11 @@
     <div>
         <p>Which gender do you think Baby P. will be?</p>
         <p>
-            <button type="button" class="btn btn-lg btn-default" ng-class="{'light':results.gender != 'Male'}" ng-click="chooseGender('Male')"> Male</button> or
-            <button type="button" class="btn btn-lg btn-default" ng-class="{'light':results.gender != 'Female'}" ng-click="chooseGender('Female')"> Female</button>
+            <button type="button" ng-class="{'light':results.gender != 'Male'}" ng-click="chooseGender('Male')"> Male</button> or
+            <button type="button" ng-class="{'light':results.gender != 'Female'}" ng-click="chooseGender('Female')"> Female</button>
         </p>
         <p>
-            <a ui-sref="guess.date" class="btn btn-success section">Next</a>
+            <a ui-sref="guess.date" class="button">Next</a>
         </p>
     </div>
 </div>

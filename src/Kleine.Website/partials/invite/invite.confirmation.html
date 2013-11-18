@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="twelve column">
+        <h2><!--Confirmation Code Sent--></h2>
+        <p>We have just sent an email containing a confirmation code to your email address: <u>{{ invitation.EmailAddress }}</u>.<p>
+        <p>
+            You can confirm your email address in two ways:
+            <ul>
+                <li>Copy and paste the code from your confirmation email into the field below.</li>
+                <li>click the link in your confirmation email</li>
+            </ul>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="six column">
+        <form ng-submit="confirm()">
+
+            <p>
+                <label>Confirmation Code: </label>
+                <input type="text" ng-model="code" value="" />
+            </p>
+            <p>
+                <button class="btn" type="submit" value="Confirm Email Address">Confirm Email Address</button>
+            </p>
+        </form>
+    </div>
+</div>

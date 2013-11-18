@@ -2,7 +2,7 @@
     <h2>Finish - Submit Results</h2>
     <p>Here are your final choices. If you want to make changes to your guess, you can click the category name of the guess you want to change.</p>
     <table>
-        
+
         <tr><td><a ui-sref="guess.gender">Gender </td><td>{{ results.gender }}</a></td>
         <tr><td><a ui-sref="guess.date">Date </td><td>{{ results.date }}</a></td></tr>
         <tr><td><a ui-sref="guess.time">Time </td><td>{{ (results.time.length > 0 ? results.time[0] + ' - ' + results.time[1] : '') }}</a></td></tr>
@@ -10,7 +10,7 @@
         <tr><td><a ui-sref="guess.length">Length </td><td>{{ (results.length.length > 0 ? results.length[0] + ' in - ' + results.length[1] + ' in' : '') }}</a></td></tr>
     </table>
     <p>
-        <button type="button" class="btn btn-lg btn-default">Submit Guess</button>
-
+        <a ui-sref="guess.length" class="button light">Back</a>
+        <button type="button">Submit Guess</button>
     </p>
 </div>

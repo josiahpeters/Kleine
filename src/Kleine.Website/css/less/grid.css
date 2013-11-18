@@ -16,6 +16,9 @@
   /*display: block;*/
 
 }
+.wrapper {
+  padding: 10px 0;
+}
 .row {
   margin: 0 auto;
   min-width: 0;

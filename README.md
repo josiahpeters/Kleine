@@ -1,6 +1,3 @@
 Kleine
-<<<<<<< HEAD
-========
-=======
 ======
->>>>>>> 89bcb00a8051cbf15a3d7fbc99065329dd525b44
+Nothing to explain just yet.

@@ -46,61 +46,90 @@ namespace Kleine.Website
                 });
         }
 
-        public List<DueDate> Get(DueDateGetAll request)
+        //public List<DueDate> Get(DueDateGetAll request)
+        //{
+        //    return repo.DueDates.GetAll();
+        //}
+
+        //public DueDate Get(DueDateGetById request)
+        //{
+        //    return repo.DueDates.GetById(request.Id);
+        //}
+
+        //public DueDate Post(DueDateCreate request)
+        //{
+        //    var dueDate = repo.DueDates.Create(request);
+
+        //    return dueDate;
+        //}
+
+        //public DueDate Put(DueDateUpdate request)
+        //{
+        //    var dueDate = repo.DueDates.Update(request);
+
+        //    return dueDate;
+        //}
+
+        //// Profiles
+        //public List<Profile> Get(GuessProfileGetAll request)
+        //{
+        //    return repo.Profiles.GetAll();
+        //}
+
+        //public Profile Get(GuessProfileGetById request)
+        //{
+        //    return repo.Profiles.GetById(request.Id);
+        //}
+
+        public Profile Post(ProfileCreate request)
         {
-            return repo.DueDates.GetAll();
-        }
+            var dueDate = repo.DueDates.GetById(1);
 
-        public DueDate Get(DueDateGetById request)
-        {
-            return repo.DueDates.GetById(request.Id);
-        }
+            request.SessionId = Guid.NewGuid();
 
-        public DueDate Post(DueDateCreate request)
-        {
-            var dueDate = repo.DueDates.Create(request);
+            var profile = repo.Profiles.Create(request);
 
-            return dueDate;
-        }
-
-        public DueDate Put(DueDateUpdate request)
-        {
-            var dueDate = repo.DueDates.Update(request);
-
-            return dueDate;
-        }
-
-        // Profiles
-        public List<Profile> Get(GuessProfileGetAll request)
-        {
-            return repo.Profiles.GetAll();
-        }
-
-        public Profile Get(GuessProfileGetById request)
-        {
-            return repo.Profiles.GetById(request.Id);
-        }
-
-        public Profile Post(GuessProfileCreate request)
-        {
-            var dueDate = repo.Profiles.Create(request);
+            var invite = this.repo.InviteCodes.Create(
+                new InviteCode
+                {
+                    DueDateId = dueDate.Id,
+                    ProfileId = profile.Id,
+                    Code = "canada123"
+                });
 
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Dear {0},<br /><br />\n", request.Name);
-            sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
+            sb.AppendFormat("Your confirmation code is: {0} or click this link: <a href=\"http://localhost:53252/#/invite/start-guessing?code={0}\">THIS LINK</a>", invite.Code);
+            //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            //notify.SendNotification("josiahpeters@gmail.com", "Welcome", "test");
+            //notify.SendNotification("josiahpeters@gmail.com", "Welcome", sb.ToString());
 
-            return dueDate;
+            return profile;
         }
 
-        public Profile Put(GuessProfileUpdate request)
+        public Profile Post(ProfileConfirmation request)
         {
-            var dueDate = repo.Profiles.Update(request);
+            var invites = repo.InviteCodes.GetAll();
+            var invite = invites.FirstOrDefault(u => u.Code == request.ConfirmationCode);
 
-            return dueDate;
+            if (invite != null)
+            {
+                var profile = repo.Profiles.GetById(invite.ProfileId);
+
+                return profile;
+            }
+            else
+                throw new Exception("DERP!");
+            
         }
+
+        //public Profile Put(GuessProfileUpdate request)
+        //{
+        //    var dueDate = repo.Profiles.Update(request);
+
+        //    return dueDate;
+        //}
     }
 
     // DueDate
@@ -121,20 +150,25 @@ namespace Kleine.Website
 
 
     // Guess Profiles
-    [Route("/GuessProfile/", "GET")]
+    [Route("/profile/", "GET")]
     public class GuessProfileGetAll : IReturn<List<Profile>> { }
 
-    [Route("/GuessProfile/{id}", "GET")]
+    [Route("/profile/{id}", "GET")]
     public class GuessProfileGetById : IReturn<Profile>
     {
         public int Id { get; set; }
     }
 
-    [Route("/GuessProfile/", "POST")]
-    public class GuessProfileCreate : Profile, IReturn<Profile> { }
+    [Route("/profile/", "POST")]
+    public class ProfileCreate : Profile, IReturn<Profile> { }
 
-    [Route("/GuessProfile/{id}", "PATCH")]
-    public class GuessProfileUpdate : Profile, IReturn<Profile> { }
+    [Route("/profile/confirmation", "POST")]
+    public class ProfileConfirmation : IReturn<Profile> {
+        public string ConfirmationCode { get; set; }
+    }
+
+    [Route("/profile/{id}", "PATCH")]
+    public class ProfileUpdate : Profile, IReturn<Profile> { }
 
 
 }

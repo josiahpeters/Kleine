@@ -28,31 +28,44 @@ ul {
   padding: 0;
   margin: 0;
 }
-nav.wrapper.navbar {
+nav.navbar {
   height: 50px;
-  background-color: #4a4d50;
+  background-color: #333333;
 }
-nav.wrapper.navbar h1 {
+nav.navbar h1 {
   line-height: 50px;
   margin: 0;
 }
-nav.wrapper.navbar a {
+nav.navbar a {
+  color: #ffffff;
+  text-decoration: none;
+  height: 50px;
+  display: block;
+}
+nav.navbar a:hover {
+  color: #ffffff;
   text-decoration: none;
 }
-nav.wrapper.navbar a:hover {
-  text-decoration: none;
+nav.horizontal {
+  margin: 0;
 }
 nav.horizontal ul {
   padding: 0;
   margin: 0;
+  float: right;
 }
 nav.horizontal ul li {
   display: block;
   float: left;
   padding: 0;
-  margin: 0 20px;
+  /*margin: 0 20px;*/
+
+  margin: 0;
   list-style: none;
   line-height: 50px;
+}
+nav.horizontal ul li a {
+  padding: 0 20px;
 }
 nav.horizontal ul:before,
 nav.horizontal ul:after {
@@ -61,6 +74,9 @@ nav.horizontal ul:after {
 }
 nav.horizontal ul:after {
   clear: both;
+}
+nav.horizontal a:hover {
+  background-color: #222222;
 }
 nav.horizontal.right ul li {
   float: right;
@@ -89,8 +105,8 @@ button:hover {
 }
 .button.light,
 button.light {
-  background-color: #e9e9e9;
-  border: 1px solid #e9e9e9;
+  background-color: #dddddd;
+  border: 1px solid #dddddd;
   color: #444444;
 }
 .button.light:hover,
@@ -116,6 +132,9 @@ button.light:hover {
   width: 100%;
   /*display: block;*/
 
+}
+.wrapper {
+  padding: 10px 0;
 }
 .row {
   margin: 0 auto;
@@ -384,4 +403,53 @@ button.light:hover {
 .list .list-item.active span.result {
   /*color: #eee;*/
 
+}
+form {
+  line-height: 1.5em;
+}
+form p {
+  vertical-align: middle;
+  display: block;
+  /*margin: 0;*/
+
+}
+form p label {
+  font-weight: bold;
+  vertical-align: middle;
+}
+form p > input,
+form p > textarea {
+  /*, dd > select {*/
+
+  display: block;
+  font-family: Helvetica, arial;
+  padding: 7px 8px;
+  color: #000;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.075);
+  box-sizing: border-box;
+  width: 100%;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  font-size: .875em;
+}
+form p > input[disabled=disabled],
+form p > textarea[disabled=disabled] {
+  color: #aaa;
+}
+form p > input:focus,
+form p > textarea:focus {
+  border: 1px solid #5897fb;
+  outline: none;
+}
+form p > textarea {
+  min-height: 75px;
+}
+form p > span {
+  color: #555;
+  display: block;
+  min-height: 1em;
 }
