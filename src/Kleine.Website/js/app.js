@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var modules = ['ngRoute', 'ui.router', 'ngResource', 'kleine.controllers', 'kleine.directives'];
+var modules = ['ngRoute', 'ui.router', 'ngResource', 'kleine.controllers', 'kleine.directives', 'kleine.services'];
 
 var app = angular.module('kleine', modules)
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider)
@@ -15,38 +15,43 @@ var app = angular.module('kleine', modules)
                 //url: '/{name}/{id}/invite',
                 url: '/invite',
                 templateUrl: 'partials/invite/invite.html',
-                controller: function ($scope)
+                controller: function ($scope, profile)
                 {
                     $scope.theme = {
                         title: "Invitation"
                     };
-                    $scope.invitation = {
-                        Name: "a",
-                        EmailAddress: "a"
-                    };
+                    // get the current profile for each invite state change
+                },
+                resolve: {
+                    profile: 'profile',
+                    start: function (profile)
+                    {
+                        profile.fetchProfile();
+                    }
                 },
                 abstract: true,
             })
             .state('invite.organic', {
+
                 url: '',
                 views: {
                     'invite': {
                         templateUrl: 'partials/invite/invite.organic.html',
-                        controller: function ($scope, $state, $http, $stateParams)
+                        controller: function ($scope, $state, $http, $stateParams, profile)
                         {
                             $scope.theme.title = "You are Invited!";
-
-                            $scope.Name = "Joey Peters";
-                            $scope.EmailAddress = "josiahpeters@gmail.com";
+                            $scope.profile = profile.current();
 
                             $scope.confirm = function ()
                             {
-                                $scope.invitation.Name = $scope.Name;
-                                $scope.invitation.EmailAddress = $scope.EmailAddress;
+                                //$scope.invitation.Name = $scope.Name;
+                                //$scope.invitation.EmailAddress = $scope.EmailAddress;
 
-                                var promise = $http.post('/api/profile/', $scope.invitation).then(function (response)
+                                profile.update($scope.profile);
+
+                                var promise = $http.post('/api/profile/', profile.current()).then(function (response)
                                 {
-                                    $state.go('invite.confirmation', { email: response.data.EmailAddress });
+                                    $state.go('invite.confirmation');
                                 });
                             }
                         }
@@ -58,26 +63,27 @@ var app = angular.module('kleine', modules)
                 views: {
                     'invite': {
                         templateUrl: 'partials/invite/invite.confirmation.html',
-                        controller: function ($scope, $state, $http, $stateParams)
+                        controller: function ($scope, $state, $http, $stateParams, profile)
                         {
                             $scope.theme.title = "Confirmation Code Sent";
-                            
-                            if ($stateParams.email == null && $stateParams.code == null)
+                            $scope.profile = profile.current();
+
+                            // they didn't fill out the previous page or they haven't sent their confirmation code
+                            if ($stateParams.code == null && $scope.profile.EmailAddress == null)
                             {
                                 $state.go('invite.organic');
                             }
-                             
+                            // grab a code form the url if its passed VIA email // or we've got a default one here
+                            $scope.code = $stateParams.code || "canada123";
 
                             $scope.confirm = function ()
                             {
-                                var promise = $http.post('/api/profile/confirmation', { confirmationCode: $stateParams.code }).then(function (response)
+                                profile.confirmation($scope.code).then(function (response)
                                 {
-                                    console.log(response);
-
-                                    $state.go('invite.finish', { email: response.data.EmailAddress });
-                                });
+                                    if (response)
+                                        $state.go('invite.finish');
+                                });                                
                             }
-
 
                             if ($stateParams.code != null)
                                 $scope.confirm();
@@ -90,9 +96,10 @@ var app = angular.module('kleine', modules)
                 views: {
                     'invite': {
                         templateUrl: 'partials/invite/invite.finish.html',
-                        controller: function ($scope, $state, $stateParams)
+                        controller: function ($scope, $state, $stateParams, profile)
                         {
-                            $scope.theme.title = "Welcome " + "name" + ",";
+                            $scope.profile = profile.current();
+                            $scope.theme.title = "Welcome " + $scope.profile.Name + ",";
 
                             $scope.startGuessing = function ()
                             {
@@ -106,16 +113,18 @@ var app = angular.module('kleine', modules)
                 //url: '/{name}/{id}/guess',
                 url: '/guess',
                 templateUrl: 'partials/guess/guess.html',
-                controller: function ($scope)
+                controller: function ($scope, guess)
                 {
-                    $scope.results = {
-                        weight: [],
-                        length: [],
-                        date: '',
-                        gender: '',
-                        time: [],
-                    };
-
+                    $scope.guess = guess.current;
+                },
+                resolve: {
+                    profile: 'profile',
+                    guess: 'guess',
+                    start: function (profile, guess)
+                    {
+                        profile.fetchProfile();                        
+                        guess.fetchGuess(1, profile.current().Id);
+                    }
                 },
                 abstract: true,
             })
@@ -187,12 +196,120 @@ var app = angular.module('kleine', modules)
                 }
             });
     }])
+    .factory('profile', ['$http', function ($http)
+    {
+        // cache current profile
+        var currentProfile = {};
+
+        return {
+            // get current user by session
+            fetchProfile: function ()
+            {
+                var promise = $http.get('/api/profile').then(function (response)
+                {
+                    if (response.data.length > 0)
+                        currentProfile = response.data;
+                });
+
+                return promise;
+            },
+            current: function ()
+            {
+                return currentProfile;
+            },
+            update: function (property, value)
+            {
+                currentProfile[property] = value;
+            },
+            confirmation: function(code)
+            {
+                var promise = $http.post('/api/profile/confirmation', { confirmationCode: code }).then(function (response)
+                {
+                    if (response.data.EmailAddress.length > 0)
+                    {
+                        currentProfile = response.data;
+                        return true;
+                    }
+                    else return false;
+                });
+                return promise;
+            }
+            
+            //updateProfileValue: function(property, value)
+        };
+    }])
+    .factory('guess', ['$http', function ($http)
+    {
+        // cache current profile
+        var currentGuess = {};
+
+        return {
+            // get current user by session
+            fetchGuess: function (dueDateId, profileId)
+            {
+                var promise = $http.get('/api/guess/' + dueDateId).then(function (response)
+                {
+                    if (response.data.length > 0)
+                        currentGuess = response.data;
+                });
+
+                return promise;
+            },
+            current: function ()
+            {
+                return currentGuess;
+            },
+            update: function (property, value)
+            {
+                currentGuess[property] = value;
+            },
+            //confirmation: function (code)
+            //{
+            //    var promise = $http.post('/api/guess/confirmation', { confirmationCode: code }).then(function (response)
+            //    {
+            //        if (response.data.EmailAddress.length > 0)
+            //        {
+            //            currentProfile = response.data;
+            //            return true;
+            //        }
+            //        else return false;
+            //    });
+            //    return promise;
+            //}
+
+            //updateProfileValue: function(property, value)
+        };
+    }])
     .run(function ($rootScope, $state, $stateParams)
     {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
+        //console.log("run");
     });
 //.controller('controllers.invite', ['$scope', '$location', '$stateParams'])
+
+//angular.module('kleine.services', [])
+//    .factory('profile', ['$http', function ($http)
+//    {
+//        var currentProfile =
+//            {
+//                Id: null,
+//                Name: null,
+//                EmailAddress: null,
+//            };
+
+//        return {
+//            getProfile: function()
+//            {
+//                return currentProfile;
+//            },
+//            updateProfileValue: function(property, value)
+//            {
+//                currentProfile[property] = value;
+//                console.log(currentProfile);
+//            }
+//        };
+//    }]);
 
 angular.module('kleine.controllers', [])
     .controller('guess', ['$scope', '$state', function ($scope, $state)

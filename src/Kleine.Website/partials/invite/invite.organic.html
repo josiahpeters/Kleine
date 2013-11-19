@@ -10,11 +10,11 @@
         <form ng-submit="confirm()">
             <p>
                 <label>Name:</label>
-                <input type="text" ng-model="Name" value="" placeholder="First and Last Name" />
+                <input type="text" ng-model="profile.Name" value="" placeholder="First and Last Name" />
             </p>
             <p>
                 <label>Email Address:</label>
-                <input type="text" ng-model="EmailAddress" value="" placeholder="example@example.com" />
+                <input type="text" ng-model="profile.EmailAddress" value="" placeholder="example@example.com" />
             </p>
             <button class="btn" type="submit" value="Confirm Email Address">Send Confirmation Code</button>
         </form>

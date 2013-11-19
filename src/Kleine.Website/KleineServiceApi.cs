@@ -11,6 +11,12 @@ using System.Web;
 
 namespace Kleine.Website
 {
+    public class SessionKeys
+    {
+        public const string ProfileId = "ProfileId";
+    }
+
+
     public class KleineServiceApi : Service
     {
         IRepositories repo;
@@ -44,7 +50,7 @@ namespace Kleine.Website
                 {
                     DueDateId = dueDate.Id,
                     ProfileId = joey.Id,
-                    Code = "canada"
+                    Code = "canada123"
                 });
         }
 
@@ -82,14 +88,24 @@ namespace Kleine.Website
         //{
         //    return repo.Profiles.GetById(request.Id);
         //}
+        public Profile Get(ProfileGet request)
+        {
+            if (Session[SessionKeys.ProfileId] != null)
+            {
+                int profileId = Session.Get<int>(SessionKeys.ProfileId);
 
+                return repo.Profiles.GetById(profileId);
+            }
+            else
+                return null;
+        }
         public Profile Post(ProfileCreate request)
         {
             var dueDate = repo.DueDates.GetById(1);
 
             request.SessionId = Guid.NewGuid();
 
-            var profile = repo.Profiles.Create(request);
+            var profile = repo.Profiles.Create(request);                
 
             var invite = this.repo.InviteCodes.Create(
                 new InviteCode
@@ -98,6 +114,8 @@ namespace Kleine.Website
                     ProfileId = profile.Id,
                     Code = "canada123"
                 });
+
+            this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
 
             StringBuilder sb = new StringBuilder();
 
@@ -119,18 +137,35 @@ namespace Kleine.Website
             {
                 var profile = repo.Profiles.GetById(invite.ProfileId);
 
-                if(this.Session["id"] == null)
-                    this.Session["id"] = profile.SessionId.ToString();
-
-                var session = this.Session["id"];
+                this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
 
                 return profile;
             }
             else
-                throw new Exception("DERP!");
+                throw new Exception("Confirmation code invalid.");    
+        }
 
-            
-            
+        public Guess Get(GuessGet request)
+        {
+            int profileId = Session.Get<int>(SessionKeys.ProfileId);
+
+            var guesses = repo.Guesses.GetAll();
+            var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == profileId);
+
+            if (guess == null)
+                guess = repo.Guesses.Create(new Guess { ProfileId = profileId, DueDateId = request.DueDateId });
+
+            return guess;
+        }
+
+        public Guess Post(GuessUpdate request)
+        {
+            var guesses = repo.Guesses.GetAll();
+            var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
+
+            repo.Guesses.Update(guess);
+
+            return guess;
         }
 
         //public Profile Put(GuessProfileUpdate request)
@@ -141,43 +176,59 @@ namespace Kleine.Website
         //}
     }
 
-    // DueDate
-    [Route("/DueDate/", "GET")]
-    public class DueDateGetAll : IReturn<List<DueDate>> { }
+    //// DueDate
+    //[Route("/DueDate/", "GET")]
+    //public class DueDateGetAll : IReturn<List<DueDate>> { }
 
-    [Route("/DueDate/{id}", "GET")]
-    public class DueDateGetById : IReturn<DueDate>
-    {
-        public int Id { get; set; }
-    }
+    //[Route("/DueDate/{id}", "GET")]
+    //public class DueDateGetById : IReturn<DueDate>
+    //{
+    //    public int Id { get; set; }
+    //}
 
-    [Route("/DueDate/", "POST")]
-    public class DueDateCreate : DueDate, IReturn<DueDate> { }
+    //[Route("/DueDate/", "POST")]
+    //public class DueDateCreate : DueDate, IReturn<DueDate> { }
 
-    [Route("/DueDate/{id}", "PATCH")]
-    public class DueDateUpdate : DueDate, IReturn<DueDate> { }
+    //[Route("/DueDate/{id}", "PATCH")]
+    //public class DueDateUpdate : DueDate, IReturn<DueDate> { }
 
 
-    // Guess Profiles
-    [Route("/profile/", "GET")]
-    public class GuessProfileGetAll : IReturn<List<Profile>> { }
+    //// Guess Profiles
+    
 
-    [Route("/profile/{id}", "GET")]
-    public class GuessProfileGetById : IReturn<Profile>
-    {
-        public int Id { get; set; }
-    }
+    //[Route("/profile/{id}", "GET")]
+    //public class GuessProfileGetById : IReturn<Profile>
+    //{
+    //    public int Id { get; set; }
+    //}
 
-    [Route("/profile/", "POST")]
+
+
+    // PROFILE
+    [Route("/profile", "GET")]
+    public class ProfileGet : IReturn<Profile> { }
+
+    [Route("/profile", "POST")]
     public class ProfileCreate : Profile, IReturn<Profile> { }
 
     [Route("/profile/confirmation", "POST")]
-    public class ProfileConfirmation : IReturn<Profile> {
+    public class ProfileConfirmation : IReturn<Profile>
+    {
         public string ConfirmationCode { get; set; }
     }
 
-    [Route("/profile/{id}", "PATCH")]
-    public class ProfileUpdate : Profile, IReturn<Profile> { }
 
+    // GUESS
+    [Route("/guess/{DueDateId}", "GET")]
+    public class GuessGet : IReturn<Guess>
+    {
+        public int DueDateId { get; set; }
+        //public int ProfileId { get; set; }
+    }
 
+    [Route("/guess", "POST")]
+    public class GuessUpdate : Guess, IReturn<Guess> { }
+
+    //[Route("/profile/{id}", "PATCH")]
+    //public class ProfileUpdate : Profile, IReturn<Profile> { }
 }
