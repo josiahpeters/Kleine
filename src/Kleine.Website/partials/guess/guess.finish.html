@@ -9,8 +9,11 @@
         <tr><td><a ui-sref="guess.weight">Weight </td><td>{{ (results.weight.length > 0 ? results.weight[0] + ' lbs - ' + results.weight[1] + ' lbs' : '') }}</a></td></tr>
         <tr><td><a ui-sref="guess.length">Length </td><td>{{ (results.length.length > 0 ? results.length[0] + ' in - ' + results.length[1] + ' in' : '') }}</a></td></tr>
     </table>
-    <p>
-        <a ui-sref="guess.length" class="button light">Back</a>
-        <button type="button">Submit Guess</button>
-    </p>
+    <form ng-submit="submit()">
+
+        <p>
+            <a ui-sref="guess.length" class="button light">Back</a>
+            <button type="submit">Submit Guess</button>
+        </p>
+    </form>
 </div>

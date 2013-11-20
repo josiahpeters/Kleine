@@ -129,8 +129,7 @@ var app = angular.module('kleine', modules)
                     start: function (profile, guess)
                     {
                         profile.fetchProfile();
-                        guess.fetchGuess(1, profile.current().Id);
-
+                        return guess.fetchGuess(1, profile.current().Id);
                     }
                 },
                 abstract: true,
@@ -212,6 +211,7 @@ var app = angular.module('kleine', modules)
                             {
                                 guess.update("weight", value);
                                 $scope.$emit('guess.update');
+                                console.log(value);
                             });
                         },
                     }
@@ -240,7 +240,17 @@ var app = angular.module('kleine', modules)
                 url: '/finish',
                 controller: 'guess',
                 views: {
-                    'guess': { templateUrl: 'partials/guess/guess.finish.html' }
+                    'guess': {
+                        templateUrl: 'partials/guess/guess.finish.html',
+                        controller: function ($scope, $state, guess)
+                        {
+                            $scope.submit = function ()
+                            {
+                                console.log("submitting");
+                                guess.updateGuess(1);
+                            }
+                        }
+                    }
                 }
             });
     }])
@@ -249,7 +259,46 @@ var app = angular.module('kleine', modules)
     {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-    });
+    })
+.filter('hours', function ()
+{
+    return function (input, uppercase)
+    {
+        if (typeof (input) == "object")
+        {
+            var hours = input.getHours();
+            var time = "am";
+
+            if (hours > 12)
+                time = "pm";
+
+            var hour = Math.floor(hours % 12);
+
+            if (hour == 0)
+                hour = 12;
+
+            var minutes = input.getMinutes();
+
+            if (minutes < 10)
+                minutes = '0' + minutes;
+
+            return hour + ':' + minutes + ' ' + time;
+        }
+        return input;
+    }
+})
+.filter('date', function ()
+{
+    return function (input, uppercase)
+    {
+        if (typeof (input) == "object")
+        {
+            return (input.getMonth() + 1) + '/' + input.getDate() + '/' + input.getFullYear();
+
+        }
+        return input;
+    }
+});
 
 angular.module('kleine.controllers', [])
     .controller('guess', ['$scope', '$state', function ($scope, $state)

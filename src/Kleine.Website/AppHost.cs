@@ -28,6 +28,7 @@ namespace Kleine.Website
             container.Register<INotification>(notify);
 
             Plugins.Add(new SessionFeature());
+
             ////Configure ServiceStack Json web services to return idiomatic Json camelCase properties.
             //JsConfig.EmitCamelCaseNames = true;
 

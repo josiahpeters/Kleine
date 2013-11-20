@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
+using ServiceStack.Common;
+
 
 namespace Kleine.Website
 {
@@ -52,6 +54,8 @@ namespace Kleine.Website
                     ProfileId = joey.Id,
                     Code = "canada123"
                 });
+
+
         }
 
         //public List<DueDate> Get(DueDateGetAll request)
@@ -97,7 +101,11 @@ namespace Kleine.Website
                 return repo.Profiles.GetById(profileId);
             }
             else
-                return null;
+            {
+                this.Session.Set<int>(SessionKeys.ProfileId, 1);
+                return repo.Profiles.GetById(1);
+            }
+            //return null;
         }
         public Profile Post(ProfileCreate request)
         {
@@ -105,7 +113,7 @@ namespace Kleine.Website
 
             request.SessionId = Guid.NewGuid();
 
-            var profile = repo.Profiles.Create(request);                
+            var profile = repo.Profiles.Create(request);
 
             var invite = this.repo.InviteCodes.Create(
                 new InviteCode
@@ -142,7 +150,7 @@ namespace Kleine.Website
                 return profile;
             }
             else
-                throw new Exception("Confirmation code invalid.");    
+                throw new Exception("Confirmation code invalid.");
         }
 
         public Guess Get(GuessGet request)
@@ -162,6 +170,13 @@ namespace Kleine.Website
         {
             var guesses = repo.Guesses.GetAll();
             var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
+
+            if (guess == null)
+            {                
+                guess = repo.Guesses.Create(request.TranslateTo<Guess>());
+            }
+            else
+                guess.PopulateWithNonDefaultValues(request);
 
             repo.Guesses.Update(guess);
 
@@ -194,7 +209,7 @@ namespace Kleine.Website
 
 
     //// Guess Profiles
-    
+
 
     //[Route("/profile/{id}", "GET")]
     //public class GuessProfileGetById : IReturn<Profile>

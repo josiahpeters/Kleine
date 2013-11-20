@@ -13,8 +13,8 @@
         <ul class="list four column">
             <li class="list-item header">Prediction: Baby P</li>
             <li class="list-item" ng-class="{ active: $state.includes('guess.gender') }"><a ui-sref="guess.gender"><i class="fa fa-user"></i> Gender <span class="result">{{ guess.gender }}</span></a> </li>
-            <li class="list-item" ng-class="{ active: $state.includes('guess.date') }"><a ui-sref="guess.date"><i class="fa fa-calendar"></i> Date <span class="result">{{ guess.date }}</span></a></li>
-            <li class="list-item" ng-class="{ active: $state.includes('guess.time') }"><a ui-sref="guess.time"><i class="fa fa-clock-o"></i> Time <span class="result">{{ (guess.time.length > 0 ? guess.time[0] + ' - ' + guess.time[1] : '') }}</span></a></li>
+            <li class="list-item" ng-class="{ active: $state.includes('guess.date') }"><a ui-sref="guess.date"><i class="fa fa-calendar"></i> Date <span class="result">{{ guess.date|date }}</span></a></li>
+            <li class="list-item" ng-class="{ active: $state.includes('guess.time') }"><a ui-sref="guess.time"><i class="fa fa-clock-o"></i> Time <span class="result">{{ (guess.time.length > 0 ? (guess.time[0]|hours) + ' - ' + (guess.time[1]|hours) : '') }}</span></a></li>
             <li class="list-item" ng-class="{ active: $state.includes('guess.weight') }"><a ui-sref="guess.weight"><i class="fa fa-anchor"></i> Weight <span class="result">{{ (guess.weight.length > 0 ? guess.weight[0] + ' lbs - ' + guess.weight[1] + ' lbs' : '') }}</span></a></li>
             <li class="list-item" ng-class="{ active: $state.includes('guess.length') }"><a ui-sref="guess.length"><i class="fa fa-sort-amount-asc"></i> Length <span class="result">{{ (guess.length.length > 0 ? guess.length[0] + ' in - ' + guess.length[1] + ' in' : '') }}</span></a></li>
             <li class="list-item" ng-class="{ active: $state.includes('guess.finish') }"><a ui-sref="guess.finish"><i class="fa fa-check-square"></i> Submit Guess</a></li>
