@@ -50,16 +50,29 @@ app.factory('profile', ['$http', function ($http)
 
         function mapGuess(currentGuess, guess)
         {
-            var date = new Date(parseInt(guess.Date.substr(6)));
+            var date = undefined;
+            if (guess.Date !== undefined)
+                date = new Date(parseInt(guess.Date.substr(6)));
 
-            var time = [new Date(parseInt(guess.Time.substr(6)))];
-            time.push(new Date(time[0]).addHours(4));
+            var time = undefined;
+            if (guess.Time !== undefined)
+            {
+                time = [new Date(parseInt(guess.Time.substr(6)))];
+                time.push(new Date(time[0]).addHours(4));
+            }
+            var weight = undefined;
+            if (guess.Weight > 0)
+            {
+                weight = [guess.Weight];
+                weight.push(guess.Weight + 1.5);
+            }
 
-            var weight = [guess.Weight];
-            weight.push(guess.Weight + 1.5);
-
-            var length = [guess.Length]; 1.5
-            length.push(guess.Length + 4);
+            var length = undefined;
+            if (guess.length > 0)
+            {
+                length = [guess.Length];
+                length.push(guess.Length + 4);
+            }
 
             currentGuess.gender = guess.Gender;
             currentGuess.date = date;
@@ -77,7 +90,7 @@ app.factory('profile', ['$http', function ($http)
                     var guess = response.data;
 
                     mapGuess(currentGuess, guess);
-                    
+
                 });
 
                 return promise;
@@ -117,23 +130,3 @@ Date.prototype.addHours = function (h)
     this.setHours(this.getHours() + h);
     return this;
 }
-//Date.prototype.toHourString = function ()
-//{
-//    timeValue = timeValue % 24;
-//    var time = "am";
-
-//    if (timeValue > 12)
-//        time = "pm";
-
-//    var hour = Math.floor(timeValue % 12);
-
-//    if (hour == 0)
-//        hour = 12;
-
-//    var minutes = Math.floor((timeValue % 1) * 60);
-
-//    if (minutes < 10)
-//        minutes = '0' + minutes;
-
-//    return hour + ':' + minutes + ' ' + time;
-//}

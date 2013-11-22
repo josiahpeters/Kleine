@@ -114,7 +114,7 @@ angular.module('kleine.directives', []).
 
                       x = leftValue;
                   }
-
+                  
                   var left = parseFloat(sliderElement.css("left"));
 
                   var minimumValue = (left / pixelPerValue + minValue);
@@ -161,14 +161,17 @@ angular.module('kleine.directives', []).
               function getTargetValue()
               {
                   var value = targetValue(scope.$parent) || minValue;                                    
-
-                  if (scope.name == "time")
+                  
+                  if (typeof (value) == "object")
                   {
-                      value = value[0].getHours() + value[0].getMinutes() / 60;
+                      if (scope.name == "time")
+                      {
+                          value = value[0].getHours() + value[0].getMinutes() / 60;
+                      }
+                      else
+                          if (value.length > 0)
+                              value = value[0];
                   }
-                  else
-                      if (value.length > 0)
-                          value = value[0];
                   return value;
               }
 

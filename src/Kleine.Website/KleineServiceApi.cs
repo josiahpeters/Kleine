@@ -92,8 +92,21 @@ namespace Kleine.Website
         //{
         //    return repo.Profiles.GetById(request.Id);
         //}
-        public Profile Get(ProfileGet request)
+        public object Get(BrowserIdentity request)
         {
+            string identity = Guid.NewGuid().ToString();
+
+            var cookies = Response.CookiesAsDictionary();
+
+            if (Request.Cookies.ContainsKey("Identity"))
+                throw new Exception("HUR");
+
+            Response.Cookies.AddPermanentCookie("Identity", identity, false);
+            return "done";
+        }
+
+        public Profile Get(ProfileGet request)
+        {            
             if (Session[SessionKeys.ProfileId] != null)
             {
                 int profileId = Session.Get<int>(SessionKeys.ProfileId);
@@ -124,6 +137,7 @@ namespace Kleine.Website
                 });
 
             this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
+            
 
             StringBuilder sb = new StringBuilder();
 
@@ -218,6 +232,8 @@ namespace Kleine.Website
     //}
 
 
+    [Route("/info", "GET")]
+    public class BrowserIdentity { }
 
     // PROFILE
     [Route("/profile", "GET")]
