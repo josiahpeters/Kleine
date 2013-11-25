@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Kleine
 {
-    public class Guess : Entity
+    public class Prediction : Entity
     {
         public int DueDateId { get; set; }
 

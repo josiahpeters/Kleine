@@ -38,43 +38,56 @@ app.factory('profile', ['$http', function ($http)
                 else return false;
             });
             return promise;
+        },
+        invite: function (EmailAddress)
+        {
+            var promise = $http.post('/api/profile/', { EmailAddress: EmailAddress }).then(function (response)
+            {
+                if (response.data.EmailAddress.length > 0)
+                {
+                    currentProfile = response.data;
+                    return true;
+                }
+                else return false;
+            });
+            return promise;
         }
 
         //updateProfileValue: function(property, value)
     };
 }])
-    .factory('guess', ['$http', function ($http)
+    .factory('predict', ['$http', function ($http)
     {
         // cache current profile
         var currentGuess = {};
 
-        function mapGuess(currentGuess, guess)
+        function mapGuess(currentGuess, predict)
         {
             var date = undefined;
-            if (guess.Date !== undefined)
-                date = new Date(parseInt(guess.Date.substr(6)));
+            if (predict.Date !== undefined)
+                date = new Date(parseInt(predict.Date.substr(6)));
 
             var time = undefined;
-            if (guess.Time !== undefined)
+            if (predict.Time !== undefined)
             {
-                time = [new Date(parseInt(guess.Time.substr(6)))];
+                time = [new Date(parseInt(predict.Time.substr(6)))];
                 time.push(new Date(time[0]).addHours(4));
             }
             var weight = undefined;
-            if (guess.Weight > 0)
+            if (predict.Weight > 0)
             {
-                weight = [guess.Weight];
-                weight.push(guess.Weight + 1.5);
+                weight = [predict.Weight];
+                weight.push(predict.Weight + 1.5);
             }
 
             var length = undefined;
-            if (guess.length > 0)
+            if (predict.length > 0)
             {
-                length = [guess.Length];
-                length.push(guess.Length + 4);
+                length = [predict.Length];
+                length.push(predict.Length + 4);
             }
 
-            currentGuess.gender = guess.Gender;
+            currentGuess.gender = predict.Gender;
             currentGuess.date = date;
             currentGuess.time = time;
             currentGuess.weight = weight;
@@ -85,11 +98,11 @@ app.factory('profile', ['$http', function ($http)
             // get current user by session
             fetchGuess: function (dueDateId, profileId)
             {
-                var promise = $http.get('/api/guess/' + dueDateId).then(function (response)
+                var promise = $http.get('/api/predict/' + dueDateId).then(function (response)
                 {
-                    var guess = response.data;
+                    var predict = response.data;
 
-                    mapGuess(currentGuess, guess);
+                    mapGuess(currentGuess, predict);
 
                 });
 
@@ -105,7 +118,7 @@ app.factory('profile', ['$http', function ($http)
             },
             updateGuess: function (dueDateId)
             {
-                var guess = {
+                var predict = {
                     DueDateId: dueDateId,
                     ProfileId: 1,
                     Gender: currentGuess.gender,
@@ -115,9 +128,9 @@ app.factory('profile', ['$http', function ($http)
                     Length: currentGuess.length[0],
                 }
 
-                var promise = $http.post('/api/guess/', guess).then(function (response)
+                var promise = $http.post('/api/predict/', predict).then(function (response)
                 {
-                    mapGuess(currentGuess, guess);
+                    mapGuess(currentGuess, predict);
                 });
 
                 return promise;

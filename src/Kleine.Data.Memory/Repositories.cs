@@ -9,7 +9,7 @@ namespace Kleine.Data
     {
         private IRepository<DueDate> dueDates = new BaseRepository<DueDate>();
         private IRepository<Profile> profile = new BaseRepository<Profile>();
-        private IRepository<Guess> guesses = new BaseRepository<Guess>();
+        private IRepository<Prediction> guesses = new BaseRepository<Prediction>();
         private IRepository<InviteCode> inviteCodes = new BaseRepository<InviteCode>();
         
         public IRepository<DueDate> DueDates
@@ -37,7 +37,7 @@ namespace Kleine.Data
         }
 
 
-        public IRepository<Guess> Guesses
+        public IRepository<Prediction> Guesses
         {
             get
             {

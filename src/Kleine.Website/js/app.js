@@ -11,6 +11,35 @@ var app = angular.module('kleine', modules)
                 url: '/',
                 templateUrl: 'partials/welcome.html'
             })
+            .state('start', {
+                url: '/start',
+                templateUrl: 'partials/start.html',
+                controller: function ($scope, $state, profile, predict)
+                {
+                    $scope.profile = profile.current();
+                    $scope.predict = predict.current();
+
+                    $scope.profile.EmailAddress = "josiahpeters@gmail.com";
+
+                    $scope.confirm = function()
+                    {
+                        profile.invite($scope.profile.EmailAddress).then(function ()
+                        {
+                            $state.go('invite.organic');
+                        });
+                    }
+
+                },
+                resolve: {
+                    profile: 'profile',
+                    predict: 'predict',
+                    start: function (profile, predict)
+                    {
+                        profile.fetchProfile();
+                        //return predict.fetchGuess(1, profile.current().Id);
+                    }
+                },
+            })
             .state('invite', {
                 //url: '/{name}/{id}/invite',
                 url: '/invite',
@@ -44,15 +73,7 @@ var app = angular.module('kleine', modules)
 
                             $scope.confirm = function ()
                             {
-                                //$scope.invitation.Name = $scope.Name;
-                                //$scope.invitation.EmailAddress = $scope.EmailAddress;
-
-                                profile.update($scope.profile);
-
-                                var promise = $http.post('/api/profile/', profile.current()).then(function (response)
-                                {
-                                    $state.go('invite.confirmation');
-                                });
+                                profile.update("name",$scope.profile.Name);
                             }
                         }
                     }
@@ -103,151 +124,150 @@ var app = angular.module('kleine', modules)
 
                             $scope.startGuessing = function ()
                             {
-                                $state.go('guess.start', { id: $stateParams.id, name: $stateParams.name });
+                                $state.go('predict.start', { id: $stateParams.id, name: $stateParams.name });
                             }
                         }
                     }
                 }
             })
-            .state('guess', {
-                //url: '/{name}/{id}/guess',
-                url: '/guess',
-                templateUrl: 'partials/guess/guess.html',
-                controller: function ($scope, guess)
+            .state('predict', {
+                //url: '/{name}/{id}/predict',
+                url: '/predict',
+                templateUrl: 'partials/predict/predict.html',
+                controller: function ($scope, predict)
                 {
-                    $scope.guess = guess.current();
+                    $scope.predict = predict.current();
 
-                    $scope.$on('guess.update', function ()
+                    $scope.$on('predict.update', function ()
                     {
-                        $scope.guess = guess.current();
+                        $scope.predict = predict.current();
                     });
 
                 },
                 resolve: {
                     profile: 'profile',
-                    guess: 'guess',
-                    start: function (profile, guess)
+                    predict: 'predict',
+                    start: function (profile, predict)
                     {
                         profile.fetchProfile();
-                        return guess.fetchGuess(1, profile.current().Id);
+                        return predict.fetchGuess(1, profile.current().Id);
                     }
                 },
                 abstract: true,
             })
-            .state('guess.start', {
+            .state('predict.start', {
                 url: '/start',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.start.html',
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.start.html',
                     }
                 }
 
             })
-            .state('guess.gender', {
+            .state('predict.gender', {
                 url: '/gender',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.gender.html',
-                        controller: function ($scope, $stateParams, guess)
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.gender.html',
+                        controller: function ($scope, $stateParams, predict)
                         {
-                            $scope.gender = guess.current().gender;
+                            $scope.gender = predict.current().gender;
 
                             $scope.chooseGender = function (gender)
                             {
                                 $scope.gender = gender;
-                                guess.update("gender", gender);
-                                $scope.$emit('guess.update');
+                                predict.update("gender", gender);
+                                $scope.$emit('predict.update');
                             }
                         }
                     }
                 }
             })
-            .state('guess.date', {
+            .state('predict.date', {
                 url: '/date',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.date.html',
-                        controller: function ($scope, $stateParams, guess)
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.date.html',
+                        controller: function ($scope, $stateParams, predict)
                         {
-                            $scope.dateValue = guess.current().date;
+                            $scope.dateValue = predict.current().date;
 
                             $scope.$watch('dateValue', function (value)
                             {
-                                guess.update("date", value);
-                                $scope.$emit('guess.update');
+                                predict.update("date", value);
+                                $scope.$emit('predict.update');
                             });
                         },
                     }
                 }
             })
-            .state('guess.time', {
+            .state('predict.time', {
                 url: '/time',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.time.html',
-                        controller: function ($scope, $stateParams, guess)
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.time.html',
+                        controller: function ($scope, $stateParams, predict)
                         {
-                            $scope.timeValue = guess.current().time;
+                            $scope.timeValue = predict.current().time;
 
                             $scope.$watch('timeValue', function (value)
                             {
-                                guess.update("time", value);
-                                $scope.$emit('guess.update');
+                                predict.update("time", value);
+                                $scope.$emit('predict.update');
                             });
                         },
                     }
                 }
             })
-            .state('guess.weight', {
+            .state('predict.weight', {
                 url: '/weight',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.weight.html',
-                        controller: function ($scope, $state, guess)
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.weight.html',
+                        controller: function ($scope, $state, predict)
                         {
-                            $scope.weightValue = guess.current().weight;
+                            $scope.weightValue = predict.current().weight;
 
                             $scope.$watch('weightValue', function (value)
                             {
-                                guess.update("weight", value);
-                                $scope.$emit('guess.update');
-                                console.log(value);
+                                predict.update("weight", value);
+                                $scope.$emit('predict.update');
                             });
                         },
                     }
                 }
             })
-            .state('guess.length', {
+            .state('predict.length', {
                 url: '/length',
-                controller: 'guess',
+                controller: 'predict',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.length.html',
-                        controller: function ($scope, $state, guess)
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.length.html',
+                        controller: function ($scope, $state, predict)
                         {
-                            $scope.lengthValue = guess.current().length;
+                            $scope.lengthValue = predict.current().length;
 
                             $scope.$watch('lengthValue', function (value)
                             {
-                                guess.update("length", value);
-                                $scope.$emit('guess.update');
+                                predict.update("length", value);
+                                $scope.$emit('predict.update');
                             });
                         },
                     }
                 }
             })
-            .state('guess.finish', {
+            .state('predict.finish', {
                 url: '/finish',
-                controller: 'guess',
+                controller: 'predict',
                 views: {
-                    'guess': {
-                        templateUrl: 'partials/guess/guess.finish.html',
-                        controller: function ($scope, $state, guess)
+                    'predict': {
+                        templateUrl: 'partials/predict/predict.finish.html',
+                        controller: function ($scope, $state, predict)
                         {
                             $scope.submit = function ()
                             {
                                 console.log("submitting");
-                                guess.updateGuess(1);
+                                predict.updateGuess(1);
                             }
                         }
                     }
@@ -301,7 +321,7 @@ var app = angular.module('kleine', modules)
 });
 
 angular.module('kleine.controllers', [])
-    .controller('guess', ['$scope', '$state', function ($scope, $state)
+    .controller('predict', ['$scope', '$state', function ($scope, $state)
     {
     }]);
 
@@ -315,7 +335,7 @@ angular.module('myApp.filters', []).
   }]);
 
 angular.module('kleine.services', [])
-    .factory('guess', [function ()
+    .factory('predict', [function ()
     {
 
     }

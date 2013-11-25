@@ -39,21 +39,21 @@ namespace Kleine.Website
                     Description = "Baby P is coming soon!"
                 });
 
-            var joey = this.repo.Profiles.Create(
-                new Profile
-                {
-                    EmailAddress = "josiahpeters@gmail.com",
-                    Name = "Joey Peters",
-                    SessionId = Guid.NewGuid()
-                });
+            //var joey = this.repo.Profiles.Create(
+            //    new Profile
+            //    {
+            //        EmailAddress = "josiahpeters@gmail.com",
+            //        Name = "Joey Peters",
+            //        SessionId = Guid.NewGuid()
+            //    });
 
-            var invite = this.repo.InviteCodes.Create(
-                new InviteCode
-                {
-                    DueDateId = dueDate.Id,
-                    ProfileId = joey.Id,
-                    Code = "canada123"
-                });
+            //var invite = this.repo.InviteCodes.Create(
+            //    new InviteCode
+            //    {
+            //        DueDateId = dueDate.Id,
+            //        ProfileId = joey.Id,
+            //        Code = "canada123"
+            //    });
 
 
         }
@@ -94,14 +94,14 @@ namespace Kleine.Website
         //}
         public object Get(BrowserIdentity request)
         {
-            string identity = Guid.NewGuid().ToString();
+            //string identity = Guid.NewGuid().ToString();
 
-            var cookies = Response.CookiesAsDictionary();
+            //var cookies = Response.CookiesAsDictionary();
 
-            if (Request.Cookies.ContainsKey("Identity"))
-                throw new Exception("HUR");
+            //if (Request.Cookies.ContainsKey("Identity"))
+            //    throw new Exception("HUR");
 
-            Response.Cookies.AddPermanentCookie("Identity", identity, false);
+            //Response.Cookies.AddPermanentCookie("Identity", identity, false);
             return "done";
         }
 
@@ -115,8 +115,8 @@ namespace Kleine.Website
             }
             else
             {
-                this.Session.Set<int>(SessionKeys.ProfileId, 1);
-                return repo.Profiles.GetById(1);
+                return null;
+                //return repo.Profiles.GetById(1);
             }
             //return null;
         }
@@ -133,19 +133,20 @@ namespace Kleine.Website
                 {
                     DueDateId = dueDate.Id,
                     ProfileId = profile.Id,
-                    Code = "canada123"
+                    Code = request.SessionId.ToString(),
                 });
 
             this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
-            
+
+            Response.Cookies.AddPermanentCookie("Identity", request.SessionId.ToString(), false);            
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendFormat("Dear {0},<br /><br />\n", request.Name);
-            sb.AppendFormat("Your confirmation code is: {0} or click this link: <a href=\"http://localhost:53252/#/invite/start-guessing?code={0}\">THIS LINK</a>", invite.Code);
+            sb.AppendFormat("Dear {0},<br /><br />\n", "Friend");
+            sb.AppendFormat("<a href=\"http://localhost:53252/#/predict/start?code={0}\">Make Prediction</a>", invite.Code);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            //notify.SendNotification("josiahpeters@gmail.com", "Welcome", sb.ToString());
+            notify.SendNotification("josiahpeters@gmail.com", "BabyP - Make Prediction", sb.ToString());
 
             return profile;
         }
@@ -167,7 +168,7 @@ namespace Kleine.Website
                 throw new Exception("Confirmation code invalid.");
         }
 
-        public Guess Get(GuessGet request)
+        public Prediction Get(PredictionGet request)
         {
             int profileId = Session.Get<int>(SessionKeys.ProfileId);
 
@@ -175,19 +176,19 @@ namespace Kleine.Website
             var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == profileId);
 
             if (guess == null)
-                guess = repo.Guesses.Create(new Guess { ProfileId = profileId, DueDateId = request.DueDateId });
+                guess = repo.Guesses.Create(new Prediction { ProfileId = profileId, DueDateId = request.DueDateId });
 
             return guess;
         }
 
-        public Guess Post(GuessUpdate request)
+        public Prediction Post(PredictionUpdate request)
         {
             var guesses = repo.Guesses.GetAll();
             var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
 
             if (guess == null)
             {                
-                guess = repo.Guesses.Create(request.TranslateTo<Guess>());
+                guess = repo.Guesses.Create(request.TranslateTo<Prediction>());
             }
             else
                 guess.PopulateWithNonDefaultValues(request);
@@ -242,6 +243,9 @@ namespace Kleine.Website
     [Route("/profile", "POST")]
     public class ProfileCreate : Profile, IReturn<Profile> { }
 
+    [Route("/profile", "PUT")]
+    public class ProfileUpdate : Profile, IReturn<Profile> { }
+
     [Route("/profile/confirmation", "POST")]
     public class ProfileConfirmation : IReturn<Profile>
     {
@@ -250,15 +254,15 @@ namespace Kleine.Website
 
 
     // GUESS
-    [Route("/guess/{DueDateId}", "GET")]
-    public class GuessGet : IReturn<Guess>
+    [Route("/predict/{DueDateId}", "GET")]
+    public class PredictionGet : IReturn<Prediction>
     {
         public int DueDateId { get; set; }
         //public int ProfileId { get; set; }
     }
 
-    [Route("/guess", "POST")]
-    public class GuessUpdate : Guess, IReturn<Guess> { }
+    [Route("/predict", "POST")]
+    public class PredictionUpdate : Prediction, IReturn<Prediction> { }
 
     //[Route("/profile/{id}", "PATCH")]
     //public class ProfileUpdate : Profile, IReturn<Profile> { }
