@@ -1,153 +1,118 @@
 ﻿'use strict';
 
 
-app.factory('profile', ['$http', function ($http)
+app.factory('profilePrediction', ['$http', function ($http)
 {
-    // cache current profile
-    var currentProfile = {};
+    // cache current profile prediction aggregate
+    var currentData = {};
 
     return {
         // get current user by session
-        fetchProfile: function ()
+        fetch: function ()
         {
             var promise = $http.get('/api/profile').then(function (response)
             {
-                if (response.data.length > 0)
-                    currentProfile = response.data;
+                setCurrentData(response.data);
             });
 
             return promise;
         },
+
         current: function ()
         {
-            return currentProfile;
+            return currentData;
         },
-        update: function (property, value)
-        {
-            currentProfile[property] = value;
-        },
-        updateProfile: function ()
+
+
+        saveProfile: function ()
         {            
-            var promise = $http.put('/api/profile/', currentProfile).then(function (response)
+            var promise = $http.put('/api/profile/', currentData.Profile).then(function (response)
             {
-                console.log(response.data);
-                if (response.data.length > 0)
-                    currentProfile = response.data;
+                if (response.status == 200)
+                    setCurrentData(response.data);
             });
 
             return promise;
-        },
-        confirmation: function (code)
+        },        
+        createProfile: function ()
         {
-            var promise = $http.post('/api/profile/confirmation', { confirmationCode: code }).then(function (response)
+            var promise = $http.post('/api/profile/', currentData.Profile).then(function (response)
             {
-                if (response.data.EmailAddress.length > 0)
-                {
-                    currentProfile = response.data;
-                    return true;
-                }
-                else return false;
+                setCurrentData(response.data);
             });
             return promise;
         },
-        invite: function (EmailAddress)
+        
+        savePrediction: function (dueDateId)
         {
-            var promise = $http.post('/api/profile/', { EmailAddress: EmailAddress }).then(function (response)
+            var predict = {
+                DueDateId: dueDateId,
+                ProfileId: 1,
+                Gender: currentData.Prediction.Gender,
+                Date: currentData.Prediction.Date,
+                Time: currentData.Prediction.Time[0],
+                Weight: currentData.Prediction.Weight[0],
+                Length: currentData.Prediction.Length[0],
+            }
+
+            var promise = $http.put('/api/predict/', predict).then(function (response)
             {
-                if (response.data.EmailAddress.length > 0)
-                {
-                    currentProfile = response.data;
-                    return currentProfile;
-                }
-                else return undefined;
+                //var predict = response.data;                
             });
+
             return promise;
         }
-
-        //updateProfileValue: function(property, value)
     };
-}])
-    .factory('predict', ['$http', function ($http)
+
+    function setCurrentData(data)
     {
-        // cache current profile
-        var currentGuess = {};
+        currentData.Profile = data.Profile;
 
-        function mapGuess(currentGuess, predict)
+        if (currentData.Profile === undefined)
+            currentData.Profile = {};
+
+        mapPrediction(currentData.Prediction, data.Prediction);
+    }
+    
+    function mapPrediction(currentPrediction, predict)
+    {
+        var date = undefined;
+        if (predict !== undefined && predict.Date !== undefined)
+            date = new Date(parseInt(predict.Date.substr(6)));
+
+        var time = undefined;
+        if (predict !== undefined && predict.Time !== undefined)
         {
-            var date = undefined;
-            if (predict.Date !== undefined)
-                date = new Date(parseInt(predict.Date.substr(6)));
-
-            var time = undefined;
-            if (predict.Time !== undefined)
-            {
-                time = [new Date(parseInt(predict.Time.substr(6)))];
-                time.push(new Date(time[0]).addHours(4));
-            }
-            var weight = undefined;
-            if (predict.Weight > 0)
-            {
-                weight = [predict.Weight];
-                weight.push(predict.Weight + 1.5);
-            }
-
-            var length = undefined;
-            if (predict.length > 0)
-            {
-                length = [predict.Length];
-                length.push(predict.Length + 4);
-            }
-
-            currentGuess.gender = predict.Gender;
-            currentGuess.date = date;
-            currentGuess.time = time;
-            currentGuess.weight = weight;
-            currentGuess.length = length;
+            time = [new Date(parseInt(predict.Time.substr(6)))];
+            time.push(new Date(time[0]).addHours(4));
+        }
+        var weight = undefined;
+        if (predict !== undefined && predict.Weight > 0)
+        {
+            weight = [predict.Weight];
+            weight.push(predict.Weight + 1.5);
         }
 
-        return {
-            // get current user by session
-            fetchGuess: function (dueDateId, profileId)
-            {
-                var promise = $http.get('/api/predict/' + dueDateId).then(function (response)
-                {
-                    var predict = response.data;
+        var length = undefined;
+        if (predict !== undefined && predict.length > 0)
+        {
+            length = [predict.Length];
+            length.push(predict.Length + 4);
+        }
+        var gender = undefined;
+        if (predict !== undefined && predict.Gender !== undefined)
+            gender = predict.Gender;
 
-                    mapGuess(currentGuess, predict);
+        if (currentData.Prediction === undefined)
+            currentData.Prediction = {};
 
-                });
-
-                return promise;
-            },
-            current: function ()
-            {
-                return currentGuess;
-            },
-            update: function (property, value)
-            {
-                currentGuess[property] = value;
-            },
-            updateGuess: function (dueDateId)
-            {
-                var predict = {
-                    DueDateId: dueDateId,
-                    ProfileId: 1,
-                    Gender: currentGuess.gender,
-                    Date: currentGuess.date,
-                    Time: currentGuess.time[0],
-                    Weight: currentGuess.weight[0],
-                    Length: currentGuess.length[0],
-                }
-
-                var promise = $http.post('/api/predict/', predict).then(function (response)
-                {
-                    mapGuess(currentGuess, predict);
-                });
-
-                return promise;
-            }
-        };
-    }])
+        currentData.Prediction.Gender = gender;
+        currentData.Prediction.Date = date;
+        currentData.Prediction.Time = time;
+        currentData.Prediction.Weight = weight;
+        currentData.Prediction.Length = length;
+    }
+}])
 
 Date.prototype.addHours = function (h)
 {

@@ -47,7 +47,7 @@ namespace Kleine
             sb.AppendFormat("<a href=\"http://localhost:53252/#/invite?code={0}\">Make Prediction</a>", profile.EmailCode);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            SendNotification("josiahpeters@gmail.com", "BabyP - Make Prediction", sb.ToString());
+            SendNotification("josiahpeters@gmail.com", "BabyP - You are invited to make a prediction", sb.ToString());
         }
 
         public void SendAuth(Profile profile, DueDate dueDate)
@@ -59,7 +59,7 @@ namespace Kleine
             sb.AppendFormat("<p><a href=\"http://localhost:53252/#/results/start?code={0}\">View Results</a></p>", profile.EmailCode);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            SendNotification("josiahpeters@gmail.com", "BabyP - Make Prediction", sb.ToString());
+            SendNotification("josiahpeters@gmail.com", "BabyP - Make Your Prediction", sb.ToString());
         }
     }
 }

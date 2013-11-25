@@ -38,7 +38,7 @@ namespace Kleine.Data
         }
 
 
-        public IRepository<Prediction> Guesses
+        public IRepository<Prediction> Predictions
         {
             get
             {

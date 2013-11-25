@@ -9,7 +9,7 @@ namespace Kleine.Data
     {
         IRepository<DueDate> DueDates { get; set; }
         IRepository<Profile> Profiles { get; set; }
-        IRepository<Prediction> Guesses { get; set; }
+        IRepository<Prediction> Predictions { get; set; }
         IRepository<InviteCode> InviteCodes { get; set; }
         IRepository<CookieTracker> CookieTrackers { get; set; }
     }

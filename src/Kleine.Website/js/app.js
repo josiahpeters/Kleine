@@ -9,42 +9,62 @@ var app = angular.module('kleine', modules)
         $stateProvider
             .state('welcome', {
                 url: '/',
-                templateUrl: 'partials/welcome.html'
+                templateUrl: 'partials/welcome.html',
+                controller: function ($scope, $state, profilePrediction)
+                {
+                    $scope.profile = profilePrediction.current().Profile;
+
+                    $scope.makePrediction = function ($event)
+                    {
+                        $event.preventDefault()
+
+
+                        if ($scope.profile !== undefined && $scope.profile.Name !== undefined)
+                            $state.go('predict.start');
+                        else
+                            $state.go('start');
+                    };
+
+
+                },
+                resolve: {
+                    profilePrediction: 'profilePrediction',
+                    start: function (profilePrediction)
+                    {
+                        return profilePrediction.fetch();
+                    }
+                },
             })
             .state('start', {
                 url: '/start',
                 templateUrl: 'partials/start.html',
-                controller: function ($scope, $state, profile, predict)
+                controller: function ($scope, $state, profilePrediction)
                 {
-                    $scope.profile = profile.current();
-                    $scope.predict = predict.current();
+                    $scope.profile = profilePrediction.current().Profile;
 
-                    $scope.profile.EmailAddress = "josiahpeters@gmail.com";
+                    $scope.profile.EmailAddress = "josiahpetefrs@gmail.com";
 
-                    $scope.confirm = function()
+                    $scope.confirm = function ()
                     {
-                        profile.invite($scope.profile.EmailAddress).then(function (profile)
+                        profilePrediction.createProfile().then(function ()
                         {
-                            console.log(profile);
-                            $state.go('invite.organic', { code: profile.SessionId });
+                            $state.go('invite.organic');
                         });
                     }
 
                 },
                 resolve: {
-                    profile: 'profile',
-                    predict: 'predict',
-                    start: function (profile, predict)
+                    profilePrediction: 'profilePrediction',
+                    start: function (profilePrediction)
                     {
-                        profile.fetchProfile();
+                        return profilePrediction.fetch();
                     }
                 },
             })
             .state('invite', {
-                //url: '/{name}/{id}/invite',
                 url: '/invite',
                 templateUrl: 'partials/invite/invite.html',
-                controller: function ($scope, profile)
+                controller: function ($scope, profilePrediction)
                 {
                     $scope.theme = {
                         title: "Invitation"
@@ -52,10 +72,10 @@ var app = angular.module('kleine', modules)
                     // get the current profile for each invite state change
                 },
                 resolve: {
-                    profile: 'profile',
-                    start: function (profile)
+                    profilePrediction: 'profilePrediction',
+                    start: function (profilePrediction)
                     {
-                        profile.fetchProfile();
+                        return profilePrediction.fetch();
                     }
                 },
                 abstract: true,
@@ -65,16 +85,15 @@ var app = angular.module('kleine', modules)
                 views: {
                     'invite': {
                         templateUrl: 'partials/invite/invite.organic.html',
-                        controller: function ($scope, $state, $http, $stateParams, profile)
+                        controller: function ($scope, $state, $http, $stateParams, profilePrediction)
                         {
                             $scope.theme.title = "You are Invited!";
-                            $scope.profile = profile.current();
+                            $scope.profile = profilePrediction.current().Profile;
                             $scope.profile.Name = "Joey Peters";
 
                             $scope.confirm = function ()
                             {
-                                profile.update("Name", $scope.profile.Name);
-                                profile.updateProfile().then(function ()
+                                profilePrediction.saveProfile().then(function ()
                                 {
                                     $state.go('predict.start');
                                 });
@@ -82,28 +101,27 @@ var app = angular.module('kleine', modules)
                         }
                     }
                 }
-            })            
+            })
             .state('predict', {
                 //url: '/{name}/{id}/predict',
                 url: '/predict',
                 templateUrl: 'partials/predict/predict.html',
-                controller: function ($scope, predict)
+                controller: function ($scope, profilePrediction)
                 {
-                    $scope.predict = predict.current();
+                    $scope.prediction = profilePrediction.current().Prediction;
 
                     $scope.$on('predict.update', function ()
                     {
-                        $scope.predict = predict.current();
+                        $scope.prediction = profilePrediction.current().Prediction;
+                        //$scope.predict = predict.current();
                     });
 
                 },
                 resolve: {
-                    profile: 'profile',
-                    predict: 'predict',
-                    start: function (profile, predict)
+                    profilePrediction: 'profilePrediction',
+                    start: function (profilePrediction)
                     {
-                        profile.fetchProfile();
-                        return predict.fetchGuess(1, profile.current().Id);
+                        return profilePrediction.fetch();
                     }
                 },
                 abstract: true,
@@ -122,14 +140,14 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.gender.html',
-                        controller: function ($scope, $stateParams, predict)
+                        controller: function ($scope, $stateParams, profilePrediction)
                         {
-                            $scope.gender = predict.current().gender;
+                            //$scope.prediction = profilePrediction.current().Prediction;
+                            //$scope.gender = $scope.prediction;
 
                             $scope.chooseGender = function (gender)
                             {
-                                $scope.gender = gender;
-                                predict.update("gender", gender);
+                                $scope.prediction.Gender = gender;
                                 $scope.$emit('predict.update');
                             }
                         }
@@ -141,13 +159,14 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.date.html',
-                        controller: function ($scope, $stateParams, predict)
+                        controller: function ($scope, $stateParams, profilePrediction)
                         {
-                            $scope.dateValue = predict.current().date;
+                            //$scope.prediction = profilePrediction.current().Prediction;
+                            //$scope.dateValue = $scope.prediction.Date;
 
                             $scope.$watch('dateValue', function (value)
                             {
-                                predict.update("date", value);
+                                $scope.prediction.Date = value;
                                 $scope.$emit('predict.update');
                             });
                         },
@@ -159,13 +178,13 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.time.html',
-                        controller: function ($scope, $stateParams, predict)
+                        controller: function ($scope, $stateParams, profilePrediction)
                         {
-                            $scope.timeValue = predict.current().time;
+                            //$scope.timeValue = profilePrediction.current().Prediction.Time;
 
                             $scope.$watch('timeValue', function (value)
                             {
-                                predict.update("time", value);
+                                $scope.prediction.Time = value;
                                 $scope.$emit('predict.update');
                             });
                         },
@@ -177,13 +196,13 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.weight.html',
-                        controller: function ($scope, $state, predict)
+                        controller: function ($scope, $state, profilePrediction)
                         {
-                            $scope.weightValue = predict.current().weight;
+                            //$scope.weightValue = profilePrediction.current().Prediction.Weight;
 
                             $scope.$watch('weightValue', function (value)
                             {
-                                predict.update("weight", value);
+                                predict.updatePrediction("Weight", value);
                                 $scope.$emit('predict.update');
                             });
                         },
@@ -196,13 +215,13 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.length.html',
-                        controller: function ($scope, $state, predict)
+                        controller: function ($scope, $state, profilePrediction)
                         {
-                            $scope.lengthValue = predict.current().length;
+                            $scope.lengthValue = profilePrediction.current().Prediction.Length;
 
                             $scope.$watch('lengthValue', function (value)
                             {
-                                predict.update("length", value);
+                                predict.updatePrediction("Length", value);
                                 $scope.$emit('predict.update');
                             });
                         },
@@ -215,7 +234,7 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.finish.html',
-                        controller: function ($scope, $state, predict)
+                        controller: function ($scope, $state, profilePrediction)
                         {
                             $scope.submit = function ()
                             {

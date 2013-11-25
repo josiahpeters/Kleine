@@ -35,35 +35,48 @@ namespace Kleine.Website
             this.repo = repo;
             this.notify = notify;
 
-            var dueDate = this.repo.DueDates.Create(
-                new DueDate
+            var dueDate = this.repo.DueDates.Create(new DueDate
                 {
                     Name = "BabyP",
                     Title = "BabyP",
                     ExpectedDate = new DateTime(2013, 12, 16),
                     Description = "Baby P is coming soon!"
                 });
-
-            //var joey = this.repo.Profiles.Create(
-            //    new Profile
-            //    {
-            //        EmailAddress = "josiahpeters@gmail.com",
-            //        Name = "Joey Peters",
-            //        SessionId = Guid.NewGuid()
-            //    });
-
-            //var invite = this.repo.InviteCodes.Create(
-            //    new InviteCode
-            //    {
-            //        DueDateId = dueDate.Id,
-            //        ProfileId = joey.Id,
-            //        Code = "canada123"
-            //    });
-
-
         }
-        
-        private Profile determineCurrentProfileFromSession()
+
+
+        private string getUniqueCode()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "");
+        }
+
+        private void setProfileSession(Profile profile)
+        {
+            this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
+            trackCookieForProfile(profile);
+        }
+
+        private void trackCookieForProfile(Profile profile)
+        {
+            var cookieTracker = this.repo.CookieTrackers.Create(new CookieTracker
+            {
+                ProfileId = profile.Id,
+                Unique = getUniqueCode()
+            });
+
+            Response.Cookies.AddPermanentCookie(CookieKeys.Identity, cookieTracker.Unique, false);
+        }
+
+        private ProfilePrediction getAggregate(Profile profile, Prediction prediction = null)
+        {
+            if (prediction == null)
+            {
+                return new ProfilePrediction(profile, repo.Predictions.GetAll().SingleOrDefault(u => u.ProfileId == profile.Id));
+            }
+            return new ProfilePrediction(profile);
+        }
+
+        private Profile getCurrentProfileFromSession()
         {
             if (Session[SessionKeys.ProfileId] != null)
             {
@@ -73,94 +86,66 @@ namespace Kleine.Website
             }
             else if (Request.Cookies.ContainsKey(CookieKeys.Identity))
             {
-                string sessionId = Request.Cookies[CookieKeys.Identity].ToString();
+                string unique = Request.Cookies[CookieKeys.Identity].ToString();
 
-                return repo.Profiles.GetAll().FirstOrDefault(u => u.SessionId == Guid.Parse(sessionId));
+                var tracker = repo.CookieTrackers.GetAll().FirstOrDefault(u => u.Unique == unique);
+
+                if (tracker != null)
+                    return repo.Profiles.GetById(tracker.ProfileId);
+                else
+                {
+                    Response.Cookies.DeleteCookie(CookieKeys.Identity);
+                    return null;
+                }
             }
             else
                 return null;
         }
 
-        public object Get(BrowserIdentity request)
+        public ProfilePrediction Get(ProfileGet request)
         {
-            //string identity = Guid.NewGuid().ToString();
-
-            //var cookies = Response.CookiesAsDictionary();
-
-            //if (Request.Cookies.ContainsKey("Identity"))
-            //    throw new Exception("HUR");
-
-            //Response.Cookies.AddPermanentCookie("Identity", identity, false);
-            return "done";
+            return getAggregate(getCurrentProfileFromSession());
         }
 
-        public Profile Get(ProfileGet request)
-        {
-            if (Session[SessionKeys.ProfileId] != null)
-            {
-                int profileId = Session.Get<int>(SessionKeys.ProfileId);
-
-                return repo.Profiles.GetById(profileId);
-            }
-            else
-            {
-                return null;
-            }
-        }
-        public Profile Post(ProfileCreate request)
+        public ProfilePrediction Post(ProfileCreate request)
         {
             var dueDate = repo.DueDates.GetById(1);
 
-            string emailCode = Guid.NewGuid().ToString().Replace("-","");
+            string emailCode = getUniqueCode();
 
             // determine if they have already signed up
             Profile profile = repo.Profiles.GetAll().FirstOrDefault(u => u.EmailAddress == request.EmailAddress);
             // if they have send them an email telling them how to 
             if (profile != null)
             {
-                
-
-                return profile;
+                return getAggregate(profile);
             }
 
-            profile = new Profile { EmailCode = emailCode }.PopulateWith(request);
+            // if they are a new person, lets create a new profile for them
+            profile = repo.Profiles.Create(new Profile { EmailCode = emailCode }.PopulateWithNonDefaultValues(request));
 
-            profile = repo.Profiles.Create(request);
+            repo.Predictions.Create(new Prediction { ProfileId = profile.Id, DueDateId = dueDate.Id });
 
+            notify.SendAuth(profile, dueDate);
 
-            this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
+            // store profile Id in session and set a long lasting cookie associated with the profile
+            setProfileSession(profile);
 
-            var cookieTracker = this.repo.CookieTrackers.Create(new CookieTracker
-            {
-                ProfileId = profile.Id,
-                Unique = request.SessionId.ToString()
-            });
-
-            Response.Cookies.AddPermanentCookie(CookieKeys.Identity, cookieTracker.Unique, false);
-
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendFormat("Dear {0},<br /><br />\n", "Friend");
-            sb.AppendFormat("<a href=\"http://localhost:53252/#/predict/start?code={0}\">Make Prediction</a>", cookieTracker.Unique);
-            //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
-
-            notify.SendNotification("josiahpeters@gmail.com", "BabyP - Make Prediction", sb.ToString());
-
-            return profile;
+            return getAggregate(profile);
         }
 
-        public Profile Put(ProfileUpdate request)
+        public ProfilePrediction Put(ProfileUpdate request)
         {
             var dueDate = repo.DueDates.GetById(1);
 
-            var profile = determineCurrentProfileFromSession();
+            var profile = getCurrentProfileFromSession();
 
             profile.Name = request.Name ?? profile.Name;
 
-            return profile;
+            return getAggregate(profile);
         }
 
-        public Profile Post(ProfileConfirmation request)
+        public ProfilePrediction Post(ProfileConfirmation request)
         {
             var invites = repo.InviteCodes.GetAll();
             var invite = invites.FirstOrDefault(u => u.Code == request.ConfirmationCode);
@@ -171,48 +156,22 @@ namespace Kleine.Website
 
                 this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
 
-                return profile;
+                return getAggregate(profile);
             }
             else
                 throw new Exception("Confirmation code invalid.");
-        }
+        }        
 
-        public Prediction Get(PredictionGet request)
+        public ProfilePrediction Put(PredictionUpdate request)
         {
-            int profileId = Session.Get<int>(SessionKeys.ProfileId);
+            var profile = getCurrentProfileFromSession();
 
-            var guesses = repo.Guesses.GetAll();
-            var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == profileId);
+            var guess = repo.Predictions.GetAll().SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
 
-            if (guess == null)
-                guess = repo.Guesses.Create(new Prediction { ProfileId = profileId, DueDateId = request.DueDateId });
+            guess = repo.Predictions.Update(guess.PopulateWithNonDefaultValues(request));
 
-            return guess;
+            return getAggregate(profile, guess);
         }
-
-        public Prediction Post(PredictionUpdate request)
-        {
-            var guesses = repo.Guesses.GetAll();
-            var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
-
-            if (guess == null)
-            {
-                guess = repo.Guesses.Create(request.TranslateTo<Prediction>());
-            }
-            else
-                guess.PopulateWithNonDefaultValues(request);
-
-            repo.Guesses.Update(guess);
-
-            return guess;
-        }
-
-        //public Profile Put(GuessProfileUpdate request)
-        //{
-        //    var dueDate = repo.Profiles.Update(request);
-
-        //    return dueDate;
-        //}
     }
 
 
@@ -221,16 +180,16 @@ namespace Kleine.Website
 
     // PROFILE
     [Route("/profile", "GET")]
-    public class ProfileGet : IReturn<Profile> { }
+    public class ProfileGet : IReturn<ProfilePrediction> { }
 
     [Route("/profile", "POST")]
-    public class ProfileCreate : Profile, IReturn<Profile> { }
+    public class ProfileCreate : Profile, IReturn<ProfilePrediction> { }
 
     [Route("/profile", "PUT")]
-    public class ProfileUpdate : Profile, IReturn<Profile> { }
+    public class ProfileUpdate : Profile, IReturn<ProfilePrediction> { }
 
     [Route("/profile/confirmation", "POST")]
-    public class ProfileConfirmation : IReturn<Profile>
+    public class ProfileConfirmation : IReturn<ProfilePrediction>
     {
         public string ConfirmationCode { get; set; }
     }
@@ -249,4 +208,16 @@ namespace Kleine.Website
 
     //[Route("/profile/{id}", "PATCH")]
     //public class ProfileUpdate : Profile, IReturn<Profile> { }
+
+    public class ProfilePrediction
+    {
+        public Profile Profile { get; set; }
+        public Prediction Prediction { get; set; }
+
+        public ProfilePrediction(Profile profile = null, Prediction prediction = null)
+        {
+            this.Profile = profile;
+            this.Prediction = prediction;
+        }
+    }
 }
