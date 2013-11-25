@@ -145,28 +145,20 @@ namespace Kleine.Website
             return getAggregate(profile);
         }
 
-        public ProfilePrediction Post(ProfileConfirmation request)
-        {
-            var invites = repo.InviteCodes.GetAll();
-            var invite = invites.FirstOrDefault(u => u.Code == request.ConfirmationCode);
-
-            if (invite != null)
-            {
-                var profile = repo.Profiles.GetById(invite.ProfileId);
-
-                this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
-
-                return getAggregate(profile);
-            }
-            else
-                throw new Exception("Confirmation code invalid.");
-        }        
-
         public ProfilePrediction Put(PredictionUpdate request)
         {
             var profile = getCurrentProfileFromSession();
 
             var guess = repo.Predictions.GetAll().SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
+
+            if (guess.Gender != "Male" || guess.Gender != "Female")
+                throw new Exception("Gender is incorrect");
+            if (guess.Date < new DateTime(2013, 11, 25) || guess.Date > new DateTime(2014, 1, 4))
+                throw new Exception("Date is not valid range.");
+            if (guess.Weight < 1 || guess.Weight > 13)
+                throw new Exception("Weight is not valid range.");
+            if (guess.Length < 15 || guess.Length > 41)
+                throw new Exception("Length is not valid range.");
 
             guess = repo.Predictions.Update(guess.PopulateWithNonDefaultValues(request));
 
@@ -187,12 +179,6 @@ namespace Kleine.Website
 
     [Route("/profile", "PUT")]
     public class ProfileUpdate : Profile, IReturn<ProfilePrediction> { }
-
-    [Route("/profile/confirmation", "POST")]
-    public class ProfileConfirmation : IReturn<ProfilePrediction>
-    {
-        public string ConfirmationCode { get; set; }
-    }
 
 
     // GUESS

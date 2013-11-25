@@ -29,6 +29,11 @@ namespace Kleine.Website
 
             Plugins.Add(new SessionFeature());
 
+            SetConfig(new EndpointHostConfig
+            {
+                ServiceStackHandlerFactoryPath = "api",
+            });
+
             ////Configure ServiceStack Json web services to return idiomatic Json camelCase properties.
             //JsConfig.EmitCamelCaseNames = true;
 

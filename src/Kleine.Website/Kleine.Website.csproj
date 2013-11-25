@@ -200,6 +200,8 @@
     <Content Include="partials\invite\invite.confirmation.html" />
     <Content Include="partials\invite\invite.html" />
     <Content Include="partials\invite\signup.html" />
+    <Content Include="partials\reward.html" />
+    <Content Include="partials\results\results.html" />
     <Content Include="partials\start.html" />
     <Content Include="partials\welcome.html" />
     <Content Include="Web.config" />
