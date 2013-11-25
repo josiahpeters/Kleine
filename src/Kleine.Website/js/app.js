@@ -110,11 +110,11 @@ var app = angular.module('kleine', modules)
                 {
                     $scope.prediction = profilePrediction.current().Prediction;
 
-                    $scope.$on('predict.update', function ()
-                    {
-                        $scope.prediction = profilePrediction.current().Prediction;
-                        //$scope.predict = predict.current();
-                    });
+                    //$scope.$on('predict.update', function ()
+                    //{
+                    //    $scope.prediction = profilePrediction.current().Prediction;
+                    //    //$scope.predict = predict.current();
+                    //});
 
                 },
                 resolve: {
@@ -148,10 +148,13 @@ var app = angular.module('kleine', modules)
                             $scope.chooseGender = function (gender)
                             {
                                 $scope.prediction.Gender = gender;
-                                $scope.$emit('predict.update');
                             }
                         }
                     }
+                },
+                onExit: function (profilePrediction)
+                {
+                    profilePrediction.savePrediction();
                 }
             })
             .state('predict.date', {
@@ -164,13 +167,17 @@ var app = angular.module('kleine', modules)
                             //$scope.prediction = profilePrediction.current().Prediction;
                             //$scope.dateValue = $scope.prediction.Date;
 
-                            $scope.$watch('dateValue', function (value)
-                            {
-                                $scope.prediction.Date = value;
-                                $scope.$emit('predict.update');
-                            });
-                        },
+                            //$scope.$watch('dateValue', function (value)
+                            //{
+                            //    $scope.prediction.Date = value;
+                            //    $scope.$emit('predict.update');
+                            //});
+                        }
                     }
+                },
+                onExit: function (profilePrediction)
+                {
+                    profilePrediction.savePrediction();
                 }
             })
             .state('predict.time', {
@@ -182,13 +189,17 @@ var app = angular.module('kleine', modules)
                         {
                             //$scope.timeValue = profilePrediction.current().Prediction.Time;
 
-                            $scope.$watch('timeValue', function (value)
-                            {
-                                $scope.prediction.Time = value;
-                                $scope.$emit('predict.update');
-                            });
-                        },
+                            //$scope.$watch('timeValue', function (value)
+                            //{
+                            //    $scope.prediction.Time = value;
+                            //    $scope.$emit('predict.update');
+                            //});
+                        }
                     }
+                },
+                onExit: function (profilePrediction)
+                {
+                    profilePrediction.savePrediction();
                 }
             })
             .state('predict.weight', {
@@ -200,13 +211,17 @@ var app = angular.module('kleine', modules)
                         {
                             //$scope.weightValue = profilePrediction.current().Prediction.Weight;
 
-                            $scope.$watch('weightValue', function (value)
-                            {
-                                predict.updatePrediction("Weight", value);
-                                $scope.$emit('predict.update');
-                            });
+                            //$scope.$watch('weightValue', function (value)
+                            //{
+                            //    $scope.prediction.Weight = value;
+                            //    $scope.$emit('predict.update');
+                            //});
                         },
                     }
+                },
+                onExit: function (profilePrediction)
+                {
+                    profilePrediction.savePrediction();
                 }
             })
             .state('predict.length', {
@@ -217,15 +232,19 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/predict/predict.length.html',
                         controller: function ($scope, $state, profilePrediction)
                         {
-                            $scope.lengthValue = profilePrediction.current().Prediction.Length;
+                            //$scope.lengthValue = profilePrediction.current().Prediction.Length;
 
-                            $scope.$watch('lengthValue', function (value)
-                            {
-                                predict.updatePrediction("Length", value);
-                                $scope.$emit('predict.update');
-                            });
+                            //$scope.$watch('lengthValue', function (value)
+                            //{
+                            //    $scope.prediction.Length = value;
+                            //    $scope.$emit('predict.update');
+                            //});
                         },
                     }
+                },
+                onExit: function (profilePrediction)
+                {
+                    profilePrediction.savePrediction();
                 }
             })
             .state('predict.finish', {
@@ -238,7 +257,6 @@ var app = angular.module('kleine', modules)
                         {
                             $scope.submit = function ()
                             {
-                                console.log("submitting");
                                 predict.updateGuess(1);
                             }
                         }

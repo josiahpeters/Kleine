@@ -3,11 +3,32 @@
     <p>Here are your final choices. If you want to make changes to your guess, you can click the category name of the guess you want to change.</p>
     <table>
 
-        <tr><td><a ui-sref="predict.gender">Gender </td><td>{{ results.gender }}</a></td>
-        <tr><td><a ui-sref="predict.date">Date </td><td>{{ results.date }}</a></td></tr>
-        <tr><td><a ui-sref="predict.time">Time </td><td>{{ (results.time.length > 0 ? results.time[0] + ' - ' + results.time[1] : '') }}</a></td></tr>
-        <tr><td><a ui-sref="predict.weight">Weight </td><td>{{ (results.weight.length > 0 ? results.weight[0] + ' lbs - ' + results.weight[1] + ' lbs' : '') }}</a></td></tr>
-        <tr><td><a ui-sref="predict.length">Length </td><td>{{ (results.length.length > 0 ? results.length[0] + ' in - ' + results.length[1] + ' in' : '') }}</a></td></tr>
+        <tr>
+            <td><a ui-sref="predict.gender">Gender</a></td>
+            <td>{{ prediction.Gender }}</td>
+        </tr>
+        <tr>
+            <td><a ui-sref="predict.date">Date </a></td>
+            <td>{{ prediction.Date|date }}</td>
+        </tr>
+        <tr>
+            <td><a ui-sref="predict.time">Time </a></td>
+            <td> {{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }}</td>
+        </tr>
+        <tr>
+            <td><a ui-sref="predict.weight">Weight</a></td>
+            <td>{{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }}</td>
+        </tr>
+        <tr>
+            <td><a ui-sref="predict.length">Length</a></td>
+            <td>{{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }}</td>
+        </tr>
+
+        <!--{{ prediction.Gender }}
+        {{ prediction.Date|date }}
+        {{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }}
+        {{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }}
+        {{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }}-->
     </table>
     <form ng-submit="submit()">
 

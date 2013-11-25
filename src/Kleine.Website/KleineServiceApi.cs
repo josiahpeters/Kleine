@@ -203,8 +203,8 @@ namespace Kleine.Website
         //public int ProfileId { get; set; }
     }
 
-    [Route("/predict", "POST")]
-    public class PredictionUpdate : Prediction, IReturn<Prediction> { }
+    [Route("/predict", "PUT")]
+    public class PredictionUpdate : Prediction, IReturn<ProfilePrediction> { }
 
     //[Route("/profile/{id}", "PATCH")]
     //public class ProfileUpdate : Profile, IReturn<Profile> { }

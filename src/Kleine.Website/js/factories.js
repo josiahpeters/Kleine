@@ -45,14 +45,23 @@ app.factory('profilePrediction', ['$http', function ($http)
         
         savePrediction: function (dueDateId)
         {
+            if (dueDateId === undefined)
+                dueDateId = 1;
+
+            var date = currentData.Prediction.Date || null;
+            var time = currentData.Prediction.Time || [null];
+            var weight = currentData.Prediction.Weight || [null];
+            var length = currentData.Prediction.Length || [null];
+            
+
             var predict = {
                 DueDateId: dueDateId,
                 ProfileId: 1,
                 Gender: currentData.Prediction.Gender,
                 Date: currentData.Prediction.Date,
-                Time: currentData.Prediction.Time[0],
-                Weight: currentData.Prediction.Weight[0],
-                Length: currentData.Prediction.Length[0],
+                Time: time[0],
+                Weight: weight[0],
+                Length: length[0],
             }
 
             var promise = $http.put('/api/predict/', predict).then(function (response)
@@ -94,11 +103,12 @@ app.factory('profilePrediction', ['$http', function ($http)
         }
 
         var length = undefined;
-        if (predict !== undefined && predict.length > 0)
+        if (predict !== undefined && predict.Length > 0)
         {
             length = [predict.Length];
             length.push(predict.Length + 4);
         }
+
         var gender = undefined;
         if (predict !== undefined && predict.Gender !== undefined)
             gender = predict.Gender;
@@ -111,6 +121,7 @@ app.factory('profilePrediction', ['$http', function ($http)
         currentData.Prediction.Time = time;
         currentData.Prediction.Weight = weight;
         currentData.Prediction.Length = length;
+
     }
 }])
 
