@@ -11,7 +11,7 @@
 <div class="wrapper">
     <div class="row">
         <ul class="list four column">
-            <li class="list-item header">Prediction: Baby P</li>f
+            <li class="list-item header">Prediction: Baby P</li>
             <li class="list-item" ng-class="{ active: $state.includes('predict.gender') }"><a ui-sref="predict.gender"><i class="fa fa-user"></i> Gender <span class="result">{{ predict.gender }}</span></a> </li>
             <li class="list-item" ng-class="{ active: $state.includes('predict.date') }"><a ui-sref="predict.date"><i class="fa fa-calendar"></i> Date <span class="result">{{ predict.date|date }}</span></a></li>
             <li class="list-item" ng-class="{ active: $state.includes('predict.time') }"><a ui-sref="predict.time"><i class="fa fa-clock-o"></i> Time <span class="result">{{ (predict.time.length > 0 ? (predict.time[0]|hours) + ' - ' + (predict.time[1]|hours) : '') }}</span></a></li>

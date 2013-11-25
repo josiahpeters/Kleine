@@ -23,9 +23,10 @@ var app = angular.module('kleine', modules)
 
                     $scope.confirm = function()
                     {
-                        profile.invite($scope.profile.EmailAddress).then(function ()
+                        profile.invite($scope.profile.EmailAddress).then(function (profile)
                         {
-                            $state.go('invite.organic');
+                            console.log(profile);
+                            $state.go('invite.organic', { code: profile.SessionId });
                         });
                     }
 
@@ -36,7 +37,6 @@ var app = angular.module('kleine', modules)
                     start: function (profile, predict)
                     {
                         profile.fetchProfile();
-                        //return predict.fetchGuess(1, profile.current().Id);
                     }
                 },
             })
@@ -61,8 +61,7 @@ var app = angular.module('kleine', modules)
                 abstract: true,
             })
             .state('invite.organic', {
-
-                url: '',
+                url: '?code',
                 views: {
                     'invite': {
                         templateUrl: 'partials/invite/invite.organic.html',
@@ -70,66 +69,20 @@ var app = angular.module('kleine', modules)
                         {
                             $scope.theme.title = "You are Invited!";
                             $scope.profile = profile.current();
+                            $scope.profile.Name = "Joey Peters";
 
                             $scope.confirm = function ()
                             {
-                                profile.update("name",$scope.profile.Name);
-                            }
-                        }
-                    }
-                }
-            })
-            .state('invite.confirmation', {
-                url: '/confirmation?email&code',
-                views: {
-                    'invite': {
-                        templateUrl: 'partials/invite/invite.confirmation.html',
-                        controller: function ($scope, $state, $http, $stateParams, profile)
-                        {
-                            $scope.theme.title = "Confirmation Code Sent";
-                            $scope.profile = profile.current();
-
-                            // they didn't fill out the previous page or they haven't sent their confirmation code
-                            if ($stateParams.code == null && $scope.profile.EmailAddress == null)
-                            {
-                                $state.go('invite.organic');
-                            }
-                            // grab a code form the url if its passed VIA email // or we've got a default one here
-                            $scope.code = $stateParams.code || "canada123";
-
-                            $scope.confirm = function ()
-                            {
-                                profile.confirmation($scope.code).then(function (response)
+                                profile.update("Name", $scope.profile.Name);
+                                profile.updateProfile().then(function ()
                                 {
-                                    if (response)
-                                        $state.go('invite.finish');
+                                    $state.go('predict.start');
                                 });
                             }
-
-                            if ($stateParams.code != null)
-                                $scope.confirm();
                         }
                     }
                 }
-            })
-            .state('invite.finish', {
-                url: '/start-guessing?code',
-                views: {
-                    'invite': {
-                        templateUrl: 'partials/invite/invite.finish.html',
-                        controller: function ($scope, $state, $stateParams, profile)
-                        {
-                            $scope.profile = profile.current();
-                            $scope.theme.title = "Welcome " + $scope.profile.Name + ",";
-
-                            $scope.startGuessing = function ()
-                            {
-                                $state.go('predict.start', { id: $stateParams.id, name: $stateParams.name });
-                            }
-                        }
-                    }
-                }
-            })
+            })            
             .state('predict', {
                 //url: '/{name}/{id}/predict',
                 url: '/predict',

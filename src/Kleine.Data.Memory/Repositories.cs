@@ -11,6 +11,7 @@ namespace Kleine.Data
         private IRepository<Profile> profile = new BaseRepository<Profile>();
         private IRepository<Prediction> guesses = new BaseRepository<Prediction>();
         private IRepository<InviteCode> inviteCodes = new BaseRepository<InviteCode>();
+        private IRepository<CookieTracker> cookieTrackers = new BaseRepository<CookieTracker>();
         
         public IRepository<DueDate> DueDates
         {
@@ -59,6 +60,18 @@ namespace Kleine.Data
             set
             {
                 inviteCodes = value;
+            }
+        }
+
+        public IRepository<CookieTracker> CookieTrackers
+        {
+            get
+            {
+                return cookieTrackers;
+            }
+            set
+            {
+                cookieTrackers = value;
             }
         }
     }

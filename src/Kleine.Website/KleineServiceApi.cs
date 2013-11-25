@@ -18,6 +18,11 @@ namespace Kleine.Website
         public const string ProfileId = "ProfileId";
     }
 
+    public class CookieKeys
+    {
+        public const string Identity = "Identity";
+    }
+
 
     public class KleineServiceApi : Service
     {
@@ -57,41 +62,25 @@ namespace Kleine.Website
 
 
         }
+        
+        private Profile determineCurrentProfileFromSession()
+        {
+            if (Session[SessionKeys.ProfileId] != null)
+            {
+                int profileId = Session.Get<int>(SessionKeys.ProfileId);
 
-        //public List<DueDate> Get(DueDateGetAll request)
-        //{
-        //    return repo.DueDates.GetAll();
-        //}
+                return repo.Profiles.GetById(profileId);
+            }
+            else if (Request.Cookies.ContainsKey(CookieKeys.Identity))
+            {
+                string sessionId = Request.Cookies[CookieKeys.Identity].ToString();
 
-        //public DueDate Get(DueDateGetById request)
-        //{
-        //    return repo.DueDates.GetById(request.Id);
-        //}
+                return repo.Profiles.GetAll().FirstOrDefault(u => u.SessionId == Guid.Parse(sessionId));
+            }
+            else
+                return null;
+        }
 
-        //public DueDate Post(DueDateCreate request)
-        //{
-        //    var dueDate = repo.DueDates.Create(request);
-
-        //    return dueDate;
-        //}
-
-        //public DueDate Put(DueDateUpdate request)
-        //{
-        //    var dueDate = repo.DueDates.Update(request);
-
-        //    return dueDate;
-        //}
-
-        //// Profiles
-        //public List<Profile> Get(GuessProfileGetAll request)
-        //{
-        //    return repo.Profiles.GetAll();
-        //}
-
-        //public Profile Get(GuessProfileGetById request)
-        //{
-        //    return repo.Profiles.GetById(request.Id);
-        //}
         public object Get(BrowserIdentity request)
         {
             //string identity = Guid.NewGuid().ToString();
@@ -106,7 +95,7 @@ namespace Kleine.Website
         }
 
         public Profile Get(ProfileGet request)
-        {            
+        {
             if (Session[SessionKeys.ProfileId] != null)
             {
                 int profileId = Session.Get<int>(SessionKeys.ProfileId);
@@ -116,37 +105,57 @@ namespace Kleine.Website
             else
             {
                 return null;
-                //return repo.Profiles.GetById(1);
             }
-            //return null;
         }
         public Profile Post(ProfileCreate request)
         {
             var dueDate = repo.DueDates.GetById(1);
 
-            request.SessionId = Guid.NewGuid();
+            string emailCode = Guid.NewGuid().ToString().Replace("-","");
 
-            var profile = repo.Profiles.Create(request);
+            // determine if they have already signed up
+            Profile profile = repo.Profiles.GetAll().FirstOrDefault(u => u.EmailAddress == request.EmailAddress);
+            // if they have send them an email telling them how to 
+            if (profile != null)
+            {
+                
 
-            var invite = this.repo.InviteCodes.Create(
-                new InviteCode
-                {
-                    DueDateId = dueDate.Id,
-                    ProfileId = profile.Id,
-                    Code = request.SessionId.ToString(),
-                });
+                return profile;
+            }
+
+            profile = new Profile { EmailCode = emailCode }.PopulateWith(request);
+
+            profile = repo.Profiles.Create(request);
+
 
             this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
 
-            Response.Cookies.AddPermanentCookie("Identity", request.SessionId.ToString(), false);            
+            var cookieTracker = this.repo.CookieTrackers.Create(new CookieTracker
+            {
+                ProfileId = profile.Id,
+                Unique = request.SessionId.ToString()
+            });
+
+            Response.Cookies.AddPermanentCookie(CookieKeys.Identity, cookieTracker.Unique, false);
 
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Dear {0},<br /><br />\n", "Friend");
-            sb.AppendFormat("<a href=\"http://localhost:53252/#/predict/start?code={0}\">Make Prediction</a>", invite.Code);
+            sb.AppendFormat("<a href=\"http://localhost:53252/#/predict/start?code={0}\">Make Prediction</a>", cookieTracker.Unique);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
             notify.SendNotification("josiahpeters@gmail.com", "BabyP - Make Prediction", sb.ToString());
+
+            return profile;
+        }
+
+        public Profile Put(ProfileUpdate request)
+        {
+            var dueDate = repo.DueDates.GetById(1);
+
+            var profile = determineCurrentProfileFromSession();
+
+            profile.Name = request.Name ?? profile.Name;
 
             return profile;
         }
@@ -187,7 +196,7 @@ namespace Kleine.Website
             var guess = guesses.SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
 
             if (guess == null)
-            {                
+            {
                 guess = repo.Guesses.Create(request.TranslateTo<Prediction>());
             }
             else
@@ -205,32 +214,6 @@ namespace Kleine.Website
         //    return dueDate;
         //}
     }
-
-    //// DueDate
-    //[Route("/DueDate/", "GET")]
-    //public class DueDateGetAll : IReturn<List<DueDate>> { }
-
-    //[Route("/DueDate/{id}", "GET")]
-    //public class DueDateGetById : IReturn<DueDate>
-    //{
-    //    public int Id { get; set; }
-    //}
-
-    //[Route("/DueDate/", "POST")]
-    //public class DueDateCreate : DueDate, IReturn<DueDate> { }
-
-    //[Route("/DueDate/{id}", "PATCH")]
-    //public class DueDateUpdate : DueDate, IReturn<DueDate> { }
-
-
-    //// Guess Profiles
-
-
-    //[Route("/profile/{id}", "GET")]
-    //public class GuessProfileGetById : IReturn<Profile>
-    //{
-    //    public int Id { get; set; }
-    //}
 
 
     [Route("/info", "GET")]

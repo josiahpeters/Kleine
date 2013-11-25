@@ -8,5 +8,7 @@ namespace Kleine
     public interface INotification
     {
         void SendNotification(string to, string subject, string message);
+        void SendInvitation(Profile profile, DueDate dueDate);
+        void SendAuth(Profile profile, DueDate dueDate);
     }
 }

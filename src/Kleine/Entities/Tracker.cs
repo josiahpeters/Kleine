@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Kleine
 {
-    public class Tracker : Entity
+    public class CookieTracker : Entity
     {
         public int ProfileId { get; set; }
 

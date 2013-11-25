@@ -26,6 +26,17 @@ app.factory('profile', ['$http', function ($http)
         {
             currentProfile[property] = value;
         },
+        updateProfile: function ()
+        {            
+            var promise = $http.put('/api/profile/', currentProfile).then(function (response)
+            {
+                console.log(response.data);
+                if (response.data.length > 0)
+                    currentProfile = response.data;
+            });
+
+            return promise;
+        },
         confirmation: function (code)
         {
             var promise = $http.post('/api/profile/confirmation', { confirmationCode: code }).then(function (response)
@@ -46,9 +57,9 @@ app.factory('profile', ['$http', function ($http)
                 if (response.data.EmailAddress.length > 0)
                 {
                     currentProfile = response.data;
-                    return true;
+                    return currentProfile;
                 }
-                else return false;
+                else return undefined;
             });
             return promise;
         }
