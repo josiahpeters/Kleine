@@ -1,8 +1,11 @@
 
 <div class="" id="Gender">
-    <h2>Gender</h2>
+    <h2>Which gender do you think Baby P. will be?</h2>
     <div>
-        <p>Which gender do you think Baby P. will be?</p>
+        <dl>
+            <dt>Birth Ratio:</dt>
+            <dd>In the United States, boys make up 51.2% of the birth rate.</dd>
+        </dl>
         <p>
             <button type="button" ng-class="{'light':prediction.Gender != 'Male'}" ng-click="chooseGender('Male')"> Male</button> or
             <button type="button" ng-class="{'light':prediction.Gender != 'Female'}" ng-click="chooseGender('Female')"> Female</button>

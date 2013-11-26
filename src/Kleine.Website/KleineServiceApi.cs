@@ -71,7 +71,12 @@ namespace Kleine.Website
         {
             if (prediction == null)
             {
-                return new ProfilePrediction(profile, repo.Predictions.GetAll().SingleOrDefault(u => u.ProfileId == profile.Id));
+                var predictions = repo.Predictions.GetAll();
+
+                if (predictions != null && predictions.Count > 0)
+                    return new ProfilePrediction(profile, predictions.SingleOrDefault(u => u.ProfileId == profile.Id));
+                else
+                    return new ProfilePrediction(profile);
             }
             return new ProfilePrediction(profile);
         }
@@ -126,7 +131,7 @@ namespace Kleine.Website
 
             repo.Predictions.Create(new Prediction { ProfileId = profile.Id, DueDateId = dueDate.Id });
 
-            notify.SendAuth(profile, dueDate);
+            //notify.SendAuth(profile, dueDate);
 
             // store profile Id in session and set a long lasting cookie associated with the profile
             setProfileSession(profile);
