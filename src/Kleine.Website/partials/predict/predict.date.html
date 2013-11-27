@@ -1,13 +1,13 @@
 <div class="" id="Date">
-    <h2>Date</h2>
+    <h2>Choose the date you think Baby P. will be born on.</h2>
     <div>
-
-        <div id="viz"></div>
-
-        <p>On what date do you think Baby P. will be born on?</p>
-
-        <calendar target="prediction.Date"></calendar>
-
+        <calendar target="prediction.Date" click="next()"></calendar>
+        <div class="hint">
+            <p>
+                <strong>Interesting Fact:</strong>
+                Baby P's doctor, Dr. Lowder says that first time mothers deliver on average four days after their expected due date.
+            </p>
+        </div>
         <p>
             <a ui-sref="predict.gender" class="button light">Back</a>
             <a ui-sref="predict.time" class="button">Next</a>

@@ -78,7 +78,7 @@ namespace Kleine.Website
                 else
                     return new ProfilePrediction(profile);
             }
-            return new ProfilePrediction(profile);
+            return new ProfilePrediction(profile, prediction);
         }
 
         private Profile getCurrentProfileFromSession()
@@ -156,13 +156,16 @@ namespace Kleine.Website
 
             var guess = repo.Predictions.GetAll().SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
 
-            if (guess.Gender != "Male" || guess.Gender != "Female")
+            if (request.Gender != null && !(request.Gender == "Male" || request.Gender == "Female"))
                 throw new Exception("Gender is incorrect");
-            if (guess.Date < new DateTime(2013, 11, 25) || guess.Date > new DateTime(2014, 1, 4))
+
+            if (request.Date != null && (request.Date < new DateTime(2013, 11, 25) || request.Date > new DateTime(2014, 1, 4)))
                 throw new Exception("Date is not valid range.");
-            if (guess.Weight < 1 || guess.Weight > 13)
+
+            if (request.Weight != null && request.Weight != 0 && (request.Weight < 1 || request.Weight > 13))
                 throw new Exception("Weight is not valid range.");
-            if (guess.Length < 15 || guess.Length > 41)
+
+            if (request.Length != null && request.Length != 0 && (request.Length < 15 || request.Length > 41))
                 throw new Exception("Length is not valid range.");
 
             guess = repo.Predictions.Update(guess.PopulateWithNonDefaultValues(request));

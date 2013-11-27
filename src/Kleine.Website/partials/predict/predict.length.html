@@ -1,15 +1,82 @@
 
-            <div class="id=" length">
-                <h2>Length</h2>
-                <div>
-                    <p>What length range do you think Baby P. will be born in?</p>
-                    <p>
-                        <!--<div slider name="length" label="in" min="15" max="41" range="4"></div>-->
-                        <slider name="length" target="prediction.Length" label="in" min="15" max="41" range="4"></slider>
-                    </p>
-                    <p>
-                        <a ui-sref="predict.weight" class="button light">Back</a>
-                        <a ui-sref="predict.finish" class="button">Finished</a>
-                    </p>
-                </div>
-            </div>
+<div class="id=" length">
+    <h2>Choose the length range you think Baby P. will be born in:</h2>
+    <div>
+        <p>
+            <slider name="length" target="prediction.Length" label="in" min="15" max="25" range="2"></slider>
+        </p>
+
+        <div class="hint">
+            <p>
+                <strong>Interesting Fact:</strong>
+                The average U.S. newborn weight in 2008 was 7 pounds, 4.26 ounces (7.26 lbs).
+            </p>
+        </div>
+
+        <div class="hint" ng-show="prediction.Gender == 'Male'">
+            <p><strong>Male Length - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleM = !toggleM" ng-show="!toggleM">View</span><a ui-sref="predict.gender" ng-show="toggleM">Change Gender</a></p>
+            <div class="details" ng-show="toggleM">
+                <table>
+                    <tr>
+                        <th>2nd</th>
+                        <th>5th</th>
+                        <th>10th</th>
+                        <th>25th</th>
+                        <th>50th</th>
+                        <th>75th</th>
+                        <th>90th</th>
+                        <th>95th</th>
+                        <th>98th</th>
+                    </tr>
+                    <tr>
+                        <td>18.15 in</td>
+                        <td>18.41 in</td>
+                        <td>18.68 in</td>
+                        <td>19.14 in</td>
+                        <td>19.64 in</td>
+                        <td>20.14 in</td>
+                        <td>20.59 in</td>
+                        <td>20.87 in</td>
+                        <td>21.13 in</td>
+                    </tr>
+                </table>
+                <p>Source: <a href="http://www.cdc.gov/growthcharts/who/boys_length_weight.htm" class="details">WHO growth chart</a></p>
+</div>
+        </div>
+        <div class="hint" ng-show="prediction.Gender == 'Female'">
+            <p><strong>Female Length - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleF = !toggleF" ng-show="!toggleF">View</span><a ui-sref="predict.gender" ng-show="toggleF">Change Gender</a></p>
+            <div class="details" ng-show="toggleF">
+                <table>
+                    <tr>
+                        <th>2nd</th>
+                        <th>5th</th>
+                        <th>10th</th>
+                        <th>25th</th>
+                        <th>50th</th>
+                        <th>75th</th>
+                        <th>90th</th>
+                        <th>95th</th>
+                        <th>98th</th>
+                    </tr>
+                    <tr>
+                        <td>17.88 in</td>
+                        <td>18.14 in</td>
+                        <td>18.41 in</td>
+                        <td>18.85 in</td>
+                        <td>19.35 in</td>
+                        <td>19.84 in</td>
+                        <td>20.29 in</td>
+                        <td>20.56 in</td>
+                        <td>20.82 in</td>
+                    </tr>
+                </table>
+                <p>Source: <a href="http://www.cdc.gov/growthcharts/who/girls_length_weight.htm" class="details">WHO growth chart</a></p>
+</div>
+        </div>
+
+        <p>
+            <a ui-sref="predict.weight" class="button light">Back</a>
+            <a ui-sref="predict.finish" class="button">Finished</a>
+        </p>
+    </div>
+</div>

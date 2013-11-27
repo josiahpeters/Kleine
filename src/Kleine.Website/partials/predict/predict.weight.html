@@ -1,14 +1,132 @@
 <div class="" id="Weight">
-    <h2>Weight</h2>
+    <h2>Choose the weight range you think Baby P. will be born in.</h2>
     <div>
-        <p>What weight range do you think Baby P. will be born in?</p>
         <p>
             <slider name="weight" target="prediction.Weight" label="lbs" min="1" max="13" range="1.5"></slider>
             <!--<div slider name="length" label="lbs" min="1" max="13" range="1.5" filter="ounces"></div>-->
         </p>
+        <div class="hint">
+            <p>
+                <strong>Interesting Fact:</strong> 
+                The average U.S. newborn weight in 2008 was 7 pounds, 4.26 ounces (7.26 lbs).
+            </p>
+        </div>
+
+        <div class="hint" ng-show="prediction.Gender == 'Male'">
+            <p><strong>Male Weight - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleM = !toggleM" ng-show="!toggleM">View</span><a ui-sref="predict.gender" ng-show="toggleM">Change Gender</a></p>
+            <div class="details" ng-show="toggleM">
+                <table>
+                    <tr>
+                        <th>2nd</th>
+                        <th>5th</th>
+                        <th>10th</th>
+                        <th>25th</th>
+                        <th>50th</th>
+                        <th>75th</th>
+                        <th>90th</th>
+                        <th>95th</th>
+                        <th>98th</th>
+                    </tr>
+                    <tr>
+                        <td>5.42 lbs</td>
+                        <td>5.74 lbs</td>
+                        <td>6.08 lbs</td>
+                        <td>6.67 lbs</td>
+                        <td>7.38 lbs</td>
+                        <td>8.13 lbs</td>
+                        <td>8.84 lbs</td>
+                        <td>9.29 lbs</td>
+                        <td>9.74 lbs</td>
+                    </tr>
+                </table>
+                <p>Source: <a href="http://www.cdc.gov/growthcharts/who/boys_length_weight.htm" class="details">WHO growth chart</a></p>
+            </div>
+        </div>
+        <div class="hint" ng-show="prediction.Gender == 'Female'">
+            <p><strong>Female Weight - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleF = !toggleF" ng-show="!toggleF">View</span><a ui-sref="predict.gender" ng-show="toggleF">Change Gender</a></p>
+            <div class="details" ng-show="toggleF">
+                <table>
+                    <tr>
+                        <th>2nd</th>
+                        <th>5th</th>
+                        <th>10th</th>
+                        <th>25th</th>
+                        <th>50th</th>
+                        <th>75th</th>
+                        <th>90th</th>
+                        <th>95th</th>
+                        <th>98th</th>
+                    </tr>
+                    <tr>
+                        <td>5.28 lbs</td>
+                        <td>5.58 lbs</td>
+                        <td>5.90 lbs</td>
+                        <td>6.46 lbs</td>
+                        <td>7.13 lbs</td>
+                        <td>7.83 lbs</td>
+                        <td>8.49 lbs</td>
+                        <td>8.91 lbs</td>
+                        <td>9.33 lbs</td>
+                    </tr>
+                </table>
+                <p>Source: <a href="http://www.cdc.gov/growthcharts/who/girls_length_weight.htm" class="details">WHO growth chart</a></p>
+            </div>
+        </div>
         <p>
             <a ui-sref="predict.time" class="button light">Back</a>
             <a ui-sref="predict.length" class="button">Next</a>
         </p>
+
+        <!--<h3>Male Weight</h3>
+        <table>
+            <tr>
+                <th>2nd (2.3rd)</th>
+                <th>5th</th>
+                <th>10th</th>
+                <th>25th</th>
+                <th>50th</th>
+                <th>75th</th>
+                <th>90th</th>
+                <th>95th</th>
+                <th>98th (97.7th)</th>
+            </tr>
+            <tr>
+                <td>5.4218548694</td>
+                <td>5.7408240796</td>
+                <td>6.0795136391</td>
+                <td>6.6740143799</td>
+                <td>7.37754914</td>
+                <td>8.1276918304</td>
+                <td>8.8438414429</td>
+                <td>9.2914415646</td>
+                <td>9.7430078024</td>
+            </tr>
+        </table>
+
+        <h3>Female Weight</h3>
+        <table>
+            <tr>
+                <th>2nd (2.3rd)</th>
+                <th>5th</th>
+                <th>10th</th>
+                <th>25th</th>
+                <th>50th</th>
+                <th>75th</th>
+                <th>90th</th>
+                <th>95th</th>
+                <th>98th (97.7th)</th>
+            </tr>
+            <tr>
+                <td>5.27935</td>
+                <td>5.5824241488</td>
+                <td>5.90337311009</td>
+                <td>6.4646832573</td>
+                <td>7.12578124</td>
+                <td>7.827181925</td>
+                <td>8.4936768227</td>
+                <td>8.9087896254</td>
+                <td>9.326502163165</td>
+            </tr>
+        </table>-->
     </div>
 </div>

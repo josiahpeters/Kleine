@@ -28,11 +28,7 @@ var app = angular.module('kleine', modules)
 
                 },
                 resolve: {
-                    profilePrediction: 'profilePrediction',
-                    start: function (profilePrediction)
-                    {
-                        return profilePrediction.fetch();
-                    }
+                    profilePrediction: 'profilePrediction'
                 },
             })
             .state('start', {
@@ -55,11 +51,7 @@ var app = angular.module('kleine', modules)
 
                 },
                 resolve: {
-                    profilePrediction: 'profilePrediction',
-                    start: function (profilePrediction)
-                    {
-                        //return profilePrediction.fetch();
-                    }
+                    profilePrediction: 'profilePrediction'
                 },
             })
             .state('reward', {
@@ -85,11 +77,7 @@ var app = angular.module('kleine', modules)
                     
                 },
                 resolve: {
-                    profilePrediction: 'profilePrediction',
-                    start: function (profilePrediction)
-                    {
-                        //return profilePrediction.fetch();
-                    }
+                    profilePrediction: 'profilePrediction'
                 },
             })
             .state('invite', {
@@ -103,11 +91,7 @@ var app = angular.module('kleine', modules)
                     // get the current profile for each invite state change
                 },
                 resolve: {
-                    profilePrediction: 'profilePrediction',
-                    start: function (profilePrediction)
-                    {
-                        //return profilePrediction.fetch();
-                    }
+                    profilePrediction: 'profilePrediction'
                 },
                 abstract: true,
             })
@@ -142,20 +126,9 @@ var app = angular.module('kleine', modules)
                         $state.go('start');
 
                     $scope.prediction = profilePrediction.current().Prediction;
-
-                    //$scope.$on('predict.update', function ()
-                    //{
-                    //    $scope.prediction = profilePrediction.current().Prediction;
-                    //    //$scope.predict = predict.current();
-                    //});
-
                 },
                 resolve: {
                     profilePrediction: 'profilePrediction',
-                    start: function (profilePrediction)
-                    {
-                        return profilePrediction.fetch();
-                    }
                 },
                 abstract: true,
             })
@@ -173,14 +146,19 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.gender.html',
-                        controller: function ($scope, $stateParams, profilePrediction)
+                        controller: function ($scope, $state, $stateParams, profilePrediction)
                         {
-                            //$scope.prediction = profilePrediction.current().Prediction;
-                            //$scope.gender = $scope.prediction;
-
                             $scope.chooseGender = function (gender)
                             {
+                                var first = true;
+
+                                if ($scope.prediction.Gender != undefined)
+                                    first = false;
+
                                 $scope.prediction.Gender = gender;
+
+                                if(first)
+                                    $state.go('predict.date');
                             }
                         }
                     }
@@ -195,16 +173,12 @@ var app = angular.module('kleine', modules)
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.date.html',
-                        controller: function ($scope, $stateParams, profilePrediction)
+                        controller: function ($scope, $state, $stateParams, profilePrediction)
                         {
-                            //$scope.prediction = profilePrediction.current().Prediction;
-                            //$scope.dateValue = $scope.prediction.Date;
-
-                            //$scope.$watch('dateValue', function (value)
-                            //{
-                            //    $scope.prediction.Date = value;
-                            //    $scope.$emit('predict.update');
-                            //});
+                            $scope.next = function()
+                            {                                
+                                $state.go('predict.time');
+                            }
                         }
                     }
                 },
@@ -220,13 +194,7 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/predict/predict.time.html',
                         controller: function ($scope, $stateParams, profilePrediction)
                         {
-                            //$scope.timeValue = profilePrediction.current().Prediction.Time;
 
-                            //$scope.$watch('timeValue', function (value)
-                            //{
-                            //    $scope.prediction.Time = value;
-                            //    $scope.$emit('predict.update');
-                            //});
                         }
                     }
                 },
@@ -242,13 +210,13 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/predict/predict.weight.html',
                         controller: function ($scope, $state, profilePrediction)
                         {
-                            //$scope.weightValue = profilePrediction.current().Prediction.Weight;
-
-                            //$scope.$watch('weightValue', function (value)
+                            //$scope.showDetails = false;
+                            //$scope.toggle = function ()
                             //{
-                            //    $scope.prediction.Weight = value;
-                            //    $scope.$emit('predict.update');
-                            //});
+                            //    console.log("Show")
+                            //    $scope.showDetails = true;
+                            //};
+                            
                         },
                     }
                 },
@@ -265,13 +233,7 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/predict/predict.length.html',
                         controller: function ($scope, $state, profilePrediction)
                         {
-                            //$scope.lengthValue = profilePrediction.current().Prediction.Length;
 
-                            //$scope.$watch('lengthValue', function (value)
-                            //{
-                            //    $scope.prediction.Length = value;
-                            //    $scope.$emit('predict.update');
-                            //});
                         },
                     }
                 },
@@ -300,6 +262,7 @@ var app = angular.module('kleine', modules)
 
     .run(function ($rootScope, $state, $stateParams, profilePrediction)
     {
+        console.log(".run pre-fetch profile");
         profilePrediction.fetch();
 
         $rootScope.$state = $state;

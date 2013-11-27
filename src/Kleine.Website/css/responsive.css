@@ -1,4 +1,5 @@
-﻿html {
+﻿/*@color-calm: #83d6e5;*/
+html {
   font-size: 62.5%;
 }
 body {
@@ -9,14 +10,23 @@ body {
 h1 {
   font-size: 24px;
   font-size: 2.4rem;
+  margin-top: 0;
 }
 h2 {
   font-size: 18px;
   font-size: 1.8rem;
+  margin-top: 0;
 }
 h3 {
   font-size: 16px;
   font-size: 1.6rem;
+  margin-top: 0;
+}
+h4 {
+  font-size: 14px;
+  font-size: 1.4rem;
+  margin-top: 0;
+  color: #777777;
 }
 p,
 li,
@@ -38,6 +48,64 @@ a:hover {
 ul {
   padding: 0;
   margin: 0;
+}
+table {
+  width: 100%;
+}
+table tr th {
+  padding: 6px;
+  text-align: left;
+  font-size: 14px;
+  font-size: 1.4rem;
+}
+table tr td {
+  border-top: 1px solid #dddddd;
+  padding: 6px;
+}
+.hint {
+  border: 1px solid #ddd;
+  border: 1px solid #43cee6;
+  border-radius: 8px;
+  padding: 0 12px;
+  background-color: #dddddd;
+  /*background-color: @color-calm;*/
+
+  color: #3085d6;
+  color: #000;
+  font-size: 12px;
+  font-size: 1.2rem;
+  margin: 1em 0;
+  color: #3a87ad;
+  background-color: #d9edf7;
+  border-color: #bce8f1;
+}
+.hint dd,
+.hint dt {
+  display: inline;
+  margin: 0;
+}
+.hint dt {
+  font-weight: bold;
+}
+.hint span.toggle {
+  cursor: pointer;
+  color: #3085d6 !important;
+  text-decoration: underline;
+}
+.hint span.toggle:hover {
+  color: #5b9ede !important;
+  text-decoration: none;
+}
+.hint th,
+.hint td {
+  color: #5e5e5e;
+  font-size: 12px;
+  font-size: 1.2rem;
+}
+.hint a,
+.hint p {
+  font-size: 12px;
+  font-size: 1.2rem;
 }
 nav.navbar {
   height: 50px;
@@ -317,7 +385,7 @@ button.light:hover {
   width: 100%;
 }
 .week {
-  min-height: 2em;
+  min-height: 1em;
   clear: left;
 }
 .days .day {
@@ -353,22 +421,22 @@ button.light:hover {
 }
 @media only screen and (min-width: 600px) {
   .day div {
-    height: 2em;
+    height: 1em;
   }
 }
 @media only screen and (min-width: 768px) {
   .day div {
-    height: 3em;
+    height: 2em;
   }
 }
 @media only screen and (min-width: 966px) {
   .day div {
-    height: 4em;
+    height: 3em;
   }
 }
 @media only screen and (min-width: 1150px) {
   .day div {
-    height: 5em;
+    height: 3.5em;
   }
 }
 .list .list-item {

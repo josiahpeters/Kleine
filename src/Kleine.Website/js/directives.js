@@ -97,7 +97,7 @@ angular.module('kleine.directives', []).
 
               function calculateValue(value)
               {
-                  
+
                   if (value !== undefined)
                   {
                       if (value < minValue)
@@ -114,7 +114,7 @@ angular.module('kleine.directives', []).
 
                       x = leftValue;
                   }
-                  
+
                   var left = parseFloat(sliderElement.css("left"));
 
                   var minimumValue = (left / pixelPerValue + minValue);
@@ -130,11 +130,11 @@ angular.module('kleine.directives', []).
                       scope.minValue = minimumValue.toFixed(1);
                       scope.maxValue = maximumValue.toFixed(1);
                   }
-                  
+
                   setTargetValue([(scope.minValue), (scope.maxValue)]);
               }
 
-              
+
               function convertHoursToDateTimeString(timeValue)
               {
                   timeValue = timeValue % 24;
@@ -160,8 +160,8 @@ angular.module('kleine.directives', []).
 
               function getTargetValue()
               {
-                  var value = targetValue(scope.$parent) || minValue;                                    
-                  
+                  var value = targetValue(scope.$parent) || minValue;
+
                   if (typeof (value) == "object")
                   {
                       if (scope.name == "time")
@@ -231,6 +231,7 @@ angular.module('kleine.directives', []).
 '</table>',
         scope: {
             name: '=',
+            click: "&"
         },
         controller: function ($scope)
         {
@@ -268,7 +269,7 @@ angular.module('kleine.directives', []).
 
             var calendar = angular.element(element.children()[0]);
 
-            setTimeout(setup,1);
+            setTimeout(setup, 1);
 
             scope.getDate = function (day)
             {
@@ -279,11 +280,16 @@ angular.module('kleine.directives', []).
                 return monthNamesShort[day.date.getMonth()];
             }
             scope.setDate = function (day)
-            {                
+            {
+                var first = true;
+                if (scope.selectedDate.getFullYear() != 2001)
+                    first = false;
                 scope.selectedDate = day.date;
 
                 var value = (day.date.getMonth() + 1) + '/' + day.date.getDate() + '/' + day.date.getFullYear();
                 setTargetValue(value);
+                if (first)
+                    scope.click();
             }
             scope.isSelected = function (day)
             {
@@ -324,7 +330,7 @@ angular.module('kleine.directives', []).
 
             scope.weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
             scope.weeks = weeks;
-            
+
 
             function setTargetValue(value)
             {

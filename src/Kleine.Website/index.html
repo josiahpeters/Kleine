@@ -29,9 +29,9 @@
             </h1>
             <nav class="eight column horizontal">
                 <ul id="main-nav">
-                    <li><a href="/"><i class="fa fa-home"  title="Welcome"></i><span> Baby P</span></a></li>
+                    <li><a href="/"><i class="fa fa-home" title="Welcome"></i><span> Baby P</span></a></li>
                     <li><a href="/#/predict/start"><i class="fa fa-question-circle" title="Welcome"></i><span> Make Your Prediction</span></a></li>
-                    <li><a href="/#/results"><i class="fa fa-bar-chart-o"  title="View Results"></i><span> Current Results</span></a></li>
+                    <li><a href="/#/results"><i class="fa fa-bar-chart-o" title="View Results"></i><span> Current Results</span></a></li>
                     <li><a href="/#/reward"><i class="fa fa-trophy" title="View Results"></i><span> Reward</span></a></li>
                     <!--<li><a href="#"><i class="icon-flag" title="BumpStart"></i><span>BumpStart</span></a></li>-->
                     <!--<li><a href="#"><i class="icon-help" title="About"></i><span>About</span></a></li>-->
@@ -49,23 +49,21 @@
         .banner {
             position: relative;
             overflow: hidden;
+            height: 275px;
             margin-bottom: 10px;
         }
 
             .banner .image {
-                width: 200%;
+                width: 100%;
                 margin-bottom: 10px;
-                height: 275px;
             }
 
                 .banner .image img {
-                    margin: auto;
-                    min-width: 50%;
-                    min-height: 50%;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
+                    margin-top: -25px;
+                    min-width: 100%;
+                    min-height: 100%;
+                    width: auto;
+                    height: auto;
                 }
 
         .subtitle {
@@ -81,10 +79,12 @@
                 line-height: 50px;
                 margin: 0;
             }
+
+        
     </style>
 
 
-    
+
     <div ui-view></div>
     <div class="wrapper footer">
         <footer class="row" id="credits">
