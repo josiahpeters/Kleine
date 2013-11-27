@@ -13,8 +13,8 @@
         </div>
 
         <div class="hint" ng-show="prediction.Gender == 'Male'">
-            <p><strong>Male Weight - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleM = !toggleM" ng-show="!toggleM">View</span><a ui-sref="predict.gender" ng-show="toggleM">Change Gender</a></p>
-            <div class="details" ng-show="toggleM">
+            <p><strong>Male Weight - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
+            <div class="details">
                 <table>
                     <tr>
                         <th>2nd</th>
@@ -43,8 +43,8 @@
             </div>
         </div>
         <div class="hint" ng-show="prediction.Gender == 'Female'">
-            <p><strong>Female Weight - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleF = !toggleF" ng-show="!toggleF">View</span><a ui-sref="predict.gender" ng-show="toggleF">Change Gender</a></p>
-            <div class="details" ng-show="toggleF">
+            <p><strong>Female Weight - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
+            <div class="details">
                 <table>
                     <tr>
                         <th>2nd</th>

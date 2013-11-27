@@ -9,13 +9,12 @@
         <div class="hint">
             <p>
                 <strong>Interesting Fact:</strong>
-                The average U.S. newborn weight in 2008 was 7 pounds, 4.26 ounces (7.26 lbs).
-            </p>
+                According to the <a href="http://www.cdc.gov/growthcharts/html_charts/lenageinf.htm">CDC</a>, the average length of a newborn baby is 19.54 inches.</p>
         </div>
 
         <div class="hint" ng-show="prediction.Gender == 'Male'">
-            <p><strong>Male Length - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleM = !toggleM" ng-show="!toggleM">View</span><a ui-sref="predict.gender" ng-show="toggleM">Change Gender</a></p>
-            <div class="details" ng-show="toggleM">
+            <p><strong>Male Length - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
+            <div class="details">
                 <table>
                     <tr>
                         <th>2nd</th>
@@ -44,8 +43,8 @@
 </div>
         </div>
         <div class="hint" ng-show="prediction.Gender == 'Female'">
-            <p><strong>Female Length - Birth Percentile Chart</strong> - <span class="toggle" ng-click="toggleF = !toggleF" ng-show="!toggleF">View</span><a ui-sref="predict.gender" ng-show="toggleF">Change Gender</a></p>
-            <div class="details" ng-show="toggleF">
+            <p><strong>Female Length - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
+            <div class="details">
                 <table>
                     <tr>
                         <th>2nd</th>
