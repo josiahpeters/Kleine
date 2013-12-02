@@ -8,11 +8,11 @@ using ServiceStack.OrmLite;
 namespace Kleine.Data
 {
     // Why did we add new() at the end? BECAUSE JON SKEET MAKES IT SO - http://stackoverflow.com/questions/3056863/class-mapping-error-t-must-be-a-non-abstract-type-with-a-public-parameterless
-    public class BaseRepository<T> : IRepository<T> where T : Entity, new()
+    public class BaseSqlRepository<T> : IRepository<T> where T : Entity, new()
     {
-        IDbConnection db;    
+        IDbConnection db;
 
-        public BaseRepository(IDbConnection db)
+        public BaseSqlRepository(IDbConnection db)
         {
             this.db = db;
         }
