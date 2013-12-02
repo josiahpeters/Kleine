@@ -1,9 +1,11 @@
 ﻿using Funq;
 using Kleine.Data;
+using ServiceStack.OrmLite;
 using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -23,6 +25,14 @@ namespace Kleine.Website
         {
             repositories = new Repositories();
             notify = new NotificationService();
+
+            var dbFactory = new OrmLiteConnectionFactory(@"Data Source=localhost;Initial Catalog=Kleine;Integrated Security=True",  SqlServerDialect.Provider);
+
+            container.Register<IDbConnection>(dbFactory.OpenDbConnection());
+
+            repositories = new SqlRepositories(dbFactory);
+
+            repositories.SetUp();
 
             container.Register<IRepositories>(repositories);
             container.Register<INotification>(notify);

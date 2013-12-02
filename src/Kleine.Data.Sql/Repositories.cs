@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using ServiceStack.OrmLite;
+using System.ComponentModel;
 
 namespace Kleine.Data
 {
@@ -14,17 +16,33 @@ namespace Kleine.Data
         private IRepository<InviteCode> inviteCodes;
         private IRepository<CookieTracker> cookieTrackers;
 
-        IDbConnection db;
+        OrmLiteConnectionFactory dbFactory;
 
-        public SqlRepositories(IDbConnection db)
+        public SqlRepositories(OrmLiteConnectionFactory dbFactory)
         {
-            this.db = db;
+            this.dbFactory = dbFactory;
             //IDbConnection db
-            this.dueDates = new BaseSqlRepository<DueDate>(db);
-        this.profile = new BaseSqlRepository<Profile>(db);
-        this.guesses = new BaseSqlRepository<Prediction>(db);
-        this.inviteCodes = new BaseSqlRepository<InviteCode>(db);
-        this.cookieTrackers = new BaseSqlRepository<CookieTracker>(db);
+            this.dueDates = new BaseSqlRepository<DueDate>(this.dbFactory);
+            this.profile = new BaseSqlRepository<Profile>(this.dbFactory);
+            this.guesses = new BaseSqlRepository<Prediction>(this.dbFactory);
+            this.inviteCodes = new BaseSqlRepository<InviteCode>(this.dbFactory);
+            this.cookieTrackers = new BaseSqlRepository<CookieTracker>(this.dbFactory);
+        }
+
+        public void SetUp()
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                db.DropTable<CookieTracker>();
+                db.DropTable<Prediction>();
+                db.DropTable<Profile>();
+                db.DropTable<DueDate>();
+
+                db.CreateTable<DueDate>();
+                db.CreateTable<Profile>();
+                db.CreateTable<Prediction>();
+                db.CreateTable<CookieTracker>();
+            }
         }
         
         public IRepository<DueDate> DueDates

@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServiceStack.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Kleine
 {
+    [Alias("Predictions")]
     public class Prediction : Entity
     {
+        [References(typeof(DueDate))] 
         public int DueDateId { get; set; }
 
+        [References(typeof(Profile))] 
         public int ProfileId { get; set; }
 
+        [StringLength(40)]
         public string Gender { get; set; }
 
         public DateTime? Date { get; set; }
@@ -23,6 +29,6 @@ namespace Kleine
 
         public string Name { get; set; }
 
-        public DateTime FinishDate { get; set; }
+        public DateTime? FinishDate { get; set; }
     }
 }

@@ -74,5 +74,11 @@ namespace Kleine.Data
                 cookieTrackers = value;
             }
         }
+
+
+        public void SetUp()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

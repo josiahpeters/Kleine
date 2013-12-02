@@ -12,5 +12,7 @@ namespace Kleine.Data
         IRepository<Prediction> Predictions { get; set; }
         IRepository<InviteCode> InviteCodes { get; set; }
         IRepository<CookieTracker> CookieTrackers { get; set; }
+
+        void SetUp();
     }
 }

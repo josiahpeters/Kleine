@@ -459,6 +459,13 @@ button.light:hover {
   border-radius: 10px;
   margin-right: .5em;
 }
+.list .list-item span.result .fa {
+  color: #54ae1e;
+  vertical-align: middle;
+  margin-left: 4px;
+  font-size: 18px;
+  font-size: 1.8rem;
+}
 .list .list-item a {
   display: block;
   padding: .5em;
