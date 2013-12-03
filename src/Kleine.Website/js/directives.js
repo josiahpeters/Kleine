@@ -19,11 +19,6 @@ angular.module('kleine.directives', []).
               //bleh: '&',
               //targetvalue: '@',
           },
-          //controller: function ($scope)
-          //{
-          //    //$scope.$parent.results.weight = 12
-          //    //$scope.$parent
-          //},
           link: function (scope, element, attr)
           {
               element = angular.element(element.children()[0]);
@@ -70,6 +65,7 @@ angular.module('kleine.directives', []).
 
               // call setup with a delay to prevent conflicting scope.$apply race condition
               setTimeout(setup, 1);
+              //setup();
               // setup function
               function setup()
               {
@@ -131,6 +127,7 @@ angular.module('kleine.directives', []).
                       scope.maxValue = maximumValue.toFixed(1);
                   }
 
+
                   setTargetValue([(scope.minValue), (scope.maxValue)]);
               }
 
@@ -172,6 +169,7 @@ angular.module('kleine.directives', []).
                           if (value.length > 0)
                               value = value[0];
                   }
+
                   return value;
               }
 

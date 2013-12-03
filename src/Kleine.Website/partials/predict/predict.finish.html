@@ -30,11 +30,15 @@
         {{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }}
         {{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }}-->
     </table>
+    <p>If you are happy with your choices, you can submit your predictions and be entered into the pool for a chance at winning the reward.</p>
     <form ng-submit="submit()">
-
+        <p>
+            <label>Leave a private message for Kim and Joey:</label>
+            <textarea ng-model="prediction.Message" tabindex="1" autofocus></textarea>
+        </p>
         <p>
             <a ui-sref="predict.length" class="button light">Back</a>
-            <button type="submit">Submit Guess</button>
+            <button type="submit">Submit Prediction</button>
         </p>
     </form>
 </div>

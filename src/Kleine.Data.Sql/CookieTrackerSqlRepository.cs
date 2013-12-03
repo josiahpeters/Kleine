@@ -10,10 +10,12 @@ namespace Kleine.Data.Sql
     {
         public CookieTrackerSqlRepository(OrmLiteConnectionFactory dbFactory) : base(dbFactory) { }
 
-
         public CookieTracker GetByUniqueKey(string unique)
         {
-            throw new NotImplementedException();
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                return db.Select<CookieTracker>(p => p.Unique == unique.ToLower()).FirstOrDefault();
+            }
         }
     }
 }

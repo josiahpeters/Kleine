@@ -1,0 +1,53 @@
+<div class="banner">
+    <div class="image">
+        <img src="/img/kim-and-joey-blessed.jpg" />
+    </div>
+    <div class="subtitle">
+        <div class="row">
+            <div class="twelve column"><h1>My Prediction</h1></div>
+        </div>
+    </div>
+</div>
+<div class="wrapper">
+
+    <div class="row">
+        <div class="twelve column">
+            <div class="success">
+                <p>
+                    <strong>Prediction Complete:</strong>
+                    Your prediction has been saved and you have been entered into the pool for a chance to win a <a ui-sref="reward">reward</a>!
+                </p>
+            </div>
+        </div>
+
+        <div class="twelve column">
+            <h2>Here are your prediction choices:</h2>
+            <p>
+                <table>
+                    <tr>
+                        <td>Gender</td>
+                        <td>{{ prediction.Gender }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>{{ prediction.Date|date }}</td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td> {{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Weight</td>
+                        <td>{{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Length</td>
+                        <td>{{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }}</td>
+                    </tr>
+                </table>
+            </p>
+            <h2>The private message you left Kim and Joey:</h2>
+            <p>{{ prediction.Message || "None." }}</p>
+        </div>
+    </div>
+</div>

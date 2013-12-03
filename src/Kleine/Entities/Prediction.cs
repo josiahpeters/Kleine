@@ -27,7 +27,10 @@ namespace Kleine
 
         public decimal Length { get; set; }
 
+        [StringLength(40)]
         public string Name { get; set; }
+
+        public string Message { get; set; }
 
         public DateTime? FinishDate { get; set; }
     }

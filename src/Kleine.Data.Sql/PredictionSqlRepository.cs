@@ -10,10 +10,12 @@ namespace Kleine.Data.Sql
     {
         public PredictionSqlRepository(OrmLiteConnectionFactory dbFactory) : base(dbFactory) { }
 
-
         public Prediction GetByProfileIdAndDueDateId(int profileId, int dueDateId)
         {
-            throw new NotImplementedException();
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                return db.Select<Prediction>(p => p.ProfileId == profileId && p.DueDateId == dueDateId).FirstOrDefault();
+            }
         }
     }
 }

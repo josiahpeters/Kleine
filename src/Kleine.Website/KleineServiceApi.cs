@@ -47,7 +47,7 @@ namespace Kleine.Website
 
         private string getUniqueCode()
         {
-            return Guid.NewGuid().ToString().Replace("-", "");
+            return Guid.NewGuid().ToString().Replace("-", "").ToLower();
         }
 
         private void setProfileSession(Profile profile)
@@ -69,7 +69,7 @@ namespace Kleine.Website
 
         private ProfilePrediction getAggregate(Profile profile, Prediction prediction = null)
         {
-            if (prediction == null)
+            if (profile != null && prediction == null)
                 prediction = repo.Predictions.GetByProfileIdAndDueDateId(profile.Id, 1);
 
             return new ProfilePrediction(profile, prediction);
@@ -117,7 +117,8 @@ namespace Kleine.Website
             // if they have send them an email telling them how to 
             if (profile != null)
             {
-                return getAggregate(profile);
+                Response.StatusCode = 401;
+                return null;
             }
 
             // if they are a new person, lets create a new profile for them
@@ -139,9 +140,20 @@ namespace Kleine.Website
 
             var profile = getCurrentProfileFromSession();
 
-            profile.Name = request.Name ?? profile.Name;
+            if (profile != null)
+            {
+                profile.Name = request.Name ?? profile.Name;
 
-            return getAggregate(profile);
+                repo.Profiles.Update(profile);
+
+                return getAggregate(profile);
+            }
+            else
+            {
+
+
+            }
+            return null;
         }
 
         public ProfilePrediction Put(PredictionUpdate request)

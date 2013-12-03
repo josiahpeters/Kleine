@@ -43,9 +43,12 @@ var app = angular.module('kleine', modules)
 
                     $scope.confirm = function ()
                     {
-                        profilePrediction.createProfile().then(function ()
+                        profilePrediction.createProfile().then(function (event)
                         {
-                            $state.go('invite.organic');
+                            if (event)
+                                $state.go('invite.organic');
+                            else
+                                $state.go('confirm', { email: $scope.profile.EmailAddress});
                         });
                     }
 
@@ -54,27 +57,42 @@ var app = angular.module('kleine', modules)
                     profilePrediction: 'profilePrediction'
                 },
             })
+            .state('confirm', {
+                url: '/confirm?email',
+                templateUrl: 'partials/confirm.html',
+                controller: function ($scope, $state, $http, $stateParams, profilePrediction)
+                {
+                    $scope.EmailAddress = $stateParams.email;
+                }
+            })
             .state('reward', {
                 url: '/reward',
                 templateUrl: 'partials/reward.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
-                    
+
                 },
-                //resolve: {
-                //    profilePrediction: 'profilePrediction',
-                //    start: function (profilePrediction)
-                //    {
-                //        return profilePrediction.fetch();
-                //    }
-                //},
+            })
+            .state('prediction', {
+                url: '/prediction',
+                templateUrl: 'partials/prediction.html',
+                controller: function ($scope, $state, profilePrediction)
+                {
+                    if (profilePrediction.current().Prediction === undefined || profilePrediction.current().Prediction.FinishDate === undefined)
+                        $state.go('start');
+
+                    $scope.prediction = profilePrediction.current().Prediction;
+                },
+                resolve: {
+                    profilePrediction: 'profilePrediction'
+                },
             })
             .state('results', {
                 url: '/results',
                 templateUrl: 'partials/results/results.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
-                    
+
                 },
                 resolve: {
                     profilePrediction: 'profilePrediction'
@@ -125,6 +143,9 @@ var app = angular.module('kleine', modules)
                     if (profilePrediction.current().Profile.Name === undefined)
                         $state.go('start');
 
+                    if (profilePrediction.current().Prediction !== undefined && profilePrediction.current().Prediction.FinishDate !== undefined)
+                        $state.go('prediction');
+
                     $scope.prediction = profilePrediction.current().Prediction;
                 },
                 resolve: {
@@ -157,7 +178,7 @@ var app = angular.module('kleine', modules)
 
                                 $scope.prediction.Gender = gender;
 
-                                if(first)
+                                if (first)
                                     $state.go('predict.date');
                             }
                         }
@@ -175,8 +196,8 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/predict/predict.date.html',
                         controller: function ($scope, $state, $stateParams, profilePrediction)
                         {
-                            $scope.next = function()
-                            {                                
+                            $scope.next = function ()
+                            {
                                 $state.go('predict.time');
                             }
                         }
@@ -194,7 +215,6 @@ var app = angular.module('kleine', modules)
                         templateUrl: 'partials/predict/predict.time.html',
                         controller: function ($scope, $stateParams, profilePrediction)
                         {
-
                         }
                     }
                 },
@@ -213,10 +233,9 @@ var app = angular.module('kleine', modules)
                             //$scope.showDetails = false;
                             //$scope.toggle = function ()
                             //{
-                            //    console.log("Show")
                             //    $scope.showDetails = true;
                             //};
-                            
+
                         },
                     }
                 },
@@ -252,7 +271,12 @@ var app = angular.module('kleine', modules)
                         {
                             $scope.submit = function ()
                             {
-                                predict.updateGuess(1);
+                                $scope.prediction.FinishDate = new Date();
+
+                                profilePrediction.savePrediction(1).then(function ()
+                                {
+                                    $state.go('prediction');
+                                });
                             }
                         }
                     }
@@ -262,9 +286,7 @@ var app = angular.module('kleine', modules)
 
     .run(function ($rootScope, $state, $stateParams, profilePrediction)
     {
-        console.log(".run pre-fetch profile");
         profilePrediction.fetch();
-
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
     })

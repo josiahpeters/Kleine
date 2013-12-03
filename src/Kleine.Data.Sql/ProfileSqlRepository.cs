@@ -10,9 +10,12 @@ namespace Kleine.Data.Sql
     {
         public ProfileSqlRepository(OrmLiteConnectionFactory dbFactory) : base(dbFactory) { }
 
-        public Profile GetByEmailAddress(string p)
+        public Profile GetByEmailAddress(string emailAddress)
         {
-            throw new NotImplementedException();
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                return db.Select<Profile>(p => p.EmailAddress == emailAddress.ToLower()).FirstOrDefault();
+            }
         }
     }
 }

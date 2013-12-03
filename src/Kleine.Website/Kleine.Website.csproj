@@ -159,6 +159,8 @@
     <Content Include="img\kim-and-joey-babyp-banner.jpg" />
     <Content Include="img\kim-and-joey-babyp-photo.jpg" />
     <Content Include="img\kim-and-joey-blessed.jpg" />
+    <Content Include="img\visa-gift-card-25.jpg" />
+    <Content Include="img\visa-gift-card-50.jpg" />
     <Content Include="index.html" />
     <Content Include="css\xcharts.min.css" />
     <Content Include="js\app.js" />
@@ -188,6 +190,8 @@
     <Content Include="js\libs\jquery.flot.min.js" />
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
+    <Content Include="partials\confirm.html" />
+    <Content Include="partials\prediction.html" />
     <Content Include="partials\predict\predict.start.html" />
     <Content Include="partials\predict\predict.length.html" />
     <Content Include="partials\predict\predict.finish.html" />
