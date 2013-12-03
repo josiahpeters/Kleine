@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseSqlRepository.cs" />
+    <Compile Include="CookieTrackerSqlRepository.cs" />
+    <Compile Include="PredictionSqlRepository.cs" />
+    <Compile Include="ProfileSqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories.cs" />
     <Compile Include="SqlDb.cs" />

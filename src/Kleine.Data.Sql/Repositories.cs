@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using ServiceStack.OrmLite;
 using System.ComponentModel;
+using Kleine.Data.Sql;
 
 namespace Kleine.Data
 {
     public class SqlRepositories : IRepositories
     {
         private IRepository<DueDate> dueDates;
-        private IRepository<Profile> profile;
-        private IRepository<Prediction> guesses;
-        private IRepository<InviteCode> inviteCodes;
-        private IRepository<CookieTracker> cookieTrackers;
+        private IProfileRepository profile;
+        private IPredictionRepository guesses;
+        private ICookieTrackerRepository cookieTrackers;
 
         OrmLiteConnectionFactory dbFactory;
 
@@ -23,10 +23,9 @@ namespace Kleine.Data
             this.dbFactory = dbFactory;
             //IDbConnection db
             this.dueDates = new BaseSqlRepository<DueDate>(this.dbFactory);
-            this.profile = new BaseSqlRepository<Profile>(this.dbFactory);
-            this.guesses = new BaseSqlRepository<Prediction>(this.dbFactory);
-            this.inviteCodes = new BaseSqlRepository<InviteCode>(this.dbFactory);
-            this.cookieTrackers = new BaseSqlRepository<CookieTracker>(this.dbFactory);
+            this.profile = new ProfileSqlRepository(this.dbFactory);
+            this.guesses = new PredictionSqlRepository(this.dbFactory);
+            this.cookieTrackers = new CookieTrackerSqlRepository(this.dbFactory);
         }
 
         public void SetUp()

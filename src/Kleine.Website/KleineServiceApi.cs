@@ -70,14 +70,8 @@ namespace Kleine.Website
         private ProfilePrediction getAggregate(Profile profile, Prediction prediction = null)
         {
             if (prediction == null)
-            {
-                var predictions = repo.Predictions.GetAll();
+                prediction = repo.Predictions.GetByProfileIdAndDueDateId(profile.Id, 1);
 
-                if (predictions != null && predictions.Count > 0)
-                    return new ProfilePrediction(profile, predictions.SingleOrDefault(u => u.ProfileId == profile.Id));
-                else
-                    return new ProfilePrediction(profile);
-            }
             return new ProfilePrediction(profile, prediction);
         }
 
@@ -93,7 +87,7 @@ namespace Kleine.Website
             {
                 string unique = Request.Cookies[CookieKeys.Identity].ToString();
 
-                var tracker = repo.CookieTrackers.GetAll().FirstOrDefault(u => u.Unique == unique);
+                CookieTracker tracker = repo.CookieTrackers.GetByUniqueKey(unique);
 
                 if (tracker != null)
                     return repo.Profiles.GetById(tracker.ProfileId);
@@ -119,7 +113,7 @@ namespace Kleine.Website
             string emailCode = getUniqueCode();
 
             // determine if they have already signed up
-            Profile profile = repo.Profiles.GetAll().FirstOrDefault(u => u.EmailAddress == request.EmailAddress);
+            Profile profile = repo.Profiles.GetByEmailAddress(request.EmailAddress);
             // if they have send them an email telling them how to 
             if (profile != null)
             {
@@ -154,7 +148,7 @@ namespace Kleine.Website
         {
             var profile = getCurrentProfileFromSession();
 
-            var guess = repo.Predictions.GetAll().SingleOrDefault(u => u.DueDateId == request.DueDateId && u.ProfileId == request.ProfileId);
+            Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
 
             if (request.Gender != null && !(request.Gender == "Male" || request.Gender == "Female"))
                 throw new Exception("Gender is incorrect");
@@ -168,9 +162,9 @@ namespace Kleine.Website
             if (request.Length != null && request.Length != 0 && (request.Length < 15 || request.Length > 41))
                 throw new Exception("Length is not valid range.");
 
-            guess = repo.Predictions.Update(guess.PopulateWithNonDefaultValues(request));
+            prediction = repo.Predictions.Update(prediction.PopulateWithNonDefaultValues(request));
 
-            return getAggregate(profile, guess);
+            return getAggregate(profile, prediction);
         }
     }
 

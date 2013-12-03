@@ -11,5 +11,24 @@ namespace Kleine.Data
         List<T> GetAll();
         T Create(T entity);
         T Update(T entity);
+
     }
+
+    public interface IPredictionRepository : IRepository<Prediction>
+    {
+        Prediction GetByProfileIdAndDueDateId(int profileId, int dueDateId);
+    }
+
+    public interface IProfileRepository : IRepository<Profile>
+    {
+        Profile GetByEmailAddress(string p);
+    }
+
+    public interface ICookieTrackerRepository : IRepository<CookieTracker>
+    {
+        CookieTracker GetByUniqueKey(string unique);
+    }
+        
+
+
 }

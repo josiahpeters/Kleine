@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Kleine.Data.Memory;
 
 namespace Kleine.Data
 {
     public class Repositories : IRepositories
     {
         private IRepository<DueDate> dueDates = new BaseRepository<DueDate>();
-        private IRepository<Profile> profile = new BaseRepository<Profile>();
-        private IRepository<Prediction> guesses = new BaseRepository<Prediction>();
-        private IRepository<InviteCode> inviteCodes = new BaseRepository<InviteCode>();
-        private IRepository<CookieTracker> cookieTrackers = new BaseRepository<CookieTracker>();
-        
+        private IProfileRepository profile = new ProfileRepository();
+        private IPredictionRepository predictions = new PredictionRepository();
+        private ICookieTrackerRepository cookieTrackers = new CookieTrackerRepository();
+                
         public IRepository<DueDate> DueDates
         {
             get
@@ -25,7 +25,7 @@ namespace Kleine.Data
             }
         }
 
-        public IRepository<Profile> Profiles
+        public IProfileRepository Profiles
         {
             get
             {
@@ -38,32 +38,19 @@ namespace Kleine.Data
         }
 
 
-        public IRepository<Prediction> Predictions
+        public IPredictionRepository Predictions
         {
             get
             {
-                return guesses;
+                return predictions;
             }
             set
             {
-                guesses = value;
+                predictions = value;
             }
         }
 
-
-        public IRepository<InviteCode> InviteCodes
-        {
-            get
-            {
-                return inviteCodes;
-            }
-            set
-            {
-                inviteCodes = value;
-            }
-        }
-
-        public IRepository<CookieTracker> CookieTrackers
+        public ICookieTrackerRepository CookieTrackers
         {
             get
             {
