@@ -5,7 +5,11 @@ using System.Text;
 
 namespace Kleine.Data.Memory
 {
-    class PredictionRepository
+    public class PredictionRepository : BaseRepository<Prediction>, IPredictionRepository
     {
+        public Prediction GetByProfileIdAndDueDateId(int profileId, int dueDateId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

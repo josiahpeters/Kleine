@@ -5,7 +5,11 @@ using System.Text;
 
 namespace Kleine.Data.Memory
 {
-    class CookieTrackerRepository
+    public class CookieTrackerRepository : BaseRepository<CookieTracker>, ICookieTrackerRepository
     {
+        public CookieTracker GetByUniqueKey(string unique)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

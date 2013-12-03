@@ -5,7 +5,11 @@ using System.Text;
 
 namespace Kleine.Data.Memory
 {
-    class ProfileRepository
+    public class ProfileRepository : BaseRepository<Profile>, IProfileRepository
     {
+        public Profile GetByEmailAddress(string p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

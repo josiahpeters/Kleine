@@ -13,7 +13,7 @@ namespace Kleine.Data
     {
         private IRepository<DueDate> dueDates;
         private IProfileRepository profile;
-        private IPredictionRepository guesses;
+        private IPredictionRepository predictions;
         private ICookieTrackerRepository cookieTrackers;
 
         OrmLiteConnectionFactory dbFactory;
@@ -24,7 +24,7 @@ namespace Kleine.Data
             //IDbConnection db
             this.dueDates = new BaseSqlRepository<DueDate>(this.dbFactory);
             this.profile = new ProfileSqlRepository(this.dbFactory);
-            this.guesses = new PredictionSqlRepository(this.dbFactory);
+            this.predictions = new PredictionSqlRepository(this.dbFactory);
             this.cookieTrackers = new CookieTrackerSqlRepository(this.dbFactory);
         }
 
@@ -56,7 +56,7 @@ namespace Kleine.Data
             }
         }
 
-        public IRepository<Profile> Profiles
+        public IProfileRepository Profiles
         {
             get
             {
@@ -69,32 +69,19 @@ namespace Kleine.Data
         }
 
 
-        public IRepository<Prediction> Predictions
+        public IPredictionRepository Predictions
         {
             get
             {
-                return guesses;
+                return predictions;
             }
             set
             {
-                guesses = value;
+                predictions = value;
             }
         }
 
-
-        public IRepository<InviteCode> InviteCodes
-        {
-            get
-            {
-                return inviteCodes;
-            }
-            set
-            {
-                inviteCodes = value;
-            }
-        }
-
-        public IRepository<CookieTracker> CookieTrackers
+        public ICookieTrackerRepository CookieTrackers
         {
             get
             {
