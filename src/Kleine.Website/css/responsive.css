@@ -1,4 +1,6 @@
-﻿/*@color-calm: #83d6e5;*/
+﻿/*@color-action: #3085d6;*/
+/*@color-action: #a4c05b;*/
+/*@color-calm: #83d6e5;*/
 html {
   font-size: 62.5%;
 }
@@ -43,10 +45,10 @@ p {
   margin-top: 0;
 }
 a {
-  color: #3085d6;
+  color: #a1c84d;
 }
 a:hover {
-  color: #5b9ede;
+  color: #b6d474;
 }
 ul {
   padding: 0;
@@ -97,7 +99,7 @@ table tr td {
   background-color: #dddddd;
   /*background-color: @color-calm;*/
 
-  color: #3085d6;
+  color: #a1c84d;
   color: #000;
   font-size: 12px;
   font-size: 1.2rem;
@@ -116,11 +118,11 @@ table tr td {
 }
 .hint span.toggle {
   cursor: pointer;
-  color: #3085d6 !important;
+  color: #a1c84d !important;
   text-decoration: underline;
 }
 .hint span.toggle:hover {
-  color: #5b9ede !important;
+  color: #b6d474 !important;
   text-decoration: none;
 }
 .hint th,
@@ -267,10 +269,10 @@ button {
   height: 38px;
   line-height: 38px;
   display: inline-block;
-  background-color: #3085d6;
+  background-color: #a1c84d;
   text-decoration: none;
   color: #ffffff;
-  border: 1px solid #3085d6;
+  border: 1px solid #a1c84d;
 }
 .button:hover,
 button:hover {
@@ -278,8 +280,8 @@ button:hover {
   height: 38px;
   line-height: 38px;
   display: inline-block;
-  background-color: #5b9ede;
-  border-color: #5b9ede;
+  background-color: #b6d474;
+  border-color: #b6d474;
   text-decoration: none;
   color: #ffffff;
 }
@@ -291,8 +293,8 @@ button.light {
 }
 .button.light:hover,
 button.light:hover {
-  background-color: #3085d6;
-  border-color: #5b9ede;
+  background-color: #a1c84d;
+  border-color: #b6d474;
   color: #ffffff;
 }
 .column {
