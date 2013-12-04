@@ -9,18 +9,23 @@ nav.navbar {
     }
 
     a {
-        color: @text-nav;
+        color: #444;
+        color: #445;
+        /*color: @text-nav;*/
         text-decoration: none;
         height: @nav-height;
+        font-weight: bold;
         display: block;
     }
 
         a:hover {
-            color: @text-nav-hover;
+        color: #777;
+            /*color: @text-nav-hover;*/
             text-decoration: none;
         }
 
     background-color: @background-navbar;
+    background-image: url(/img/header.png)
 }
 
 
@@ -55,7 +60,8 @@ nav.horizontal {
         }
 
     a:hover {
-        background-color: @background-navbar-hover;
+        background-color: rgba(0, 0, 0, 0.075);
+        /*background-color: @background-navbar-hover;*/
     }
 
     margin: 0;

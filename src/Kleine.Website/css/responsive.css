@@ -39,6 +39,9 @@ td {
   font-size: 16px;
   font-size: 1.6rem;
 }
+p {
+  margin-top: 0;
+}
 a {
   color: #3085d6;
 }
@@ -135,7 +138,7 @@ table tr td {
   position: relative;
   overflow: hidden;
   height: 275px;
-  margin-bottom: -10px;
+  margin-bottom: 10px;
 }
 .banner .image {
   width: 100%;
@@ -199,19 +202,26 @@ table tr td {
 nav.navbar {
   height: 50px;
   background-color: #333333;
+  background-image: url(/img/header.png);
 }
 nav.navbar h1 {
   line-height: 50px;
   margin: 0;
 }
 nav.navbar a {
-  color: #ffffff;
+  color: #444;
+  color: #445;
+  /*color: @text-nav;*/
+
   text-decoration: none;
   height: 50px;
+  font-weight: bold;
   display: block;
 }
 nav.navbar a:hover {
-  color: #ffffff;
+  color: #777;
+  /*color: @text-nav-hover;*/
+
   text-decoration: none;
 }
 nav.horizontal {
@@ -244,7 +254,9 @@ nav.horizontal ul:after {
   clear: both;
 }
 nav.horizontal a:hover {
-  background-color: #222222;
+  background-color: rgba(0, 0, 0, 0.075);
+  /*background-color: @background-navbar-hover;*/
+
 }
 nav.horizontal.right ul li {
   float: right;
@@ -306,6 +318,7 @@ button.light:hover {
 }
 .wrapper.shaded {
   background-color: #e9e9e9;
+  margin-bottom: 10px;
   border-bottom: 1px solid #dddddd;
 }
 .wrapper.divider {
