@@ -22,6 +22,8 @@ namespace Kleine.Data
     public interface IProfileRepository : IRepository<Profile>
     {
         Profile GetByEmailAddress(string emailAddress);
+
+        Profile GetByEmailCode(string code);
     }
 
     public interface ICookieTrackerRepository : IRepository<CookieTracker>

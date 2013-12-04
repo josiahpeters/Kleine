@@ -8,9 +8,16 @@ app.factory('profilePrediction', ['$http', function ($http)
 
     return {
         // get current user by session
-        fetch: function ()
+        fetch: function (code)
         {
-            var promise = $http.get('/api/profile').then(function (response)
+            code = code || "";
+
+            var url = '/api/profile';
+
+            if(code.length > 0)
+                url += '?code=' + code
+
+            var promise = $http.get(url).then(function (response)
             {
                 if (response.status == 200)
                     setCurrentData(response.data);

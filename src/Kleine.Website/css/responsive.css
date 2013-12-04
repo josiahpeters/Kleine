@@ -1,5 +1,5 @@
-﻿/*@color-action: #3085d6;*/
-/*@color-action: #a4c05b;*/
+﻿/*@color-action: #a4c05b;*/
+/*@color-action: #a2ce44;*/
 /*@color-calm: #83d6e5;*/
 html {
   font-size: 62.5%;
@@ -45,10 +45,10 @@ p {
   margin-top: 0;
 }
 a {
-  color: #a1c84d;
+  color: #3085d6;
 }
 a:hover {
-  color: #b6d474;
+  color: #5b9ede;
 }
 ul {
   padding: 0;
@@ -83,13 +83,12 @@ table tr td {
   font-size: 12px;
   font-size: 1.2rem;
   margin: 1em 0;
-  color: #468847;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  /*p {
-        .font-size(12px);
-    }*/
-
+  color: #539032;
+  background-color: #d7eebf;
+  border-color: #d3e8b2;
+}
+.success p {
+  margin-top: 1em;
 }
 .hint {
   border: 1px solid #ddd;
@@ -99,7 +98,7 @@ table tr td {
   background-color: #dddddd;
   /*background-color: @color-calm;*/
 
-  color: #a1c84d;
+  color: #3085d6;
   color: #000;
   font-size: 12px;
   font-size: 1.2rem;
@@ -107,6 +106,9 @@ table tr td {
   color: #3a87ad;
   background-color: #d9edf7;
   border-color: #bce8f1;
+}
+.hint p {
+  margin-top: 1em;
 }
 .hint dd,
 .hint dt {
@@ -118,11 +120,11 @@ table tr td {
 }
 .hint span.toggle {
   cursor: pointer;
-  color: #a1c84d !important;
+  color: #3085d6 !important;
   text-decoration: underline;
 }
 .hint span.toggle:hover {
-  color: #b6d474 !important;
+  color: #5b9ede !important;
   text-decoration: none;
 }
 .hint th,
@@ -211,19 +213,14 @@ nav.navbar h1 {
   margin: 0;
 }
 nav.navbar a {
-  color: #444;
-  color: #445;
-  /*color: @text-nav;*/
-
+  color: #ffffff;
   text-decoration: none;
   height: 50px;
   font-weight: bold;
   display: block;
 }
 nav.navbar a:hover {
-  color: #777;
-  /*color: @text-nav-hover;*/
-
+  color: #eeeeee;
   text-decoration: none;
 }
 nav.horizontal {
@@ -269,10 +266,10 @@ button {
   height: 38px;
   line-height: 38px;
   display: inline-block;
-  background-color: #a1c84d;
+  background-color: #a2ce44;
   text-decoration: none;
   color: #ffffff;
-  border: 1px solid #a1c84d;
+  border: 1px solid #a2ce44;
 }
 .button:hover,
 button:hover {
@@ -280,8 +277,8 @@ button:hover {
   height: 38px;
   line-height: 38px;
   display: inline-block;
-  background-color: #b6d474;
-  border-color: #b6d474;
+  background-color: #b6d96c;
+  border-color: #b6d96c;
   text-decoration: none;
   color: #ffffff;
 }
@@ -293,8 +290,8 @@ button.light {
 }
 .button.light:hover,
 button.light:hover {
-  background-color: #a1c84d;
-  border-color: #b6d474;
+  background-color: #a2ce44;
+  border-color: #b6d96c;
   color: #ffffff;
 }
 .column {

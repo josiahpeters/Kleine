@@ -11,5 +11,11 @@ namespace Kleine.Data.Memory
         {
             throw new NotImplementedException();
         }
+
+
+        public Profile GetByEmailCode(string code)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

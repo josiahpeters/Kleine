@@ -17,5 +17,13 @@ namespace Kleine.Data.Sql
                 return db.Select<Profile>(p => p.EmailAddress == emailAddress.ToLower()).FirstOrDefault();
             }
         }
+
+        public Profile GetByEmailCode(string code)
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                return db.Select<Profile>(p => p.EmailCode == code.ToLower()).FirstOrDefault();
+            }
+        }
     }
 }

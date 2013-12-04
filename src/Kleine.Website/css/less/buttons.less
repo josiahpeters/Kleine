@@ -1,12 +1,16 @@
-﻿.button, button {
+﻿
+.button, button {
     padding: 0 18px;
     height: 38px;
     line-height: 38px;
     display: inline-block;
-    background-color: @color-action;
+    background-color: @color-action-theme;
+@color-action: #a2ce44;
+
     text-decoration: none;
     color: @text-inverted;
-    border: 1px solid @color-action;
+    border: 1px solid @color-action-theme;
+
 }
 
     .button:hover, button:hover {
@@ -14,8 +18,8 @@
         height: 38px;
         line-height: 38px;
         display: inline-block;
-        background-color: @color-action-light;
-        border-color: @color-action-light;
+        background-color: @color-action-theme-light;
+        border-color: @color-action-theme-light;
         text-decoration: none;
         color: @text-inverted;
     }
@@ -26,8 +30,8 @@
         color: @text-body;
 
         &:hover {
-            background-color: @color-action;
-            border-color: @color-action-light;
+            background-color: @color-action-theme;
+            border-color: @color-action-theme-light;
             color: @text-inverted;
         }
     }

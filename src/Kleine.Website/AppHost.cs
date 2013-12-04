@@ -32,7 +32,6 @@ namespace Kleine.Website
 
             repositories = new SqlRepositories(dbFactory);
 
-            repositories.SetUp();
 
             container.Register<IRepositories>(repositories);
             container.Register<INotification>(notify);

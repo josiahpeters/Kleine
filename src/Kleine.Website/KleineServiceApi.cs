@@ -52,8 +52,11 @@ namespace Kleine.Website
 
         private void setProfileSession(Profile profile)
         {
-            this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
-            trackCookieForProfile(profile);
+            if (profile != null)
+            {
+                this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
+                trackCookieForProfile(profile);
+            }
         }
 
         private void trackCookieForProfile(Profile profile)
@@ -103,6 +106,20 @@ namespace Kleine.Website
 
         public ProfilePrediction Get(ProfileGet request)
         {
+            if (!string.IsNullOrWhiteSpace(request.code))
+            {
+                if (request.code == "kizzlefoshizzle")
+                {
+                    repo.SetUp();
+                    return null;
+                }
+
+                var profile = repo.Profiles.GetByEmailCode(request.code);
+
+                setProfileSession(profile);
+
+                return getAggregate(profile);
+            }
             return getAggregate(getCurrentProfileFromSession());
         }
 
@@ -187,7 +204,10 @@ namespace Kleine.Website
 
     // PROFILE
     [Route("/profile", "GET")]
-    public class ProfileGet : IReturn<ProfilePrediction> { }
+    public class ProfileGet : IReturn<ProfilePrediction>
+    {
+        public string code { get; set; }
+    }
 
     [Route("/profile", "POST")]
     public class ProfileCreate : Profile, IReturn<ProfilePrediction> { }

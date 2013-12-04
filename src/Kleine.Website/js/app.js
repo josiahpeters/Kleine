@@ -3,8 +3,9 @@
 var modules = ['ngRoute', 'ui.router', 'ngResource', 'kleine.controllers', 'kleine.directives', 'kleine.services'];
 
 var app = angular.module('kleine', modules)
-    .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider)
+    .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider)
     {
+        //$locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise("/");
         $stateProvider
             .state('welcome', {
@@ -32,7 +33,7 @@ var app = angular.module('kleine', modules)
                 },
             })
             .state('start', {
-                url: '/start',
+                url: '/start?code',
                 templateUrl: 'partials/start.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
@@ -134,12 +135,23 @@ var app = angular.module('kleine', modules)
                     }
                 }
             })
+            .state('invitation', {
+                url: '/invitation?code',
+                controller: function ($scope, $state, $stateParams, profilePrediction)
+                {
+                    profilePrediction.fetch($stateParams.code).then(function ()
+                    {
+                        $state.go('predict.start');
+                    });
+                },
+            })
             .state('predict', {
                 //url: '/{name}/{id}/predict',
                 url: '/predict',
                 templateUrl: 'partials/predict/predict.html',
-                controller: function ($scope, $state, profilePrediction)
+                controller: function ($scope, $state, $stateParams, profilePrediction)
                 {
+
                     if (profilePrediction.current().Profile.Name === undefined)
                         $state.go('start');
 
@@ -154,10 +166,13 @@ var app = angular.module('kleine', modules)
                 abstract: true,
             })
             .state('predict.start', {
-                url: '/start',
+                url: '/start?code',
                 views: {
                     'predict': {
                         templateUrl: 'partials/predict/predict.start.html',
+                        controller: function ($scope, $state, $stateParams, profilePrediction)
+                        {
+                        }
                     }
                 }
 
@@ -284,11 +299,12 @@ var app = angular.module('kleine', modules)
             });
     }])
 
-    .run(function ($rootScope, $state, $stateParams, profilePrediction)
+    .run( function ($rootScope, $state, $stateParams, profilePrediction)
     {
-        profilePrediction.fetch();
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
+
+        profilePrediction.fetch();
     })
 .filter('hours', function ()
 {
