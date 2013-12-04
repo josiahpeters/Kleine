@@ -41,6 +41,14 @@ namespace Kleine.Data
                 db.CreateTable<Profile>();
                 db.CreateTable<Prediction>();
                 db.CreateTable<CookieTracker>();
+
+                var dueDate = dueDates.Create(new DueDate
+                {
+                    Name = "BabyP",
+                    Title = "BabyP",
+                    ExpectedDate = new DateTime(2013, 12, 16),
+                    Description = "Baby P is coming soon!"
+                });
             }
         }
         

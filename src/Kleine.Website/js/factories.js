@@ -12,7 +12,7 @@ app.factory('profilePrediction', ['$http', function ($http)
         {
             code = code || "";
 
-            var url = '/api/profile';
+            var url = '/api/profile/';
 
             if(code.length > 0)
                 url += '?code=' + code
@@ -73,7 +73,7 @@ app.factory('profilePrediction', ['$http', function ($http)
 
             var predict = {
                 DueDateId: dueDateId,
-                ProfileId: 1,
+                ProfileId: currentData.Profile.Id,
                 Gender: currentData.Prediction.Gender,
                 Date: currentData.Prediction.Date,
                 Time: time[0],
@@ -82,6 +82,8 @@ app.factory('profilePrediction', ['$http', function ($http)
                 Message: message,
                 FinishDate: finishDate,
             }
+
+            console.log(currentData.Profile.Id, predict, currentData.Profile);
 
             var promise = $http.put('/api/predict/', predict).then(function (response)
             {

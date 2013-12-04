@@ -5,11 +5,9 @@
     line-height: 38px;
     display: inline-block;
     background-color: @color-action-theme;
-@color-action: #a2ce44;
-
     text-decoration: none;
-    color: @text-inverted;
-    border: 1px solid @color-action-theme;
+    color: @color-action-text;
+    border: 1px solid @color-action-theme-light;
 
 }
 
@@ -21,17 +19,17 @@
         background-color: @color-action-theme-light;
         border-color: @color-action-theme-light;
         text-decoration: none;
-        color: @text-inverted;
+        color: @color-action-text;
     }
 
     .button.light, button.light {
         background-color: @color-inaction;
-        border: 1px solid @color-inaction;
+        border: 1px solid @color-inaction-light;
         color: @text-body;
 
         &:hover {
-            background-color: @color-action-theme;
-            border-color: @color-action-theme-light;
-            color: @text-inverted;
+            background-color: @color-inaction-light;
+            border-color: @color-inaction-light;
+            color: @text-body;
         }
     }

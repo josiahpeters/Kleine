@@ -2,10 +2,12 @@
 
 nav.navbar {
     height: @nav-height;
+    position: relative;
 
     h1 {
         line-height: @nav-height;
         margin: 0;
+        float: left;
     }
 
     a {
@@ -14,6 +16,8 @@ nav.navbar {
         height: @nav-height;
         font-weight: bold;
         display: block;
+        text-shadow: 1px 1px 1px rgba(75, 75, 75, 1);
+        /*.font-size(16px);*/
     }
 
         a:hover {
@@ -25,49 +29,82 @@ nav.navbar {
     background-image: url(/img/header.png);
 }
 
-
 nav.horizontal {
-    ul {
-        padding: 0;
-        margin: 0;
-        float: right;
-
-        li {
-            display: block;
-            float: left;
-            padding: 0;
-            /*margin: 0 20px;*/
-            margin: 0;
-            list-style: none;
-            line-height: @nav-height;
-
-            a {
-                padding: 0 20px;
-            }
-        }
-    }
-
-        ul:before, ul:after {
-            content: "";
-            display: table;
-        }
-
-        ul:after {
-            clear: both;
-        }
-
-    a:hover {
-        background-color: rgba(0, 0, 0, 0.075);
-        /*background-color: @background-navbar-hover;*/
-    }
-
-    margin: 0;
-}
-
-    nav.horizontal.right {
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    z-index: 5;
         ul {
             li {
-                float: right;
+                list-style:none;
+                
+                a {
+                    padding: 0 5px;
+                    height: auto;
+                    padding: 6px 4px;
+                }
             }
         }
     }
+
+    @media only screen and (min-width: 768px) {
+        .row {
+            width: 728px;
+        }
+
+        nav.horizontal {
+            ul {
+                padding: 0;
+                margin: 0;
+                float: right;
+
+                li {
+                    display: block;
+                    float: left;
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
+                    line-height: @nav-height;
+
+                    a {
+                        padding: 0 20px;
+                    }
+                }
+            }
+
+                ul:before, ul:after {
+                    content: "";
+                    display: table;
+                }
+
+                ul:after {
+                    clear: both;
+                }
+
+            a:hover {
+                background-color: rgba(0, 0, 0, 0.075);
+            }
+
+            margin: 0;
+        }
+    }
+
+    @media only screen and (min-width: 966px) {
+        .row {
+            width: 926px;
+        }
+    }
+
+    @media only screen and (min-width: 1150px) {
+        .row {
+            width: unit(@maxWidth, px);
+        }
+    }
+
+nav.horizontal.right {
+    ul {
+        li {
+            float: right;
+        }
+    }
+}

@@ -5,12 +5,12 @@ var modules = ['ngRoute', 'ui.router', 'ngResource', 'kleine.controllers', 'klei
 var app = angular.module('kleine', modules)
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider)
     {
-        //$locationProvider.html5Mode(true);
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise("/");
         $stateProvider
             .state('welcome', {
                 url: '/',
-                templateUrl: 'partials/welcome.html',
+                templateUrl: '/partials/welcome.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
                     $scope.profile = profilePrediction.current().Profile;
@@ -34,7 +34,7 @@ var app = angular.module('kleine', modules)
             })
             .state('start', {
                 url: '/start?code',
-                templateUrl: 'partials/start.html',
+                templateUrl: '/partials/start.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
                     if (profilePrediction.current().Profile.EmailAddress !== undefined)
@@ -60,7 +60,7 @@ var app = angular.module('kleine', modules)
             })
             .state('confirm', {
                 url: '/confirm?email',
-                templateUrl: 'partials/confirm.html',
+                templateUrl: '/partials/confirm.html',
                 controller: function ($scope, $state, $http, $stateParams, profilePrediction)
                 {
                     $scope.EmailAddress = $stateParams.email;
@@ -68,7 +68,7 @@ var app = angular.module('kleine', modules)
             })
             .state('reward', {
                 url: '/reward',
-                templateUrl: 'partials/reward.html',
+                templateUrl: '/partials/reward.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
 
@@ -76,7 +76,7 @@ var app = angular.module('kleine', modules)
             })
             .state('prediction', {
                 url: '/prediction',
-                templateUrl: 'partials/prediction.html',
+                templateUrl: '/partials/prediction.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
                     if (profilePrediction.current().Prediction === undefined || profilePrediction.current().Prediction.FinishDate === undefined)
@@ -90,7 +90,7 @@ var app = angular.module('kleine', modules)
             })
             .state('results', {
                 url: '/results',
-                templateUrl: 'partials/results/results.html',
+                templateUrl: '/partials/results/results.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
 
@@ -101,7 +101,7 @@ var app = angular.module('kleine', modules)
             })
             .state('invite', {
                 url: '/invite',
-                templateUrl: 'partials/invite/invite.html',
+                templateUrl: '/partials/invite/invite.html',
                 controller: function ($scope, profilePrediction)
                 {
                     $scope.theme = {
@@ -118,7 +118,7 @@ var app = angular.module('kleine', modules)
                 url: '?code',
                 views: {
                     'invite': {
-                        templateUrl: 'partials/invite/invite.organic.html',
+                        templateUrl: '/partials/invite/invite.organic.html',
                         controller: function ($scope, $state, $http, $stateParams, profilePrediction)
                         {
                             $scope.theme.title = "You are Invited!";
@@ -148,11 +148,10 @@ var app = angular.module('kleine', modules)
             .state('predict', {
                 //url: '/{name}/{id}/predict',
                 url: '/predict',
-                templateUrl: 'partials/predict/predict.html',
+                templateUrl: '/partials/predict/predict.html',
                 controller: function ($scope, $state, $stateParams, profilePrediction)
                 {
-
-                    if (profilePrediction.current().Profile.Name === undefined)
+                    if (profilePrediction.current().Profile === undefined || profilePrediction.current().Profile.Name === undefined)
                         $state.go('start');
 
                     if (profilePrediction.current().Prediction !== undefined && profilePrediction.current().Prediction.FinishDate !== undefined)
@@ -169,7 +168,7 @@ var app = angular.module('kleine', modules)
                 url: '/start?code',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.start.html',
+                        templateUrl: '/partials/predict/predict.start.html',
                         controller: function ($scope, $state, $stateParams, profilePrediction)
                         {
                         }
@@ -181,7 +180,7 @@ var app = angular.module('kleine', modules)
                 url: '/gender',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.gender.html',
+                        templateUrl: '/partials/predict/predict.gender.html',
                         controller: function ($scope, $state, $stateParams, profilePrediction)
                         {
                             $scope.chooseGender = function (gender)
@@ -208,7 +207,7 @@ var app = angular.module('kleine', modules)
                 url: '/date',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.date.html',
+                        templateUrl: '/partials/predict/predict.date.html',
                         controller: function ($scope, $state, $stateParams, profilePrediction)
                         {
                             $scope.next = function ()
@@ -227,7 +226,7 @@ var app = angular.module('kleine', modules)
                 url: '/time',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.time.html',
+                        templateUrl: '/partials/predict/predict.time.html',
                         controller: function ($scope, $stateParams, profilePrediction)
                         {
                         }
@@ -242,7 +241,7 @@ var app = angular.module('kleine', modules)
                 url: '/weight',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.weight.html',
+                        templateUrl: '/partials/predict/predict.weight.html',
                         controller: function ($scope, $state, profilePrediction)
                         {
                             //$scope.showDetails = false;
@@ -264,7 +263,7 @@ var app = angular.module('kleine', modules)
                 controller: 'predict',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.length.html',
+                        templateUrl: '/partials/predict/predict.length.html',
                         controller: function ($scope, $state, profilePrediction)
                         {
 
@@ -281,7 +280,7 @@ var app = angular.module('kleine', modules)
                 controller: 'predict',
                 views: {
                     'predict': {
-                        templateUrl: 'partials/predict/predict.finish.html',
+                        templateUrl: '/partials/predict/predict.finish.html',
                         controller: function ($scope, $state, profilePrediction)
                         {
                             $scope.submit = function ()

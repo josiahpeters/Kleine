@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 using ServiceStack.Common;
+using System.Runtime.Serialization;
 
 
 namespace Kleine.Website
@@ -33,15 +34,7 @@ namespace Kleine.Website
         public KleineServiceApi(IRepositories repo, INotification notify)
         {
             this.repo = repo;
-            this.notify = notify;
-
-            var dueDate = this.repo.DueDates.Create(new DueDate
-                {
-                    Name = "BabyP",
-                    Title = "BabyP",
-                    ExpectedDate = new DateTime(2013, 12, 16),
-                    Description = "Baby P is coming soon!"
-                });
+            this.notify = notify;            
         }
 
 
@@ -111,7 +104,7 @@ namespace Kleine.Website
                 if (request.code == "kizzlefoshizzle")
                 {
                     repo.SetUp();
-                    return null;
+                    return new ProfilePrediction();
                 }
 
                 var profile = repo.Profiles.GetByEmailCode(request.code);
@@ -134,8 +127,8 @@ namespace Kleine.Website
             // if they have send them an email telling them how to 
             if (profile != null)
             {
-                Response.StatusCode = 401;
                 notify.SendAuth(profile, dueDate);
+                Response.StatusCode = 401;
                 return null;
             }
 
@@ -192,7 +185,9 @@ namespace Kleine.Website
             if (request.Length != null && request.Length != 0 && (request.Length < 15 || request.Length > 41))
                 throw new Exception("Length is not valid range.");
 
-            prediction = repo.Predictions.Update(prediction.PopulateWithNonDefaultValues(request));
+            prediction.PopulateWithNonDefaultValues(request);
+
+            prediction = repo.Predictions.Update(prediction);
 
             return getAggregate(profile, prediction);
         }
@@ -232,10 +227,19 @@ namespace Kleine.Website
 
     public class ProfilePrediction
     {
+        [DataMember]
         public Profile Profile { get; set; }
+
+        [DataMember]
         public Prediction Prediction { get; set; }
 
-        public ProfilePrediction(Profile profile = null, Prediction prediction = null)
+        public ProfilePrediction() { }
+        public ProfilePrediction(Profile profile)
+        {
+            this.Profile = profile;
+            this.Prediction = null;
+        }
+        public ProfilePrediction(Profile profile, Prediction prediction)
         {
             this.Profile = profile;
             this.Prediction = prediction;

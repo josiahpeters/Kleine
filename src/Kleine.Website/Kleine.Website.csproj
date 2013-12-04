@@ -51,6 +51,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ServiceStack.Common.3.9.70\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Logging.EventLog">
+      <HintPath>..\packages\ServiceStack.Logging.EventLog.3.9.70\lib\net35\ServiceStack.Logging.EventLog.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.OrmLite">
       <HintPath>..\packages\ServiceStack.OrmLite.SqlServer.3.9.69\lib\net35\ServiceStack.OrmLite.dll</HintPath>
     </Reference>
@@ -66,12 +69,15 @@
     <Reference Include="ServiceStack.Text">
       <HintPath>..\packages\ServiceStack.Text.3.9.69\lib\net35\ServiceStack.Text.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
-    <Reference Include="System.Data" />
+    <Reference Include="System.Data">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
@@ -86,6 +92,12 @@
   <ItemGroup>
     <Content Include="apple-touch-icon-precomposed.png" />
     <Content Include="apple-touch-icon.png" />
+    <Content Include="css\less\breakpoints.css">
+      <DependentUpon>breakpoints.less</DependentUpon>
+    </Content>
+    <Content Include="css\less\breakpoints.min.css">
+      <DependentUpon>breakpoints.less</DependentUpon>
+    </Content>
     <Content Include="css\less\buttons.css">
       <DependentUpon>buttons.less</DependentUpon>
     </Content>
@@ -245,8 +257,10 @@
     <Content Include="js\libs\jquery-2.0.2.min.map" />
     <Content Include="css\less\slider.less" />
     <Content Include="css\less\form.less" />
+    <Content Include="css\less\breakpoints.less" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\pugna.pubxml" />
+    <Content Include="README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

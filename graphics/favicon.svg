@@ -7,6 +7,7 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="16"
@@ -15,11 +16,32 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="favicon.svg"
-   inkscape:export-filename="D:\git\Kleine\src\Kleine.Website\apple-touch-icon.png"
-   inkscape:export-xdpi="1125"
-   inkscape:export-ydpi="1125">
+   inkscape:export-filename="D:\git\Kleine\src\Kleine.Website\favicon.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
-     id="defs4" />
+     id="defs4">
+    <linearGradient
+       id="linearGradient3753">
+      <stop
+         style="stop-color:#3085d6;stop-opacity:1;"
+         offset="0"
+         id="stop3755" />
+      <stop
+         style="stop-color:#9fc6ec;stop-opacity:1;"
+         offset="1"
+         id="stop3757" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3753"
+       id="linearGradient3759"
+       x1="0.11823376"
+       y1="1036.411"
+       x2="16.059116"
+       y2="1052.4316"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -28,14 +50,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="33.831284"
-     inkscape:cx="5.9527643"
+     inkscape:cx="1.3416476"
      inkscape:cy="5.454967"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="1912"
+     inkscape:window-height="1017"
+     inkscape:window-x="3832"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
@@ -56,7 +78,7 @@
      id="layer1"
      transform="translate(0,-1036.3622)">
     <rect
-       style="fill:#3085d6;fill-opacity:1;stroke:none"
+       style="fill:url(#linearGradient3759);fill-opacity:1;stroke:none"
        id="rect2989"
        width="16"
        height="16"
@@ -65,13 +87,13 @@
     <text
        xml:space="preserve"
        style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Buxton Sketch;-inkscape-font-specification:Buxton Sketch"
-       x="1.950857"
-       y="1049.229"
+       x="3.7834804"
+       y="1049.2585"
        id="text2985"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan2987"
-         x="1.950857"
-         y="1049.229">K</tspan></text>
+         x="3.7834804"
+         y="1049.2585">P</tspan></text>
   </g>
 </svg>

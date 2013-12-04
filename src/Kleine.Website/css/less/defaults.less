@@ -148,28 +148,20 @@ table {
     overflow: hidden;
     height: 275px;
     margin-bottom: 10px;
-    .image {
+}
+
+    .banner .image {
         width: 100%;
         margin-bottom: 10px;
-	text-align: center;
-	height: 275px;
-	//Background gradient to make up for uber wide screens, generated - http://www.colorzilla.com/gradient-editor/
-	background: #506b22; /* Old browsers */
-	background: -moz-linear-gradient(left,  #506b22 0%, #a1cd41 50%, #506b22 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#506b22), color-stop(50%,#a1cd41), color-stop(100%,#506b22)); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(left,  #506b22 0%,#a1cd41 50%,#506b22 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(left,  #506b22 0%,#a1cd41 50%,#506b22 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(left,  #506b22 0%,#a1cd41 50%,#506b22 100%); /* IE10+ */
-	background: linear-gradient(to right,  #506b22 0%,#a1cd41 50%,#506b22 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#506b22', endColorstr='#506b22',GradientType=1 ); /* IE6-9 */
+    }
 
-	img {
+        .banner .image img {
             margin-top: -25px;
+            min-width: 100%;
+            min-height: 100%;
             width: auto;
             height: auto;
         }
-    }
-}
 
 .subtitle {
     position: absolute;
@@ -178,11 +170,6 @@ table {
     height: 50px;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5);
-    h1 {
-        line-height: 50px;
-        margin: 0;
-	padding-left: 2%;
-    }
 }
 
 .view-enter, .view-leave {
