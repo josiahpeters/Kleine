@@ -1,4 +1,4 @@
-﻿/*@color-action: #a4c05b;*/
+/*@color-action: #a4c05b;*/
 /*@color-action: #a2ce44;*/
 /*@color-calm: #83d6e5;*/
 html {
@@ -147,11 +147,35 @@ table tr td {
 .banner .image {
   width: 100%;
   margin-bottom: 10px;
+  text-align: center;
+  height: 275px;
+  background: #506b22;
+  /* Old browsers */
+
+  background: -moz-linear-gradient(left, #506b22 0%, #a1cd41 50%, #506b22 100%);
+  /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #506b22), color-stop(50%, #a1cd41), color-stop(100%, #506b22));
+  /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(left, #506b22 0%, #a1cd41 50%, #506b22 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(left, #506b22 0%, #a1cd41 50%, #506b22 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(left, #506b22 0%, #a1cd41 50%, #506b22 100%);
+  /* IE10+ */
+
+  background: linear-gradient(to right, #506b22 0%, #a1cd41 50%, #506b22 100%);
+  /* W3C */
+
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#506b22', endColorstr='#506b22', GradientType=1);
+  /* IE6-9 */
+
 }
 .banner .image img {
   margin-top: -25px;
-  min-width: 100%;
-  min-height: 100%;
   width: auto;
   height: auto;
 }
@@ -166,6 +190,7 @@ table tr td {
 .subtitle h1 {
   line-height: 50px;
   margin: 0;
+  padding-left: 2%;
 }
 .view-enter,
 .view-leave {
@@ -564,7 +589,7 @@ button.light:hover {
   white-space: nowrap;
   vertical-align: baseline;
   background-color: #dddddd;
-  border-radius: 10px;
+  border-radius: 3px;
   margin-right: .5em;
 }
 .list .list-item span.result .fa {
@@ -597,6 +622,34 @@ button.light:hover {
 .list .list-item.active span.result {
   /*color: #eee;*/
 
+}
+@media only screen and (min-width: 600px) {
+  
+}
+@media only screen and (min-width: 768px) {
+  .navbar four.column {
+    width: 21%;
+  }
+  .navbar eight.column {
+    width: 78%;
+  }
+  #main-nav li a {
+    padding: 0 7px;
+  }
+  #main-nav li a fa {
+    display: none;
+  }
+}
+@media only screen and (min-width: 966px) {
+  #main-nav li a {
+    padding: 0 10px;
+  }
+  #main-nav li a span {
+    font-size: 13px;
+  }
+}
+@media only screen and (min-width: 1150px) {
+  
 }
 form {
   line-height: 1.5em;
