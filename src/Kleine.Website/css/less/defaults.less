@@ -32,7 +32,9 @@ p, li, a, button, input, table, th, td {
     .font-size(16px);
 }
 
-p { margin-top: 0; }
+p {
+    margin-top: 0;
+}
 
 a {
     color: @text-link-default;
@@ -87,8 +89,10 @@ table {
     color: #539032;
     background-color: #d7eebf;
     border-color: #d3e8b2;
-    p { margin-top: 1em; }
 
+    p {
+        margin-top: 1em;
+    }
 }
 
 
@@ -107,7 +111,9 @@ table {
     background-color: #d9edf7;
     border-color: #bce8f1;
 
-    p { margin-top: 1em; }
+    p {
+        margin-top: 1em;
+    }
 
     dd, dt {
         display: inline;
@@ -146,22 +152,58 @@ table {
 .banner {
     position: relative;
     overflow: hidden;
-    height: 275px;
+    height: 225px;
     margin-bottom: 10px;
-}
 
-    .banner .image {
+    .image {
         width: 100%;
         margin-bottom: 10px;
-    }
 
-        .banner .image img {
-            margin-top: -25px;
+        img {
             min-width: 100%;
             min-height: 100%;
-            width: auto;
-            height: auto;
+            width: 75%;
+            height: 75%;
         }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+
+    .banner {
+        height: 265px;
+
+        .image {
+
+            img {
+                margin-top: -15px;
+                width: 90%;
+                height: 90%;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 966px) {
+    .banner {
+        height: 275px;
+
+        .image {
+
+            img {
+                margin-top: 0px;
+                width: auto;
+                height: auto;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1150px) {
+    .banner {
+        height: 300px;
+    }
+}
 
 .subtitle {
     position: absolute;
@@ -170,6 +212,10 @@ table {
     height: 50px;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5);
+
+    h1 {
+        margin-top: .5em;
+    }
 }
 
 .view-enter, .view-leave {

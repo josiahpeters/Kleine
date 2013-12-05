@@ -27,7 +27,8 @@
                     PreggoPredict
                 </a>
             </h1>
-            <nav class="horizontal">
+            <button class="toggle" ng-click="toggle = !toggle"><i class="fa fa-bars"></i></button>
+            <nav class="horizontal" ng-show="!toggle">
                 <ul id="main-nav">
                     <li><a ui-sref="welcome"><i class="fa fa-home" title="Welcome"></i><span> Baby Peters</span></a></li>
                     <li><a ui-sref="predict.start"><i class="fa fa-question-circle" title="Make Your Prediction"></i><span> Prediction</span></a></li>

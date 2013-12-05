@@ -140,7 +140,7 @@ table tr td {
 .banner {
   position: relative;
   overflow: hidden;
-  height: 275px;
+  height: 225px;
   margin-bottom: 10px;
 }
 .banner .image {
@@ -148,11 +148,35 @@ table tr td {
   margin-bottom: 10px;
 }
 .banner .image img {
-  margin-top: -25px;
   min-width: 100%;
   min-height: 100%;
-  width: auto;
-  height: auto;
+  width: 75%;
+  height: 75%;
+}
+@media only screen and (min-width: 768px) {
+  .banner {
+    height: 265px;
+  }
+  .banner .image img {
+    margin-top: -15px;
+    width: 90%;
+    height: 90%;
+  }
+}
+@media only screen and (min-width: 966px) {
+  .banner {
+    height: 275px;
+  }
+  .banner .image img {
+    margin-top: 0px;
+    width: auto;
+    height: auto;
+  }
+}
+@media only screen and (min-width: 1150px) {
+  .banner {
+    height: 300px;
+  }
 }
 .subtitle {
   position: absolute;
@@ -161,6 +185,9 @@ table tr td {
   height: 50px;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.5);
+}
+.subtitle h1 {
+  margin-top: .5em;
 }
 .view-enter,
 .view-leave {
@@ -216,17 +243,39 @@ nav.navbar a {
   font-weight: bold;
   display: block;
   text-shadow: 1px 1px 1px #4b4b4b;
-  /*.font-size(16px);*/
-
+  font-size: 18px;
+  font-size: 1.8rem;
 }
 nav.navbar a:hover {
   color: #eeeeee;
   text-decoration: none;
 }
+nav.navbar button.toggle {
+  color: #ffffff;
+  position: relative;
+  float: right;
+  margin-right: 15px;
+  padding: 6px 8px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  background-color: transparent;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}
+nav.navbar button.toggle:hover {
+  background-color: rgba(0, 0, 0, 0.075);
+}
+nav.navbar button.toggle i.fa {
+  font-size: 1.3333333333333333em;
+}
+nav.navbar .row {
+  /*position: relative;*/
+
+}
 nav.horizontal {
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: 65px;
+  right: 5px;
   z-index: 5;
 }
 nav.horizontal ul li {
@@ -235,13 +284,27 @@ nav.horizontal ul li {
 nav.horizontal ul li a {
   padding: 0 5px;
   height: auto;
-  padding: 6px 4px;
+  padding: 12px 22px;
+  background-color: rgba(143, 197, 75, 0.8);
+  font-size: 16px;
+  font-size: 1.6rem;
+}
+nav.horizontal ul li a:hover {
+  background-color: rgba(112, 164, 42, 0.9);
 }
 @media only screen and (min-width: 768px) {
   .row {
     width: 728px;
   }
+  button.toggle {
+    display: none;
+    visibility: hidden;
+  }
   nav.horizontal {
+    position: relative;
+    top: 0;
+    right: 0;
+    z-index: 5;
     margin: 0;
   }
   nav.horizontal ul {
@@ -259,6 +322,7 @@ nav.horizontal ul li a {
   }
   nav.horizontal ul li a {
     padding: 0 20px;
+    background-color: transparent;
   }
   nav.horizontal ul:before,
   nav.horizontal ul:after {
@@ -285,8 +349,7 @@ nav.horizontal ul li a {
 nav.horizontal.right ul li {
   float: right;
 }
-.button,
-button {
+.button {
   padding: 0 18px;
   height: 38px;
   line-height: 38px;
@@ -296,8 +359,7 @@ button {
   color: #444444;
   border: 1px solid #8fc54b;
 }
-.button:hover,
-button:hover {
+.button:hover {
   padding: 0 18px;
   height: 38px;
   line-height: 38px;
@@ -307,14 +369,12 @@ button:hover {
   text-decoration: none;
   color: #444444;
 }
-.button.light,
-button.light {
+.button.light {
   background-color: #dddddd;
   border: 1px solid #c4c4c4;
   color: #444444;
 }
-.button.light:hover,
-button.light:hover {
+.button.light:hover {
   background-color: #c4c4c4;
   border-color: #c4c4c4;
   color: #444444;
