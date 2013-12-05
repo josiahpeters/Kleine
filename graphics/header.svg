@@ -30,14 +30,14 @@
      inkscape:pageshadow="2"
      inkscape:zoom="2.8284271"
      inkscape:cx="116.91715"
-     inkscape:cy="17.526105"
+     inkscape:cy="17.702882"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      borderlayer="true"
      inkscape:window-width="1920"
      inkscape:window-height="1017"
-     inkscape:window-x="-8"
+     inkscape:window-x="3832"
      inkscape:window-y="-8"
      inkscape:window-maximized="1" />
   <metadata
@@ -6307,7 +6307,7 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cscsc" />
     <rect
-       style="fill:#9bca35;fill-opacity:0.17553191;stroke:none"
+       style="fill:#9fcc3e;fill-opacity:0.45212767;stroke:none"
        id="rect4901-9"
        width="289.91379"
        height="70.710678"
@@ -6324,7 +6324,7 @@
        height="96"
        width="119" />
     <rect
-       style="fill:#000000;fill-opacity:0.13297873;stroke:none"
+       style="fill:#8cb238;fill-opacity:0.91489363;stroke:none"
        id="rect8303"
        width="274.00388"
        height="29.521708"
@@ -6353,5 +6353,12 @@
        height="45.608387"
        x="21.920307"
        y="937.81091" />
+    <rect
+       style="fill:#a1cd41;fill-opacity:1;stroke:none"
+       id="rect5033-1"
+       width="82.731491"
+       height="45.608387"
+       x="-13.081474"
+       y="933.0379" />
   </g>
 </svg>

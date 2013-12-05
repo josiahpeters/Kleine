@@ -83,8 +83,6 @@ app.factory('profilePrediction', ['$http', function ($http)
                 FinishDate: finishDate,
             }
 
-            console.log(currentData.Profile.Id, predict, currentData.Profile);
-
             var promise = $http.put('/api/predict/', predict).then(function (response)
             {
                 setCurrentData(response.data);

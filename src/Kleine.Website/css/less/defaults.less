@@ -49,11 +49,6 @@ ul {
     margin: 0;
 }
 
-.wrapper {
-    ul {
-        margin-left: 1.5em;
-    }
-}
 
 hr {
     border: 0;
@@ -152,34 +147,105 @@ table {
 .banner {
     position: relative;
     overflow: hidden;
-    height: 225px;
+    height: 165px;
     margin-bottom: 10px;
 
     .image {
         width: 100%;
         margin-bottom: 10px;
+        background-image: url(/img/kim-and-joey-blessed.jpg);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        height: 300px;
 
         img {
-            min-width: 100%;
-            min-height: 100%;
-            width: 75%;
-            height: 75%;
+            margin-top: -15px;
+            width: 90%;
+            height: 90%;
+            display: none;
         }
+    }
+}
+
+.predict {
+    .row {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -moz-box-orient: vertical;
+        -webkit-box-orient: vertical;
+        -ms-box-orient: vertical;
+        -webkit-flex-direction: column;
+        flex-direction: column;
+
+        .category {
+            -moz-box-ordinal-group: 1;
+            -webkit-box-ordinal-group: 1;
+            -ms-flex-order: 1;
+            -webkit-order: 1;
+            order: 1;
+        }
+
+        .categories {
+            -moz-box-ordinal-group: 2;
+            -webkit-box-ordinal-group: 2;
+            -ms-flex-order: 2;
+            -webkit-order: 2;
+            order: 2;
+        }
+    }
+}
+
+article ul {
+    margin-left: 1.75em;
+}
+
+img.scale {
+    width: 100%;
+}
+
+@media only screen and (min-width: 380px) {
+    .banner {
+        height: 190px;
+    }
+}
+
+@media only screen and (min-width: 480px) {
+    .banner {
+        height: 210px;
+    }
+
+    img.scale {
+        width: auto;
     }
 }
 
 @media only screen and (min-width: 768px) {
 
+
     .banner {
-        height: 265px;
+        height: 235px;
 
         .image {
+            background-image: url(/img/kim-and-joey-blessed.jpg);
+            background-size: 100%;
+            height: 300px;
+            background-color: #333333;
 
             img {
                 margin-top: -15px;
                 width: 90%;
                 height: 90%;
+                display: none;
             }
+        }
+    }
+
+    .predict {
+        .row {
+            display: block;
         }
     }
 }
@@ -209,7 +275,7 @@ table {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 50px;
+    min-height: 50px;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.5);
 

@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-var modules = ['ngRoute', 'ui.router', 'ngResource', 'kleine.controllers', 'kleine.directives', 'kleine.services'];
+var modules = ['ngRoute', 'ui.router', 'ngResource', 'ngAnimate', 'kleine.controllers', 'kleine.directives', 'kleine.services'];
 
 var app = angular.module('kleine', modules)
     .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $locationProvider)
@@ -37,7 +37,7 @@ var app = angular.module('kleine', modules)
                 templateUrl: '/partials/start.html',
                 controller: function ($scope, $state, profilePrediction)
                 {
-                    if (profilePrediction.current().Profile.EmailAddress !== undefined)
+                    if (profilePrediction.current().Profile !== undefined && profilePrediction.current().Profile.EmailAddress !== undefined)
                         $state.go('invite.organic');
 
                     $scope.profile = profilePrediction.current().Profile;
@@ -343,7 +343,36 @@ var app = angular.module('kleine', modules)
         }
         return input;
     }
-});
+})
+//.animation('.collapsing', function ()
+//{
+//    return {
+//        enter: function (element, done)
+//        {
+//            //run the animation here and call done when the animation is complete
+//            return function (cancelled)
+//            {
+//                //this (optional) function will be called when the animation
+//                //completes or when the animation is cancelled (the cancelled
+//                //flag will be set to true if cancelled).
+//            };
+//        },
+//        leave: function (element, done) { },
+//        move: function (element, done) { },
+
+//        //animation that can be triggered before the class is added
+//        beforeAddClass: function (element, className, done) { },
+
+//        //animation that can be triggered after the class is added
+//        addClass: function (element, className, done) { },
+
+//        //animation that can be triggered before the class is removed
+//        beforeRemoveClass: function (element, className, done) { },
+
+//        //animation that can be triggered after the class is removed
+//        removeClass: function (element, className, done) { }
+//    };
+//});
 
 angular.module('kleine.controllers', [])
     .controller('predict', ['$scope', '$state', function ($scope, $state)
@@ -365,5 +394,4 @@ angular.module('kleine.services', [])
 
     }
     ]);
-
 

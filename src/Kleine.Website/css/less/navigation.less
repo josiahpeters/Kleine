@@ -1,13 +1,12 @@
 ﻿@nav-height: 50px;
 
 nav.navbar {
-    height: @nav-height;
+    min-height: @nav-height;
     position: relative;
 
     h1 {
         line-height: @nav-height;
         margin: 0;
-        float: left;
     }
 
     a {
@@ -27,6 +26,7 @@ nav.navbar {
 
     background-color: @background-navbar;
     background-image: url(/img/header.png);
+    background-repeat: repeat-x;
 
     button.toggle {
         color: @text-nav;
@@ -55,21 +55,19 @@ nav.navbar {
 }
 
 nav.horizontal {
-    position: absolute;
-    top: 65px;
-    right: 5px;
-    z-index: 5;
+    margin: .25em;
+    height: 175px;
 
     ul {
+
         li {
             list-style: none;
 
             a {
-                padding: 0 5px;
                 height: auto;
-                padding: 12px 22px;
-                background-color: rgba(143, 197, 75, 0.8);
+                padding: 12px 12px;
                 .font-size(16px);
+                margin-bottom: 1px;
 
                 &:hover {
                     background-color: rgba(112, 164, 42, 0.9);
@@ -79,7 +77,42 @@ nav.horizontal {
     }
 }
 
+.animate-show-hide {
+}
+
+    .animate-show-hide.ng-hide-add, .animate-show-hide.ng-hide-remove {
+        -webkit-transition: all linear 0.25s;
+        -moz-transition: all linear 0.25s;
+        -o-transition: all linear 0.25s;
+        transition: all linear 0.25s;
+        display: block !important;
+    }
+
+        .animate-show-hide.ng-hide-add.ng-hide-add-active,
+        .animate-show-hide.ng-hide-remove {
+            height: 0;
+            display: none;
+        }
+
+            .animate-show-hide.ng-hide-add,
+            .animate-show-hide.ng-hide-remove.ng-hide-remove-active {
+                height: 175px;
+            }
+
 @media only screen and (min-width: 768px) {
+
+    .animate-show-hide.ng-hide-add.ng-hide-add-active,
+    .animate-show-hide.ng-hide-remove {
+        display: block;
+    }
+
+    nav.navbar {
+
+        h1 {
+            float: left;
+        }
+    }
+
     .row {
         width: 728px;
     }
@@ -94,6 +127,11 @@ nav.horizontal {
         top: 0;
         right: 0;
         z-index: 5;
+        height: auto;
+
+        &.ng-hide {
+            display: block !important;
+        }
 
         ul {
             padding: 0;
@@ -111,6 +149,10 @@ nav.horizontal {
                 a {
                     padding: 0 20px;
                     background-color: transparent;
+
+                    &:hover {
+                        background-color: rgba(0, 0, 0, 0.075);
+                    }
                 }
             }
         }

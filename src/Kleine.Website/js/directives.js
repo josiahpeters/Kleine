@@ -53,14 +53,28 @@ angular.module('kleine.directives', []).
                   cursor: 'pointer'
               });
 
+              var lastEvent = null;
 
               sliderElement.on('mousedown', function (event)
               {
                   // Prevent default dragging of selected content
                   event.preventDefault();
+
                   startX = event.pageX - x;
+
                   $document.on('mousemove', mousemove);
                   $document.on('mouseup', mouseup);
+              });
+
+              sliderElement.on('touchstart', function (event)
+              {
+                  // Prevent default dragging of selected content
+                  event.preventDefault();
+                  
+                  startX = getTouchEvent(event).pageX - x;
+
+                  $document.on('touchend', touchend);
+                  $document.on('touchmove', touchmove);
               });
 
               // call setup with a delay to prevent conflicting scope.$apply race condition
@@ -73,8 +87,19 @@ angular.module('kleine.directives', []).
                   scope.$apply(calculateValue(getTargetValue()));
               }
 
+              function getTouchEvent(event)
+              {
+                  return event.touches[0] || event.changedTouches[0];
+              }
+
+              function touchmove(event)
+              {
+                  mousemove(getTouchEvent(event));
+              }
+
               function mousemove(event)
               {
+
                   x = event.pageX - startX;
 
                   var startingX = parseFloat(sliderElement.css("left"));
@@ -87,7 +112,7 @@ angular.module('kleine.directives', []).
                   sliderElement.css({
                       left: x + 'px'
                   });
-
+                  
                   scope.$apply(calculateValue());
               }
 
@@ -197,6 +222,11 @@ angular.module('kleine.directives', []).
               {
                   $document.unbind('mousemove', mousemove);
                   $document.unbind('mouseup', mouseup);
+              }
+              function touchend()
+              {
+                  $document.unbind('touchmove', touchmove);
+                  $document.unbind('touchend', touchend);
               }
           }
       };
@@ -344,4 +374,4 @@ angular.module('kleine.directives', []).
         }
     };
 
-});
+})

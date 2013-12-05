@@ -8,21 +8,22 @@
         </div>
     </div>
 </div>
-<div class="wrapper">
+<div class="wrapper predict">
     <div class="row">
-        <ul class="list four column">
-            <li class="list-item header">Prediction: Baby Peters</li>
-            <li class="list-item" ng-class="{ active: $state.includes('predict.gender') }"><a ui-sref="predict.gender"><i class="fa fa-user"></i> Gender <span class="result" ng-show="(prediction.Gender !== undefinied)">{{ prediction.Gender }} <i class="fa fa-check-square"></i></span></a> </li>
-            <li class="list-item" ng-class="{ active: $state.includes('predict.date') }"><a ui-sref="predict.date"><i class="fa fa-calendar"></i> Date <span class="result" ng-show="(prediction.Date !== undefinied)">{{ prediction.Date|date }} <i class="fa fa-check-square"></i></span></a></li>
-            <li class="list-item" ng-class="{ active: $state.includes('predict.time') }"><a ui-sref="predict.time"><i class="fa fa-clock-o"></i> Time <span class="result" ng-show="(prediction.Time !== undefinied)">{{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }} <i class="fa fa-check-square"></i></span></a></li>
-            <li class="list-item" ng-class="{ active: $state.includes('predict.weight') }"><a ui-sref="predict.weight"><i class="fa fa-anchor"></i> Weight <span class="result" ng-show="(prediction.Weight !== undefinied)">{{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }} <i class ="fa fa-check-square"></i></span></a></li>
-            <li class="list-item" ng-class="{ active: $state.includes('predict.length') }"><a ui-sref="predict.length"><i class="fa fa-sort-amount-asc"></i> Length <span class="result" ng-show="(prediction.Length !== undefinied)">{{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }} <i class ="fa fa-check-square"></i></span></a></li>
-            <li class="list-item" ng-class="{ active: $state.includes('predict.finish') }"><a ui-sref="predict.finish"><i class="fa fa-check-square"></i> Submit Guess</a></li>
-            <!--<li><a ui-sref="predict.hair">Hair Color</a></li>
+        <div class="four column categories">
+            <ul class="list">
+                <li class="list-item header">Prediction: Baby Peters</li>
+                <li class="list-item" ng-class="{ active: $state.includes('predict.gender') }"><a ui-sref="predict.gender"><i class="fa fa-user"></i> Gender <span class="result" ng-show="(prediction.Gender !== undefinied)">{{ prediction.Gender }} <i class="fa fa-check-square"></i></span></a> </li>
+                <li class="list-item" ng-class="{ active: $state.includes('predict.date') }"><a ui-sref="predict.date"><i class="fa fa-calendar"></i> Date <span class="result" ng-show="(prediction.Date !== undefinied)">{{ prediction.Date|date }} <i class="fa fa-check-square"></i></span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('predict.time') }"><a ui-sref="predict.time"><i class="fa fa-clock-o"></i> Time <span class="result" ng-show="(prediction.Time !== undefinied)">{{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }} <i class="fa fa-check-square"></i></span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('predict.weight') }"><a ui-sref="predict.weight"><i class="fa fa-anchor"></i> Weight <span class="result" ng-show="(prediction.Weight !== undefinied)">{{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }} <i class="fa fa-check-square"></i></span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('predict.length') }"><a ui-sref="predict.length"><i class="fa fa-sort-amount-asc"></i> Length <span class="result" ng-show="(prediction.Length !== undefinied)">{{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }} <i class="fa fa-check-square"></i></span></a></li>
+                <li class="list-item" ng-class="{ active: $state.includes('predict.finish') }"><a ui-sref="predict.finish"><i class="fa fa-check-square"></i> Submit Guess</a></li>
+                <!--<li><a ui-sref="predict.hair">Hair Color</a></li>
             <li><a ui-sref="predict.name">Name</a></li>-->
-        </ul>
-
-        <div class="eight column" ui-view="predict" ng-animate="view">
+            </ul>
+        </div>
+        <div class="eight column category" ui-view="predict" ng-animate="view">
 
         </div>
     </div>
