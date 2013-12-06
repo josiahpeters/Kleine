@@ -15,6 +15,7 @@ namespace Kleine.Data
         private IProfileRepository profile;
         private IPredictionRepository predictions;
         private ICookieTrackerRepository cookieTrackers;
+        private IResultsRepository results;
 
         OrmLiteConnectionFactory dbFactory;
 
@@ -26,6 +27,7 @@ namespace Kleine.Data
             this.profile = new ProfileSqlRepository(this.dbFactory);
             this.predictions = new PredictionSqlRepository(this.dbFactory);
             this.cookieTrackers = new CookieTrackerSqlRepository(this.dbFactory);
+            this.results = new ResultsSqlRepository(this.dbFactory);
         }
 
         public void SetUp()
@@ -98,6 +100,19 @@ namespace Kleine.Data
             set
             {
                 cookieTrackers = value;
+            }
+        }
+
+
+        public IResultsRepository Results
+        {
+            get
+            {
+                return results;
+            }
+            set
+            {
+                results = value;
             }
         }
     }

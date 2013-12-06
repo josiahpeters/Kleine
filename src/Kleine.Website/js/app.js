@@ -49,7 +49,7 @@ var app = angular.module('kleine', modules)
                             if (event)
                                 $state.go('invite.organic');
                             else
-                                $state.go('confirm', { email: $scope.profile.EmailAddress});
+                                $state.go('confirm', { email: $scope.profile.EmailAddress });
                         });
                     }
 
@@ -91,8 +91,61 @@ var app = angular.module('kleine', modules)
             .state('results', {
                 url: '/results',
                 templateUrl: '/partials/results/results.html',
-                controller: function ($scope, $state, profilePrediction)
+                controller: function ($scope, $state, $http, profilePrediction)
                 {
+                    $scope.MaleCount = 0;
+                    $scope.FemaleCount = 0;
+                    $scope.PredictionCount = 0;
+
+                    $scope.Results = [];
+
+
+                    $http.get('/api/results/')
+                    .then(function (response)
+                    {
+                        if (response.data.length > 0)
+                        {
+                            var male = response.data[1];
+                            var female = response.data[0];
+
+                            $scope.MaleCount = male.Count;
+                            $scope.FemaleCount = female.Count;
+                            $scope.PredictionCount = $scope.MaleCount + $scope.FemaleCount;
+
+                            $scope.Results.push(getData(female, $scope.PredictionCount, 'girl'));
+                            $scope.Results.push(getData(male, $scope.PredictionCount, 'boy'));
+
+                            var data = [{ value: $scope.MaleCount, color: '#8cd5e0' }, { value: $scope.FemaleCount, color: '#fc7272' }];
+                            var ctx = document.getElementById("genderPie").getContext("2d");
+                            var myNewChart = new Chart(ctx).Doughnut(data);
+                        }
+
+                    });
+
+                    function getData(result, total, gender)
+                    {
+
+                        var date = new Date(parseInt(result.Date.substr(6)));
+
+                        var time = [new Date(parseInt(result.Time.substr(6)))];
+                        time.push(new Date(time[0]).addHours(4));
+
+                        var weight = [result.Weight.toFixed(1)];
+                        weight.push((result.Weight + 1.5).toFixed(1));
+
+                        var length = [result.Length.toFixed(1)];
+                        length.push((result.Length + 4).toFixed(1));
+
+                        return {
+                            GenderPercent: (result.Count / total * 100).toFixed(1),
+                            Gender: gender,
+                            Date: date,
+                            Time: time,
+                            Weight: weight,
+                            Length: length,
+                        };
+                    }
+
 
                 },
                 resolve: {
@@ -298,7 +351,7 @@ var app = angular.module('kleine', modules)
             });
     }])
 
-    .run( function ($rootScope, $state, $stateParams, profilePrediction)
+    .run(function ($rootScope, $state, $stateParams, profilePrediction)
     {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
@@ -344,35 +397,42 @@ var app = angular.module('kleine', modules)
         return input;
     }
 })
-//.animation('.collapsing', function ()
-//{
-//    return {
-//        enter: function (element, done)
-//        {
-//            //run the animation here and call done when the animation is complete
-//            return function (cancelled)
-//            {
-//                //this (optional) function will be called when the animation
-//                //completes or when the animation is cancelled (the cancelled
-//                //flag will be set to true if cancelled).
-//            };
-//        },
-//        leave: function (element, done) { },
-//        move: function (element, done) { },
+.filter('day', function ()
+{
+    return function (input, uppercase)
+    {
+        if (typeof (input) == "object")
+        {
+            var m_names = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-//        //animation that can be triggered before the class is added
-//        beforeAddClass: function (element, className, done) { },
+            var d = new Date(input);
+            var curr_date = d.getDate();
+            var sup = "";
+            if (curr_date == 1 || curr_date == 21 || curr_date == 31)
+            {
+                sup = "st";
+            }
+            else if (curr_date == 2 || curr_date == 22)
+            {
+                sup = "nd";
+            }
+            else if (curr_date == 3 || curr_date == 23)
+            {
+                sup = "rd";
+            }
+            else
+            {
+                sup = "th";
+            }
 
-//        //animation that can be triggered after the class is added
-//        addClass: function (element, className, done) { },
+            var curr_month = d.getMonth();
+            var curr_year = d.getFullYear();
 
-//        //animation that can be triggered before the class is removed
-//        beforeRemoveClass: function (element, className, done) { },
-
-//        //animation that can be triggered after the class is removed
-//        removeClass: function (element, className, done) { }
-//    };
-//});
+            return (m_names[curr_month] + " " + curr_date + sup + ", " + curr_year);
+        }
+        return input;
+    }
+})
 
 angular.module('kleine.controllers', [])
     .controller('predict', ['$scope', '$state', function ($scope, $state)

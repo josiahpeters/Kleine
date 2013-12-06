@@ -171,6 +171,12 @@ namespace Kleine.Website
         {
             var profile = getCurrentProfileFromSession();
 
+            if(request.Time != null)
+            {
+                var d = (DateTime)request.Time;
+                request.Time = new DateTime(2013, 1, 1, d.Hour, d.Minute, d.Second);
+            }
+
             Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
 
             if (request.Gender != null && !(request.Gender == "Male" || request.Gender == "Female"))
@@ -190,6 +196,12 @@ namespace Kleine.Website
             prediction = repo.Predictions.Update(prediction);
 
             return getAggregate(profile, prediction);
+        }
+
+        public List<Result> Get(ResultsRequest request)
+        {
+            var r = repo.Results.GetGenderResult();
+            return r;
         }
     }
 
@@ -245,4 +257,12 @@ namespace Kleine.Website
             this.Prediction = prediction;
         }
     }
+
+
+    [Route("/results", "GET")]
+    public class ResultsRequest : IReturn<List<Result>>
+    {
+    }
+
+    
 }

@@ -12,6 +12,8 @@ namespace Kleine.Data
         IPredictionRepository Predictions { get; set; }
         ICookieTrackerRepository CookieTrackers { get; set; }
 
+        IResultsRepository Results { get; set; }
+
         void SetUp();
     }
 }

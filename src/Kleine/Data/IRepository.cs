@@ -30,7 +30,10 @@ namespace Kleine.Data
     {
         CookieTracker GetByUniqueKey(string unique);
     }
-        
 
+    public interface IResultsRepository
+    {
+        List<Result> GetGenderResult();
+    }
 
 }

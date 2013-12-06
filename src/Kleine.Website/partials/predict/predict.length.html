@@ -16,7 +16,7 @@
         <div class="hint" ng-show="prediction.Gender == 'Male'">
             <p><strong>Male Length - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
             <div class="details">
-                <table>
+                <table class="horizontal">
                     <tr>
                         <th>2nd</th>
                         <th>5th</th>
@@ -40,20 +40,16 @@
                         <td>21.13 in</td>
                     </tr>
                 </table>
-                <table>
-                    <tr>
-                    <tr><th>2nd</th><td>18.15 in</td>    </tr>
-                    <tr><th>5th</th><td>18.41 in</td>    </tr>
-                    <tr><th>10th</th><td>18.68 in</td>   </tr>
-                    <tr><th>25th</th><td>19.14 in</td>   </tr>
-                    <tr><th>50th</th><td>19.64 in</td>   </tr>
-                    <tr><th>75th</th><td>20.14 in</td>   </tr>
-                    <tr><th>90th</th><td>20.59 in</td>   </tr>
-                    <tr><th>95th</th><td>20.87 in</td>   </tr>
-                    <tr>
-                        <th>98th</th>
-                        <td>21.13 in</td>
-                    </tr>
+                <table class="vertical">
+                    <tr><th>2nd Percentile</th> <td>18.15 in</td></tr>
+                    <tr><th>5th Percentile</th> <td>18.41 in</td></tr>
+                    <tr><th>10th Percentile</th><td>18.68 in</td></tr>
+                    <tr><th>25th Percentile</th><td>19.14 in</td></tr>
+                    <tr><th>50th Percentile</th><td>19.64 in</td></tr>
+                    <tr><th>75th Percentile</th><td>20.14 in</td></tr>
+                    <tr><th>90th Percentile</th><td>20.59 in</td></tr>
+                    <tr><th>95th Percentile</th><td>20.87 in</td></tr>
+                    <tr><th>98th Percentile</th><td>21.13 in</td></tr>
                 </table>
                 <p>Source: <a href="http://www.cdc.gov/growthcharts/who/boys_length_weight.htm" class="details">WHO growth chart</a></p>
             </div>
@@ -61,7 +57,7 @@
         <div class="hint" ng-show="prediction.Gender == 'Female'">
             <p><strong>Female Length - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
             <div class="details">
-                <table>
+                <table class="horizontal">
                     <tr>
                         <th>2nd</th>
                         <th>5th</th>
@@ -84,6 +80,17 @@
                         <td>20.56 in</td>
                         <td>20.82 in</td>
                     </tr>
+                </table>
+                <table class="vertical">
+                    <tr><th>2nd Percentile</th> <td>17.88 in</td></tr>
+                    <tr><th>5th Percentile</th> <td>18.14 in</td></tr>
+                    <tr><th>10th Percentile</th><td>18.41 in</td></tr>
+                    <tr><th>25th Percentile</th><td>18.85 in</td></tr>
+                    <tr><th>50th Percentile</th><td>19.35 in</td></tr>
+                    <tr><th>75th Percentile</th><td>19.84 in</td></tr>
+                    <tr><th>90th Percentile</th><td>20.29 in</td></tr>
+                    <tr><th>95th Percentile</th><td>20.56 in</td></tr>
+                    <tr><th>98th Percentile</th><td>20.82 in</td></tr>
                 </table>
                 <p>Source: <a href="http://www.cdc.gov/growthcharts/who/girls_length_weight.htm" class="details">WHO growth chart</a></p>
             </div>

@@ -67,5 +67,18 @@ namespace Kleine.Data
         {
             throw new NotImplementedException();
         }
+
+
+        public IResultsRepository Results
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
     }
 }

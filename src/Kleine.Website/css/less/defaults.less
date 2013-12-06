@@ -63,6 +63,7 @@ table {
             padding: 6px;
             text-align: left;
             .font-size(14px);
+            border-top: 1px solid @borderColor;
         }
 
         td {
@@ -70,7 +71,15 @@ table {
             padding: 6px;
         }
     }
+
+    thead {
+        th {
+            border: none;
+        }
+    }
 }
+
+
 
 
 .success {
@@ -206,6 +215,14 @@ img.scale {
     width: 100%;
 }
 
+table.vertical {
+    display: table;
+}
+
+table.horizontal {
+    display: none;
+}
+
 @media only screen and (min-width: 380px) {
     .banner {
         height: 190px;
@@ -219,6 +236,17 @@ img.scale {
 
     img.scale {
         width: auto;
+    }
+}
+
+
+@media only screen and (min-width: 600px) {
+    table.vertical {
+        display: none;
+    }
+
+    table.horizontal {
+        display: table;
     }
 }
 
@@ -320,4 +348,34 @@ img.scale {
     -webkit-transform: translate3d(100px, 0, 0);
     -moz-transform: translate3d(100px, 0, 0);
     transform: translate3d(100px, 0, 0);
+}
+
+ul.legend {
+    line-height: 24px;
+    li {
+        list-style: none;
+        margin-bottom: 8px;
+        .font-size(14px);
+    }
+}
+span.legend {
+    width: 18px;
+    height: 18px;
+    margin-right: .5em;
+    display: inline-block;
+    background-color: #ffffff;
+    vertical-align: text-bottom;
+
+    &.male { 
+    background-color: #8cd5e0;
+        
+    }
+    &.female { 
+    background-color: #fc7272;
+        
+    }
+}
+
+h2 span.description {
+    font-weight: normal;
 }

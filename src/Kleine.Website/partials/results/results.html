@@ -6,7 +6,30 @@
 <div class="wrapper">
     <section class="row">
         <article class="twelve column">
-            <p>We need more predictions before results can be shown.</p>
+            <h2>{{ PredictionCount }} Predictions have been made so far.</h2>
         </article>
+    </section>
+    <section class="row">
+        <div class="twelve column">
+            <h2>Gender</h2>
+            <ul class="legend">
+                <li><span class="legend male"></span><strong>Male:</strong> {{ MaleCount }} predictions</li>
+                <li><span class="legend female"></span><strong>Female:</strong> {{ FemaleCount }} predictions</li>
+            </ul>
+            <canvas id="genderPie"></canvas>
+        </div>
+    </section>
+
+    <section class="row" ng-repeat="result in Results">
+        <div class="twelve column">
+            <h2>Of the {{ result.GenderPercent }}% that think Baby Peters is a {{ result.Gender }}:</h2>
+            <ul class="legend">
+                <li>Their average predicited delivery date is: <strong>{{ result.Date|day }} </strong>.</li>
+                <li>Their average predicited delivery time range is: <strong>{{ result.Time[0]|hours }} to {{ result.Time[1]|hours }} </strong>.</li>
+                <li>Their average predicited weight range is: <strong>{{ result.Weight[0] }} lbs to {{ result.Weight[1] }}  lbs</strong>.</li>
+                <li>Their average predicited length range is: <strong>{{ result.Length[0] }} in to {{ result.Length[1] }} in</strong>.</li>
+            </ul>
+            <p></p>
+        </div>
     </section>
 </div>

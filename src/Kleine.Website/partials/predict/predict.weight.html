@@ -15,7 +15,7 @@
         <div class="hint" ng-show="prediction.Gender == 'Male'">
             <p><strong>Male Weight - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
             <div class="details">
-                <table>
+                <table class="horizontal">
                     <tr>
                         <th>2nd</th>
                         <th>5th</th>
@@ -39,13 +39,24 @@
                         <td>9.74 lbs</td>
                     </tr>
                 </table>
+                <table class="vertical">
+                    <tr><th>2nd Percentile</th> <td>5.42 lbs</td></tr>
+                    <tr><th>5th Percentile</th> <td>5.74 lbs</td></tr>
+                    <tr><th>10th Percentile</th><td>6.08 lbs</td></tr>
+                    <tr><th>25th Percentile</th><td>6.67 lbs</td></tr>
+                    <tr><th>50th Percentile</th><td>7.38 lbs</td></tr>
+                    <tr><th>75th Percentile</th><td>8.13 lbs</td></tr>
+                    <tr><th>90th Percentile</th><td>8.84 lbs</td></tr>
+                    <tr><th>95th Percentile</th><td>9.29 lbs</td></tr>
+                    <tr><th>98th Percentile</th><td>9.74 lbs</td></tr>
+                </table>
                 <p>Source: <a href="http://www.cdc.gov/growthcharts/who/boys_length_weight.htm" class="details">WHO growth chart</a></p>
             </div>
         </div>
         <div class="hint" ng-show="prediction.Gender == 'Female'">
             <p><strong>Female Weight - Birth Percentile Chart</strong> - <a ui-sref="predict.gender">Change Gender</a></p>
             <div class="details">
-                <table>
+                <table class="horizontal">
                     <tr>
                         <th>2nd</th>
                         <th>5th</th>
@@ -68,6 +79,17 @@
                         <td>8.91 lbs</td>
                         <td>9.33 lbs</td>
                     </tr>
+                </table>
+                <table class="vertical">
+                    <tr><th>2nd Percentile</th> <td>5.28 lbs</td></tr>
+                    <tr><th>5th Percentile</th> <td>5.58 lbs</td></tr>
+                    <tr><th>10th Percentile</th><td>5.90 lbs</td></tr>
+                    <tr><th>25th Percentile</th><td>6.46 lbs</td></tr>
+                    <tr><th>50th Percentile</th><td>7.13 lbs</td></tr>
+                    <tr><th>75th Percentile</th><td>7.83 lbs</td></tr>
+                    <tr><th>90th Percentile</th><td>8.49 lbs</td></tr>
+                    <tr><th>95th Percentile</th><td>8.91 lbs</td></tr>
+                    <tr><th>98th Percentile</th><td>9.33 lbs</td></tr>
                 </table>
                 <p>Source: <a href="http://www.cdc.gov/growthcharts/who/girls_length_weight.htm" class="details">WHO growth chart</a></p>
             </div>

@@ -198,6 +198,8 @@
     <Content Include="js\libs\angular\angular.js" />
     <Content Include="js\libs\angular\angular.min.js" />
     <Content Include="js\libs\angular\version.txt" />
+    <Content Include="js\libs\Chart.js" />
+    <Content Include="js\libs\Chart.min.js" />
     <Content Include="js\libs\d3.v3.min.js" />
     <Content Include="js\libs\jquery-1.10.1.min.js" />
     <Content Include="js\libs\jquery-2.0.2.min.js" />
