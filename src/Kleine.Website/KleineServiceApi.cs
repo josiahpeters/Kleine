@@ -103,7 +103,7 @@ namespace Kleine.Website
             {
                 if (request.code == "kizzlefoshizzle")
                 {
-                    repo.SetUp();
+                    //repo.SetUp();
                     return new ProfilePrediction();
                 }
 
@@ -171,11 +171,11 @@ namespace Kleine.Website
         {
             var profile = getCurrentProfileFromSession();
 
-            if(request.Time != null)
-            {
-                var d = (DateTime)request.Time;
-                request.Time = new DateTime(2013, 1, 1, d.Hour, d.Minute, d.Second);
-            }
+            //if(request.Time != null)
+            //{
+            //    var d = (DateTime)request.Time;
+            //    request.Time = new DateTime(2013, 1, 1, d.Hour, d.Minute, d.Second);
+            //}
 
             Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
 
@@ -194,6 +194,11 @@ namespace Kleine.Website
             prediction.PopulateWithNonDefaultValues(request);
 
             prediction = repo.Predictions.Update(prediction);
+
+            if (prediction.FinishDate != null && prediction.FinishDate > DateTime.MinValue)
+            {
+                notify.SendGuessToKim(profile, prediction);
+            }
 
             return getAggregate(profile, prediction);
         }

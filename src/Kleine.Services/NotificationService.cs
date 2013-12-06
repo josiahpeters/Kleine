@@ -52,6 +52,31 @@ namespace Kleine
             SendNotification("josiahpeters@gmail.com", "Baby Peters - You are invited to make a prediction", sb.ToString());
         }
 
+        public void SendGuessToKim(Profile profile, Prediction prediction)
+        {
+            try
+            {
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendFormat("<table>");
+                sb.AppendFormat("<tr><th>Field</th><th>Value</th></tr>");
+                sb.AppendFormat("<tr><th>{0}</th><td>{1}</td></tr>", "Name", profile.Name);
+                sb.AppendFormat("<tr><th>{0}</th><td>{1}</td></tr>", "Email", profile.EmailAddress);
+                sb.AppendFormat("<tr><th>{0}</th><td>{1}</td></tr>", "Gender", prediction.Gender);
+                sb.AppendFormat("<tr><th>{0}</th><td>{1}</td></tr>", "Date", ((DateTime)prediction.Date).ToString("MM/dd/yyyy"));
+                sb.AppendFormat("<tr><th>{0}</th><td>{1}</td></tr>", "Time", ((DateTime)prediction.Time).ToString("hh:mm"));
+                sb.AppendFormat("<tr><th>{0}</th><td>{1} lbs</td></tr>", "Weight", prediction.Weight);
+                sb.AppendFormat("<tr><th>{0}</th><td>{1} in</td></tr>", "Length", prediction.Length);
+                sb.AppendFormat("<tr><th>{0}</th><td>{1}</td></tr>", "Message", prediction.Message);
+                sb.AppendFormat("</table>");
+                //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
+
+                SendNotification("kimmedinepeters@gmail.com", string.Format("Baby Peters - {0} Made a Guess!", profile.Name), sb.ToString());
+            }
+            catch (Exception ex)
+            { }
+        }
+
         public void SendAuth(Profile profile, DueDate dueDate)
         {
             StringBuilder sb = new StringBuilder();
