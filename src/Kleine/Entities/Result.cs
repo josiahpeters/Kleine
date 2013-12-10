@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Kleine
 {
-    public class Result
+    public class GenderResult
     {
         public int Count { get; set; }
         public string Gender { get; set; }

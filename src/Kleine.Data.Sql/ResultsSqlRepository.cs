@@ -15,7 +15,7 @@ namespace Kleine.Data.Sql
             this.dbFactory = dbFactory;
         }
 
-        public List<Result> GetGenderResult()
+        public List<GenderResult> GetGenderResult()
         {
             using (var db = dbFactory.OpenDbConnection())
             {
@@ -29,10 +29,79 @@ FROM Predictions
 	WHERE finishdate is not null
     GROUP BY gender
 ";
-                var results = db.Query<Result>(query);
+                var results = db.Query<GenderResult>(query);
 
                 return results;
             }    
         }
+
+
+        public List<DateTimeCount> GetDateCounts(string gender = null)
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                string query = @"
+SELECT 
+	COUNT(Date) as Count, Date
+FROM	
+	Predictions
+WHERE 
+	{0} Time IS NOT NULL 
+	AND FinishDate IS NOT NULL
+GROUP BY 
+	Date,
+	DATEPART(DAY, Date)	
+ORDER BY 
+	Date
+";
+                string genderFilter = "";
+
+                if (!string.IsNullOrWhiteSpace(gender))
+                    genderFilter = " GENDER = @Gender AND ";
+
+                var results = db.Query<DateTimeCount>(string.Format(query, genderFilter), new { Gender = gender });
+
+                return results;
+            } 
+        }
+
+        public List<DateTimeCount> GetTimeCounts(string gender = null)
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                string query = @"
+SELECT 
+	COUNT(Time) as Count, Time as Date
+FROM	
+	(SELECT 
+		DATEADD (
+			HOUR, 
+			DATEPART(HOUR, Time), 
+			CAST('12/16/2013' AS DATETIME)
+		) AS Time
+	FROM (
+		SELECT DATEADD(HOUR, -8, time) as Time 
+		FROM Predictions 
+		WHERE 
+			{0} Time IS NOT NULL 
+			AND FinishDate IS NOT NULL) localTime
+	) AS normalizedHours
+	
+GROUP BY 
+	Time,
+	DATEPART(HOUR, Time)	
+";
+                string genderFilter = "";
+
+                if(!string.IsNullOrWhiteSpace(gender))
+                    genderFilter = " GENDER = @Gender AND ";
+
+                var results = db.Query<DateTimeCount>(string.Format(query, genderFilter), new { Gender = gender });
+
+                return results;
+            } 
+        }
     }
 }
+
+

@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="Data\IRepositories.cs" />
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Entities\DateTimeCount.cs" />
     <Compile Include="Entities\DueDate.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Prediction.cs" />

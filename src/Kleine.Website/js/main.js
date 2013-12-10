@@ -1,5 +1,4 @@
-/// <reference path='../../scripts/typings/angularjs/angular.d.ts' />
-/// <reference path="../jquery/jquery.d.ts" />
+// / <reference path='../Scripts/typings/angularjs/angular.d.ts' />
 var Model;
 (function (Model) {
     var DueDate = (function () {

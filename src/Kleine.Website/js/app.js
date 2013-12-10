@@ -99,14 +99,23 @@ var app = angular.module('kleine', modules)
 
                     $scope.Results = [];
 
-
                     $http.get('/api/results/')
                     .then(function (response)
                     {
-                        if (response.data.length > 0)
+                        var white = "#ffffff";
+
+                        var maleColor = "#8cd5e0";
+                        var maleColorLight = "#c8ebf0";
+
+                        var femaleColor = "#fc7272";
+                        var femaleColorLight = "#febdbd";
+
+                        if (response.data.GenderResults.length > 0)
                         {
-                            var male = response.data[1];
-                            var female = response.data[0];
+                            console.log(response.data);
+
+                            var male = response.data.GenderResults[1];
+                            var female = response.data.GenderResults[0];
 
                             $scope.MaleCount = male.Count;
                             $scope.FemaleCount = female.Count;
@@ -115,10 +124,65 @@ var app = angular.module('kleine', modules)
                             $scope.Results.push(getData(female, $scope.PredictionCount, 'girl'));
                             $scope.Results.push(getData(male, $scope.PredictionCount, 'boy'));
 
-                            var data = [{ value: $scope.MaleCount, color: '#8cd5e0' }, { value: $scope.FemaleCount, color: '#fc7272' }];
-                            var ctx = document.getElementById("genderPie").getContext("2d");
-                            var myNewChart = new Chart(ctx).Doughnut(data);
+                            var data = [{ value: $scope.MaleCount, color: maleColor }, { value: $scope.FemaleCount, color: femaleColor }];
+                            var context = document.getElementById("genderPie").getContext("2d");
+                            var myNewChart = new Chart(context).Doughnut(data);
                         }
+                        if (response.data.TimeCounts.length > 0)
+                        {
+                            var labels = ["January", "February", "March", "April", "May", "June", "July"];
+                            var maleData = []; //[65, 59, 90, 81, 56, 55, 40];
+                            var femaleData = []; //[28, 48, 40, 19, 96, 27, 100];
+
+                            
+                            var mc = 0;
+                            var fc = 0;
+
+                            for (var d in response.data.DateCounts)
+                            {
+                                var row = response.data.DateCounts[d];
+
+                                maleData.push(row.MaleCount);
+                                femaleData.push(row.MaleCount);
+                            }
+
+                            console.log(mc, fc, mc + fc);
+
+                            //for (var d in response.data.TimeCounts[1].DateTimeCounts)
+                            //{
+                            //    var row = response.data.TimeCounts[1].DateTimeCounts[d];
+
+                            //    maleData.push(row.Count);
+                            //}
+
+                            console.log(maleData, femaleData);
+
+                            var data =
+                                {
+                                    labels: labels,
+                                    datasets:
+                                        [
+                                            {
+                                                fillColor: maleColorLight,
+                                                strokeColor: maleColor,
+                                                pointColor: maleColor,
+                                                pointStrokeColor: white,
+                                                data: maleData
+                                            },
+                                            {
+                                                fillColor: femaleColorLight,
+                                                strokeColor: femaleColor,
+                                                pointColor: femaleColor,
+                                                pointStrokeColor: white,
+                                                data: femaleData
+                                            },
+                                        ]
+                                };
+
+                            var context = document.getElementById("timeChart").getContext("2d");
+                            var timeChart = new Chart(context).Line(data)
+                        }
+                        
 
                     });
 

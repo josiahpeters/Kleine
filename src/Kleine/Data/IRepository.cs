@@ -33,7 +33,9 @@ namespace Kleine.Data
 
     public interface IResultsRepository
     {
-        List<Result> GetGenderResult();
+        List<GenderResult> GetGenderResult();
+        List<DateTimeCount> GetDateCounts(string gender = null);
+        List<DateTimeCount> GetTimeCounts(string gender = null);
     }
 
 }

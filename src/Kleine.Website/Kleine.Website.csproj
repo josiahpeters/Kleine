@@ -15,7 +15,7 @@
     <RootNamespace>Kleine.Website</RootNamespace>
     <AssemblyName>Kleine.Website</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -293,27 +293,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="js\app\app.ts" />
-    <TypeScriptCompile Include="js\app\controllers.ts" />
-    <TypeScriptCompile Include="js\app\directives.ts" />
-    <TypeScriptCompile Include="js\app\models.ts" />
-    <TypeScriptCompile Include="js\app\scope.ts" />
-    <TypeScriptCompile Include="js\app\services.ts" />
+    <None Include="js\app\app.ts" />
+    <None Include="js\app\controllers.ts" />
+    <None Include="js\app\directives.ts" />
+    <None Include="js\app\models.ts" />
+    <None Include="js\app\scope.ts" />
+    <None Include="js\app\services.ts" />
     <TypeScriptCompile Include="js\Main.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-1.0.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies-1.0.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks-1.0.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource-1.0.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-resource.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-route.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize-1.0.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-sanitize.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario-1.0.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular-scenario.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
-    <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
@@ -342,7 +328,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53252</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://joey-work/</IISUrl>
+          <IISUrl>http://localhost:53252/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

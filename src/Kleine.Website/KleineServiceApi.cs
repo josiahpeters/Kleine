@@ -203,10 +203,94 @@ namespace Kleine.Website
             return getAggregate(profile, prediction);
         }
 
-        public List<Result> Get(ResultsRequest request)
+        public ResultsAggregate Get(ResultsRequest request)
         {
-            var r = repo.Results.GetGenderResult();
-            return r;
+            var genderResults = repo.Results.GetGenderResult();
+
+            var femaleDates = repo.Results.GetDateCounts("Female");
+            var maleDates = repo.Results.GetDateCounts("Male");
+
+            var femaleTimes = repo.Results.GetTimeCounts("Female");
+            var maleTimes = repo.Results.GetTimeCounts("Male");
+
+            var dates = new Dictionary<int, GenderDateTimeCount>();
+
+            foreach (var date in femaleDates)
+            {
+                var day = date.Date.DayOfYear;
+                if (dates.ContainsKey(day))
+                {
+                    dates[day].FemaleCount += date.Count;
+                }
+                else
+                {
+                    dates.Add(day, new GenderDateTimeCount
+                    {
+                        Date = date.Date,
+                        FemaleCount = date.Count
+                    });
+                }
+            }
+
+            foreach (var date in maleDates)
+            {
+                var day = date.Date.Hour;
+                if (dates.ContainsKey(day))
+                {
+                    dates[day].MaleCount += date.Count;
+                }
+                else
+                {
+                    dates.Add(day, new GenderDateTimeCount
+                    {
+                        Date = date.Date,
+                        MaleCount = date.Count
+                    });
+                }
+            }
+
+            var dateCounts = dates.Values.OrderBy(u => u.Date).ToList();
+
+            var times = new Dictionary<int, GenderDateTimeCount>();
+
+            foreach(var time in femaleTimes)
+            {
+                var hour = time.Date.Hour;
+                if(times.ContainsKey(hour))
+                {
+                    times[hour].FemaleCount += time.Count;
+                }
+                else
+                {
+                    times.Add(hour, new GenderDateTimeCount
+                    {
+                        Date = time.Date,
+                        FemaleCount = time.Count
+                    });
+                }
+            }
+
+            foreach(var time in maleTimes)
+            {
+                var hour = time.Date.Hour;
+                if(times.ContainsKey(hour))
+                {
+                    times[hour].MaleCount += time.Count;
+                }
+                else
+                {
+                    times.Add(hour, new GenderDateTimeCount
+                    {
+                        Date = time.Date,
+                        MaleCount = time.Count
+                    });
+                }
+            }
+
+
+            var timeCounts = times.Values.OrderBy(u => u.Date).ToList();
+
+            return new ResultsAggregate(genderResults, dateCounts, timeCounts);
         }
     }
 
@@ -263,9 +347,29 @@ namespace Kleine.Website
         }
     }
 
+    public class ResultsAggregate
+    {
+        [DataMember]
+        public List<GenderResult> GenderResults { get; set; }
+
+        [DataMember]
+        public List<GenderDateTimeCount> DateCounts { get; set; }
+
+        [DataMember]
+        public List<GenderDateTimeCount> TimeCounts { get; set; }
+
+        public ResultsAggregate() { }
+        public ResultsAggregate(List<GenderResult> GenderResults, List<GenderDateTimeCount> DateCounts, List<GenderDateTimeCount> TimeCounts)
+        {
+            this.GenderResults = GenderResults;
+            this.DateCounts = DateCounts;
+            this.TimeCounts = TimeCounts;
+        }
+    }
+
 
     [Route("/results", "GET")]
-    public class ResultsRequest : IReturn<List<Result>>
+    public class ResultsRequest : IReturn<ResultsAggregate>
     {
     }
 
