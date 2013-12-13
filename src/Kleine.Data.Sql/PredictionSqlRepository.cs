@@ -14,7 +14,16 @@ namespace Kleine.Data.Sql
         {
             using (var db = dbFactory.OpenDbConnection())
             {
-                return db.Select<Prediction>(p => p.ProfileId == profileId && p.DueDateId == dueDateId).FirstOrDefault();
+                var prediction = db.Select<Prediction>(p => p.ProfileId == profileId && p.DueDateId == dueDateId).FirstOrDefault();
+
+                if(prediction.Time != null)
+                {
+                    var time = ((DateTime)prediction.Time);
+
+                    prediction.Time = time.ToLocalTime();
+                }
+
+                return prediction;
             }
         }
     }

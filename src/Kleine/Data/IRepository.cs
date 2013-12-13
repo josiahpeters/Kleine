@@ -36,6 +36,8 @@ namespace Kleine.Data
         List<GenderResult> GetGenderResult();
         List<DateTimeCount> GetDateCounts(string gender = null);
         List<DateTimeCount> GetTimeCounts(string gender = null);
+        List<IntegerGroupCount> GetWeightCounts(string gender = null);
+        List<IntegerGroupCount> GetLengthCounts(string gender = null);
     }
 
 }

@@ -68,8 +68,11 @@
     <Compile Include="Entities\DateTimeCount.cs" />
     <Compile Include="Entities\DueDate.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\IntegerGroupCount.cs" />
     <Compile Include="Entities\Prediction.cs" />
     <Compile Include="Entities\InviteCode.cs" />
+    <Compile Include="Entities\PredictionOutcome.cs" />
+    <Compile Include="Entities\PredictionScore.cs" />
     <Compile Include="Entities\Profile.cs" />
     <Compile Include="Entities\CookieTracker.cs" />
     <Compile Include="Entities\Result.cs" />

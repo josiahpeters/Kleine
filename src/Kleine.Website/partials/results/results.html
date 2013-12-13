@@ -5,8 +5,117 @@
 </div>
 <div class="wrapper">
     <section class="row">
+        <article class="six column">
+            <h2>Eliana Marie Peters</h2>
+            <p>
+                <table style="margin-top: 1em;">
+                    <tr>
+                        <th>Gender</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Weight</th>
+                        <th>Length</th>
+                    </tr>
+                    <tr>
+                        <td>Female</td>
+                        <td>12/10/13</td>
+                        <td>5:42 PM</td>
+                        <td>7.2 lbs (7 lbs 3 oz) </td>
+                        <td>20.25 in</td>
+                    </tr>
+                </table>
+
+            </p>
+        </article>
+    </section>
+</div>
+<div class="wrapper">
+    <section class="row">
         <article class="twelve column">
-            <h2>{{ PredictionCount }} Predictions have been made so far.</h2>
+            <h2>Winners</h2>
+            <p>Our first place winner and second place winners were the only ones to guess the actual birth date of Baby Peters.</p>
+        </article>
+    </section>
+    <section class="row">
+        <article class="six column">
+            <h3>Heather K - First Place</h3>
+            <p>
+                <table style="margin-top: 1em;">
+                    <tr>
+                        <td>Gender</td>
+                        <td>Male</td>
+                        <td>0 pts</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>12/10/13</td>
+                        <td><strong>5 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td>3:34 pm - 7:34 pm</td>
+                        <td><strong>3 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Weight</td>
+                        <td>6.8 lbs - 8.3 lbs</td>
+                        <td><strong>3 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Length</td>
+                        <td>18.8 in - 22.8 in</td>
+                        <td><strong>2 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Points</strong></td>
+                        <td></td>
+                        <td><strong>13 pts</strong></td>
+                    </tr>
+                </table>
+            </p>
+        </article>
+        <article class="six column">
+            <h3>Meagan - Second Place</h3>
+            <p>
+                <table style="margin-top: 1em;">
+                    <tr>
+                        <td>Gender</td>
+                        <td>Male</td>
+                        <td>0 pts</td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>12/10/13</td>
+                        <td><strong>5 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Time</td>
+                        <td>10:51 pm - 2:51 am</td>
+                        <td>0 pts</td>
+                    </tr>
+                    <tr>
+                        <td>Weight</td>
+                        <td>6.2 lbs - 7.7 lbs</td>
+                        <td><strong>3 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Length</td>
+                        <td>17.6 in - 21.6 in</td>
+                        <td><strong>2 pts</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total Points</strong></td>
+                        <td></td>
+                        <td><strong>10 pts</strong></td>
+                </table>
+            </p>
+        </article>
+    </section>
+</div>
+<div class="wrapper">
+    <section class="row">
+        <article class="twelve column">
+            <h2>{{ PredictionCount }} Predictions were made.</h2>
         </article>
     </section>
     <section class="row">
@@ -20,12 +129,30 @@
         </div>
     </section>
     <section class="row">
-        <div class="twelve column">
+        <div class="six column">
+            <h2>Date</h2>
+            <p>Number of predictions for delivery on specific days by gender:</p>
+            <canvas id="dateChart"></canvas>
+        </div>
+        <div class="six column">
             <h2>Time</h2>
+            <p>Number of predictions for birth during the time of the day by gender:</p>
             <canvas id="timeChart"></canvas>
         </div>
     </section>
-    <section class="row" ng-repeat="result in Results">
+    <section class="row">
+        <div class="six column">
+            <h2>Weight</h2>
+            <p>Number of predictions for the weight at the starting range in pounds:</p>
+            <canvas id="weightChart"></canvas>
+        </div>
+        <div class="six column">
+            <h2>Length</h2>
+            <p>Predictions for the weight range at birth:</p>
+            <canvas id="lengthChart"></canvas>
+        </div>
+    </section>
+    <!--<section class="row" ng-repeat="result in Results">
         <div class="twelve column">
             <h2>Of the {{ result.GenderPercent }}% that think Baby Peters is a {{ result.Gender }}:</h2>
             <ul class="legend">
@@ -34,6 +161,31 @@
                 <li>Their average predicited weight range is: <strong>{{ result.Weight[0] }} lbs to {{ result.Weight[1] }}  lbs</strong>.</li>
                 <li>Their average predicited length range is: <strong>{{ result.Length[0] }} in to {{ result.Length[1] }} in</strong>.</li>
             </ul>
+            <p></p>
+        </div>
+    </section>-->
+
+    <section class="row" >
+        <div class="twelve column">
+            <h2>Of the {{ result.GenderPercent }}% that think Baby Peters is a {{ result.Gender }}:</h2>
+
+            <table style="margin-top: 1em;">
+                <tr>
+                    <th>Gender</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Weight</th>
+                    <th>Length</th>
+                </tr>
+                <tr ng-repeat="score in Scores">
+                    <td>{{ Gender }}</td>
+                    <td>{{ Date }}</td>
+                    <td>{{ Time }}</td>
+                    <td>{{ Weight }}</td>
+                    <td>{{ Length }}</td>
+                </tr>
+            </table>
+            
             <p></p>
         </div>
     </section>

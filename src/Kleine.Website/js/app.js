@@ -83,6 +83,11 @@ var app = angular.module('kleine', modules)
                         $state.go('start');
 
                     $scope.prediction = profilePrediction.current().Prediction;
+                    $scope.score = profilePrediction.current().PredictionScore;
+
+                    console.log(profilePrediction.current());
+
+                    
                 },
                 resolve: {
                     profilePrediction: 'profilePrediction'
@@ -102,18 +107,19 @@ var app = angular.module('kleine', modules)
                     $http.get('/api/results/')
                     .then(function (response)
                     {
-                        var white = "#ffffff";
+                        var pointColor = "#ffffff";
 
                         var maleColor = "#8cd5e0";
-                        var maleColorLight = "#c8ebf0";
+                        var maleColorLight = "rgba(200, 235, 240, 0.5)";
 
                         var femaleColor = "#fc7272";
-                        var femaleColorLight = "#febdbd";
+                        var femaleColorLight = "rgba(254, 189, 189, 0.5)";
+
+                        var height = 200;
+                        var width = 400;
 
                         if (response.data.GenderResults.length > 0)
                         {
-                            console.log(response.data);
-
                             var male = response.data.GenderResults[1];
                             var female = response.data.GenderResults[0];
 
@@ -130,32 +136,20 @@ var app = angular.module('kleine', modules)
                         }
                         if (response.data.TimeCounts.length > 0)
                         {
-                            var labels = ["January", "February", "March", "April", "May", "June", "July"];
+                            var labels = []; //["January", "February", "March", "April", "May", "June", "July"];
                             var maleData = []; //[65, 59, 90, 81, 56, 55, 40];
                             var femaleData = []; //[28, 48, 40, 19, 96, 27, 100];
 
-                            
-                            var mc = 0;
-                            var fc = 0;
-
-                            for (var d in response.data.DateCounts)
+                            for (var d in response.data.TimeCounts)
                             {
-                                var row = response.data.DateCounts[d];
+                                var row = response.data.TimeCounts[d];
 
+                                var label = d;
+
+                                labels.push(label);
                                 maleData.push(row.MaleCount);
-                                femaleData.push(row.MaleCount);
+                                femaleData.push(row.FemaleCount);
                             }
-
-                            console.log(mc, fc, mc + fc);
-
-                            //for (var d in response.data.TimeCounts[1].DateTimeCounts)
-                            //{
-                            //    var row = response.data.TimeCounts[1].DateTimeCounts[d];
-
-                            //    maleData.push(row.Count);
-                            //}
-
-                            console.log(maleData, femaleData);
 
                             var data =
                                 {
@@ -165,24 +159,191 @@ var app = angular.module('kleine', modules)
                                             {
                                                 fillColor: maleColorLight,
                                                 strokeColor: maleColor,
-                                                pointColor: maleColor,
-                                                pointStrokeColor: white,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: maleColor,
                                                 data: maleData
                                             },
                                             {
                                                 fillColor: femaleColorLight,
                                                 strokeColor: femaleColor,
-                                                pointColor: femaleColor,
-                                                pointStrokeColor: white,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: femaleColor,
                                                 data: femaleData
                                             },
                                         ]
                                 };
 
-                            var context = document.getElementById("timeChart").getContext("2d");
-                            var timeChart = new Chart(context).Line(data)
+                            var timeChart = document.getElementById("timeChart");
+                            timeChart.width = width;
+                            timeChart.height = height;
+                            var context = timeChart.getContext("2d");
+
+                            //new Chart(ctx).Bar(data, options);
+
+                            var timeChart = new Chart(context).Line(data, {
+                                scaleOverride: true,
+                                scaleSteps: 5,
+                                scaleStepWidth: 1,
+                                scaleStartValue: 0,
+                            });
                         }
-                        
+                        if (response.data.TimeCounts.length > 0)
+                        {
+                            var labels = []; //["January", "February", "March", "April", "May", "June", "July"];
+                            var maleData = []; //[65, 59, 90, 81, 56, 55, 40];
+                            var femaleData = []; //[28, 48, 40, 19, 96, 27, 100];
+
+                            for (var d in response.data.DateCounts)
+                            {
+                                var row = response.data.DateCounts[d];
+
+                                //labels.push()
+                                var date = new Date(parseInt(row.Date.substr(6)))
+
+                                var label = (date.getMonth() + 1) + '-' + date.getDate();
+
+                                labels.push(label);
+                                maleData.push(row.MaleCount);
+                                femaleData.push(row.FemaleCount);
+                            }
+
+                            var data =
+                                {
+                                    labels: labels,
+                                    datasets:
+                                        [
+                                            {
+                                                fillColor: maleColorLight,
+                                                strokeColor: maleColor,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: maleColor,
+                                                data: maleData
+                                            },
+                                            {
+                                                fillColor: femaleColorLight,
+                                                strokeColor: femaleColor,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: femaleColor,
+                                                data: femaleData
+                                            },
+                                        ]
+                                };
+
+                            var dateChart = document.getElementById("dateChart");
+                            dateChart.width = width;
+                            dateChart.height = height;
+                            var context = dateChart.getContext("2d");
+
+                            var dateChart = new Chart(context).Line(data, {
+                                scaleOverride: true,
+                                scaleSteps: 13,
+                                scaleStepWidth: 1,
+                                scaleStartValue: 0,
+                            })
+                        }
+                        if (response.data.WeightCounts.length > 0)
+                        {
+                            var labels = [];
+                            var maleData = [];
+                            var femaleData = [];
+
+                            for (var d in response.data.WeightCounts)
+                            {
+                                var row = response.data.WeightCounts[d];
+
+                                var label = row.Value + " lbs";
+
+                                labels.push(label);
+                                maleData.push(row.MaleCount);
+                                femaleData.push(row.FemaleCount);
+                            }
+
+                            var data =
+                                {
+                                    labels: labels,
+                                    datasets:
+                                        [
+                                            {
+                                                fillColor: maleColorLight,
+                                                strokeColor: maleColor,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: maleColor,
+                                                data: maleData
+                                            },
+                                            {
+                                                fillColor: femaleColorLight,
+                                                strokeColor: femaleColor,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: femaleColor,
+                                                data: femaleData
+                                            },
+                                        ]
+                                };
+
+                            var dateChart = document.getElementById("weightChart");
+                            dateChart.width = width;
+                            dateChart.height = height;
+                            var context = dateChart.getContext("2d");
+
+                            var dateChart = new Chart(context).Line(data, {
+                                scaleOverride: true,
+                                scaleSteps: 11,
+                                scaleStepWidth: 2,
+                                scaleStartValue: 0,
+                            })
+                        }
+
+                        if (response.data.LengthCounts.length > 0)
+                        {
+                            var labels = [];
+                            var maleData = [];
+                            var femaleData = [];
+
+                            for (var d in response.data.LengthCounts)
+                            {
+                                var row = response.data.LengthCounts[d];
+
+                                var label = row.Value + " in";
+
+                                labels.push(label);
+                                maleData.push(row.MaleCount);
+                                femaleData.push(row.FemaleCount);
+                            }
+
+                            var data =
+                                {
+                                    labels: labels,
+                                    datasets:
+                                        [
+                                            {
+                                                fillColor: maleColorLight,
+                                                strokeColor: maleColor,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: maleColor,
+                                                data: maleData
+                                            },
+                                            {
+                                                fillColor: femaleColorLight,
+                                                strokeColor: femaleColor,
+                                                pointColor: pointColor,
+                                                pointStrokeColor: femaleColor,
+                                                data: femaleData
+                                            },
+                                        ]
+                                };
+
+                            var dateChart = document.getElementById("lengthChart");
+                            dateChart.width = width;
+                            dateChart.height = height;
+                            var context = dateChart.getContext("2d");
+
+                            var dateChart = new Chart(context).Line(data, {
+                                scaleOverride: true,
+                                scaleSteps: 9,
+                                scaleStepWidth: 2,
+                                scaleStartValue: 0,
+                            })
+                        }
 
                     });
 

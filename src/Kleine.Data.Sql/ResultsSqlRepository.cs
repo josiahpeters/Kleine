@@ -46,7 +46,8 @@ SELECT
 FROM	
 	Predictions
 WHERE 
-	{0} Time IS NOT NULL 
+	{0} 
+    Time IS NOT NULL 
 	AND FinishDate IS NOT NULL
 GROUP BY 
 	Date,
@@ -83,7 +84,8 @@ FROM
 		SELECT DATEADD(HOUR, -8, time) as Time 
 		FROM Predictions 
 		WHERE 
-			{0} Time IS NOT NULL 
+			{0} 
+            Time IS NOT NULL 
 			AND FinishDate IS NOT NULL) localTime
 	) AS normalizedHours
 	
@@ -100,6 +102,68 @@ GROUP BY
 
                 return results;
             } 
+        }
+
+        public List<IntegerGroupCount> GetWeightCounts(string gender = null)
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                string query = @"
+SELECT 
+	COUNT(weight) As Count,
+	weight as Value
+FROM
+	(
+	SELECT 
+		FLOOR (weight) as weight 
+	FROM Predictions
+	WHERE 
+			{0} 
+			Time IS NOT NULL 
+			AND FinishDate IS NOT NULL
+	) weightGroup
+group by weight	
+";
+                string genderFilter = "";
+
+                if (!string.IsNullOrWhiteSpace(gender))
+                    genderFilter = " GENDER = @Gender AND ";
+
+                var results = db.Query<IntegerGroupCount>(string.Format(query, genderFilter), new { Gender = gender });
+
+                return results;
+            }
+        }
+
+        public List<IntegerGroupCount> GetLengthCounts(string gender = null)
+        {
+            using (var db = dbFactory.OpenDbConnection())
+            {
+                string query = @"
+SELECT 
+	COUNT(Length) As Count,
+	Length as Value
+FROM
+	(
+	SELECT 
+		FLOOR (Length) as Length 
+	FROM Predictions
+	WHERE 
+			{0} 
+			Time IS NOT NULL 
+			AND FinishDate IS NOT NULL
+	) lengthGroup
+group by Length	
+";
+                string genderFilter = "";
+
+                if (!string.IsNullOrWhiteSpace(gender))
+                    genderFilter = " GENDER = @Gender AND ";
+
+                var results = db.Query<IntegerGroupCount>(string.Format(query, genderFilter), new { Gender = gender });
+
+                return results;
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Kleine.Website
         public KleineServiceApi(IRepositories repo, INotification notify)
         {
             this.repo = repo;
-            this.notify = notify;            
+            this.notify = notify;
         }
 
 
@@ -65,10 +65,52 @@ namespace Kleine.Website
 
         private ProfilePrediction getAggregate(Profile profile, Prediction prediction = null)
         {
-            if (profile != null && prediction == null)
-                prediction = repo.Predictions.GetByProfileIdAndDueDateId(profile.Id, 1);
+            PredictionScore predictionScore = null;
 
-            return new ProfilePrediction(profile, prediction);
+            PredictionOutcome outcome = new PredictionOutcome
+            {
+                Gender = "Female",
+                Date = new DateTime(2013, 12, 10),
+                Time = new DateTime(2013, 12, 10, 17, 42, 0),
+                Weight = 7.2M,
+                Length = 20.75M
+            };
+
+            if (profile != null && prediction == null)
+            {
+                prediction = repo.Predictions.GetByProfileIdAndDueDateId(profile.Id, 1);
+                predictionScore = getScore(prediction, outcome);
+            }
+
+            return new ProfilePrediction(profile, prediction, predictionScore);
+        }
+
+        private PredictionScore getScore(Prediction prediction, PredictionOutcome outcome)
+        {
+            PredictionScore score = new PredictionScore();           
+
+            var date = (DateTime)prediction.Date;
+            var time = ((DateTime)prediction.Time).ToLocalTime();
+            time = new DateTime(2013, 12, 10, time.Hour, time.Minute, 0);
+
+            if (prediction.Gender == outcome.Gender)
+                score.Gender = 2;
+
+            if (date.Month == outcome.Date.Month && date.Day == outcome.Date.Day)
+                score.Date = 5;
+
+            var timedif = (outcome.Time - time);
+
+            if (timedif.TotalHours <= 4 && timedif.TotalHours >= 0)
+                score.Time = 3;
+
+            if (prediction.Weight <= outcome.Weight && prediction.Weight <= (outcome.Weight+1.5M))
+                score.Weight = 3;
+
+            if (prediction.Length <= outcome.Length && prediction.Length <= outcome.Length + 2M)
+                score.Length = 2;
+
+            return score;
         }
 
         private Profile getCurrentProfileFromSession()
@@ -137,7 +179,7 @@ namespace Kleine.Website
 
             repo.Predictions.Create(new Prediction { ProfileId = profile.Id, DueDateId = dueDate.Id });
 
-            notify.SendAuth(profile, dueDate);
+            //notify.SendAuth(profile, dueDate);
 
             // store profile Id in session and set a long lasting cookie associated with the profile
             setProfileSession(profile);
@@ -171,12 +213,6 @@ namespace Kleine.Website
         {
             var profile = getCurrentProfileFromSession();
 
-            //if(request.Time != null)
-            //{
-            //    var d = (DateTime)request.Time;
-            //    request.Time = new DateTime(2013, 1, 1, d.Hour, d.Minute, d.Second);
-            //}
-
             Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
 
             if (request.Gender != null && !(request.Gender == "Male" || request.Gender == "Female"))
@@ -205,13 +241,39 @@ namespace Kleine.Website
 
         public ResultsAggregate Get(ResultsRequest request)
         {
+            var genderResults = GenderResults();
+
+            var dateCounts = DateCounts();
+
+            var timeCounts = TimeCounts();
+
+            var weightCounts = WeightCounts();
+
+            var lengthCounts = LengthCounts();
+
+            var rankings = getRankings();
+
+            return new ResultsAggregate(genderResults, dateCounts, timeCounts, weightCounts, lengthCounts);
+        }
+
+        private object getRankings()
+        {
+            var profiles = repo.Profiles.GetAll();
+            var predictions = repo.Predictions.GetAll().Where(u => u.FinishDate != null);
+
+            return null;
+        }
+
+        List<GenderResult> GenderResults()
+        {
             var genderResults = repo.Results.GetGenderResult();
 
+            return genderResults;
+        }
+        List<GenderDateTimeCount> DateCounts()
+        {
             var femaleDates = repo.Results.GetDateCounts("Female");
             var maleDates = repo.Results.GetDateCounts("Male");
-
-            var femaleTimes = repo.Results.GetTimeCounts("Female");
-            var maleTimes = repo.Results.GetTimeCounts("Male");
 
             var dates = new Dictionary<int, GenderDateTimeCount>();
 
@@ -234,7 +296,7 @@ namespace Kleine.Website
 
             foreach (var date in maleDates)
             {
-                var day = date.Date.Hour;
+                var day = date.Date.DayOfYear;
                 if (dates.ContainsKey(day))
                 {
                     dates[day].MaleCount += date.Count;
@@ -251,12 +313,19 @@ namespace Kleine.Website
 
             var dateCounts = dates.Values.OrderBy(u => u.Date).ToList();
 
+            return dateCounts;
+        }
+        List<GenderDateTimeCount> TimeCounts()
+        {
+            var femaleTimes = repo.Results.GetTimeCounts("Female");
+            var maleTimes = repo.Results.GetTimeCounts("Male");
+
             var times = new Dictionary<int, GenderDateTimeCount>();
 
-            foreach(var time in femaleTimes)
+            foreach (var time in femaleTimes)
             {
                 var hour = time.Date.Hour;
-                if(times.ContainsKey(hour))
+                if (times.ContainsKey(hour))
                 {
                     times[hour].FemaleCount += time.Count;
                 }
@@ -270,10 +339,10 @@ namespace Kleine.Website
                 }
             }
 
-            foreach(var time in maleTimes)
+            foreach (var time in maleTimes)
             {
                 var hour = time.Date.Hour;
-                if(times.ContainsKey(hour))
+                if (times.ContainsKey(hour))
                 {
                     times[hour].MaleCount += time.Count;
                 }
@@ -286,12 +355,99 @@ namespace Kleine.Website
                     });
                 }
             }
-
-
             var timeCounts = times.Values.OrderBy(u => u.Date).ToList();
 
-            return new ResultsAggregate(genderResults, dateCounts, timeCounts);
+            return timeCounts;
         }
+        List<GenderIntegerGroupCount> WeightCounts()
+        {
+            var femaleWeights = repo.Results.GetWeightCounts("Female");
+            var maleWeights = repo.Results.GetWeightCounts("Male");
+
+            var weights = new Dictionary<int, GenderIntegerGroupCount>();
+
+            foreach (var weight in femaleWeights)
+            {
+                var value = weight.Value;
+                if (weights.ContainsKey(value))
+                {
+                    weights[value].FemaleCount += weight.Count;
+                }
+                else
+                {
+                    weights.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        FemaleCount = weight.Count
+                    });
+                }
+            }
+
+            foreach (var weight in maleWeights)
+            {
+                var value = weight.Value;
+                if (weights.ContainsKey(value))
+                {
+                    weights[value].MaleCount += weight.Count;
+                }
+                else
+                {
+                    weights.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        MaleCount = weight.Count
+                    });
+                }
+            }
+            var weightCounts = weights.Values.OrderBy(u => u.Value).ToList();
+
+            return weightCounts;
+        }
+        List<GenderIntegerGroupCount> LengthCounts()
+        {
+            var femaleLengths = repo.Results.GetLengthCounts("Female");
+            var maleLengths = repo.Results.GetLengthCounts("Male");
+
+            var lengths = new Dictionary<int, GenderIntegerGroupCount>();
+
+            foreach (var length in femaleLengths)
+            {
+                var value = length.Value;
+                if (lengths.ContainsKey(value))
+                {
+                    lengths[value].FemaleCount += length.Count;
+                }
+                else
+                {
+                    lengths.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        FemaleCount = length.Count
+                    });
+                }
+            }
+
+            foreach (var length in maleLengths)
+            {
+                var value = length.Value;
+                if (lengths.ContainsKey(value))
+                {
+                    lengths[value].MaleCount += length.Count;
+                }
+                else
+                {
+                    lengths.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        MaleCount = length.Count
+                    });
+                }
+            }
+            var lengthCounts = lengths.Values.OrderBy(u => u.Value).ToList();
+
+            return lengthCounts;
+        }
+
     }
 
 
@@ -334,16 +490,20 @@ namespace Kleine.Website
         [DataMember]
         public Prediction Prediction { get; set; }
 
+        [DataMember]
+        public PredictionScore PredictionScore { get; set; }
+
         public ProfilePrediction() { }
         public ProfilePrediction(Profile profile)
         {
             this.Profile = profile;
             this.Prediction = null;
         }
-        public ProfilePrediction(Profile profile, Prediction prediction)
+        public ProfilePrediction(Profile profile, Prediction prediction, PredictionScore predictionScore = null)
         {
             this.Profile = profile;
             this.Prediction = prediction;
+            this.PredictionScore = predictionScore;
         }
     }
 
@@ -358,12 +518,24 @@ namespace Kleine.Website
         [DataMember]
         public List<GenderDateTimeCount> TimeCounts { get; set; }
 
+        [DataMember]
+        public List<GenderIntegerGroupCount> WeightCounts { get; set; }
+
+        [DataMember]
+        public List<GenderIntegerGroupCount> LengthCounts { get; set; }
+
         public ResultsAggregate() { }
-        public ResultsAggregate(List<GenderResult> GenderResults, List<GenderDateTimeCount> DateCounts, List<GenderDateTimeCount> TimeCounts)
+        public ResultsAggregate(List<GenderResult> GenderResults,
+            List<GenderDateTimeCount> DateCounts,
+            List<GenderDateTimeCount> TimeCounts,
+            List<GenderIntegerGroupCount> WeightCounts,
+            List<GenderIntegerGroupCount> LengthCounts)
         {
             this.GenderResults = GenderResults;
             this.DateCounts = DateCounts;
             this.TimeCounts = TimeCounts;
+            this.WeightCounts = WeightCounts;
+            this.LengthCounts = LengthCounts;
         }
     }
 
@@ -373,5 +545,5 @@ namespace Kleine.Website
     {
     }
 
-    
+
 }

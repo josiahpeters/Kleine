@@ -95,9 +95,12 @@ app.factory('profilePrediction', ['$http', function ($http)
     function setCurrentData(data)
     {
         currentData.Profile = data.Profile;
-
         if (currentData.Profile === undefined)
             currentData.Profile = {};
+
+        currentData.PredictionScore = data.PredictionScore;
+        if (currentData.PredictionScore === undefined)
+            currentData.PredictionScore = {};
 
         mapPrediction(currentData.Prediction, data.Prediction);
     }
@@ -112,6 +115,8 @@ app.factory('profilePrediction', ['$http', function ($http)
         if (predict !== undefined && predict.Time !== undefined)
         {
             time = [new Date(parseInt(predict.Time.substr(6)))];
+
+            console.log("actual time", predict.Time, time);
             time.push(new Date(time[0]).addHours(4));
         }
         var weight = undefined;
