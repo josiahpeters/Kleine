@@ -84,10 +84,11 @@ var app = angular.module('kleine', modules)
 
                     $scope.prediction = profilePrediction.current().Prediction;
                     $scope.score = profilePrediction.current().PredictionScore;
+                    $scope.score = profilePrediction.current().PredictionScore;
 
                     console.log(profilePrediction.current());
 
-                    
+
                 },
                 resolve: {
                     profilePrediction: 'profilePrediction'
@@ -117,6 +118,8 @@ var app = angular.module('kleine', modules)
 
                         var height = 200;
                         var width = 400;
+
+
 
                         if (response.data.GenderResults.length > 0)
                         {
@@ -344,7 +347,6 @@ var app = angular.module('kleine', modules)
                                 scaleStartValue: 0,
                             })
                         }
-
                     });
 
                     function getData(result, total, gender)
@@ -371,6 +373,29 @@ var app = angular.module('kleine', modules)
                         };
                     }
 
+
+                },
+                resolve: {
+                    profilePrediction: 'profilePrediction'
+                },
+            })
+            .state('rankings', {
+                url: '/rankings',
+                templateUrl: '/partials/results/rankings.html',
+                controller: function ($scope, $state, $http, profilePrediction)
+                {
+                    $scope.Rankings = [];
+
+
+                    $http.get('/api/results/rankings')
+                    .then(function (response)
+                    {
+                        if (response.data.length > 0)
+                        {
+                            $scope.Rankings = response.data;
+                        }
+
+                    });
 
                 },
                 resolve: {
@@ -587,6 +612,11 @@ var app = angular.module('kleine', modules)
 {
     return function (input, uppercase)
     {
+        if (typeof (input) == "string")
+        {
+            input = new Date(parseInt(input.substr(6)));
+        }
+
         if (typeof (input) == "object")
         {
             var hours = input.getHours();
@@ -610,9 +640,33 @@ var app = angular.module('kleine', modules)
         return input;
     }
 })
+.filter('hoursFour', function ()
+{
+    return function (input)
+    {
+
+        if (typeof (input) == "object")
+        {
+            input.setHours(input.getHours() + 4);
+            return input;
+        }
+    }
+})
+.filter('ssDate', function ()
+{
+    return function (input)
+    {
+        if (typeof (input) == "string")
+        {
+            return new Date(parseInt(input.substr(6)));
+        }
+        else
+            return input;
+    }
+})
 .filter('date', function ()
 {
-    return function (input, uppercase)
+    return function (input)
     {
         if (typeof (input) == "object")
         {

@@ -90,6 +90,13 @@ table thead th {
 .success p {
   margin-top: 1em;
 }
+td.ranking {
+  text-decoration: line-through;
+}
+td.ranking.correct {
+  color: #539032;
+  text-decoration: none;
+}
 .hint {
   border: 1px solid #ddd;
   border: 1px solid #43cee6;
@@ -196,6 +203,11 @@ table.vertical {
 table.horizontal {
   display: none;
 }
+table.rankings th,
+table.rankings td {
+  font-size: 10px;
+  font-size: 1rem;
+}
 @media only screen and (min-width: 380px) {
   .banner {
     height: 190px;
@@ -216,8 +228,18 @@ table.horizontal {
   table.horizontal {
     display: table;
   }
+  table.rankings th,
+  table.rankings td {
+    font-size: 12px;
+    font-size: 1.2rem;
+  }
 }
 @media only screen and (min-width: 768px) {
+  table.rankings th,
+  table.rankings td {
+    font-size: 14px;
+    font-size: 1.4rem;
+  }
   .banner {
     height: 235px;
   }
@@ -238,6 +260,11 @@ table.horizontal {
   }
 }
 @media only screen and (min-width: 966px) {
+  table.rankings th,
+  table.rankings td {
+    font-size: 16px;
+    font-size: 1.6rem;
+  }
   .banner {
     height: 275px;
   }

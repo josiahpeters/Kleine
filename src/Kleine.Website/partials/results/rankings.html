@@ -1,0 +1,38 @@
+﻿<div class="wrapper shaded">
+    <section class="row">
+        <h1>Rankings</h1>
+    </section>
+</div>
+<section class="row">
+    <div class="twelve column">
+        <p>Ordered by most points to the least, you can checkout where you fit in the overall rankings.</p>
+        <p>Want to see who won? Go check out the final <a ui-sref="results">results</a>.</p>
+        <table style="margin-top: 1em;" class="rankings">
+            <thead>
+                <tr>
+                    <th>Place</th>
+                    <th>Name</th>
+                    <th>Points</th>
+                    <th>Gender</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Weight</th>
+                    <th>Length</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="rank in Rankings">
+                <td>{{ rank.Place }}</td>
+                <td>{{ rank.Name }}</td>
+                <td>{{ rank.Score.Total }}</td>
+                <td class="ranking" ng-class="{correct: rank.Score.Gender > 0}">{{ rank.Prediction.Gender }}</td>
+                <td class="ranking" ng-class="{correct: rank.Score.Date > 0}">{{ rank.Prediction.Date|ssDate|date }}</td>
+                <td class="ranking" ng-class="{correct: rank.Score.Time > 0}">{{ (rank.Prediction.Time|ssDate|hours) + ' - ' + (rank.Prediction.Time|ssDate|hoursFour|hours)}}</td>
+                <td class="ranking" ng-class="{correct: rank.Score.Weight > 0}">{{ rank.Prediction.Weight }} lbs - {{ 1.5 + rank.Prediction.Weight }} lbs</td>
+                <td class="ranking" ng-class="{correct: rank.Score.Length > 0}">{{ rank.Prediction.Length }} in - {{ rank.Prediction.Length+2 }} in</td>
+            </tr>
+        </table>
+
+        <p></p>
+    </div>
+</section>
+</div>

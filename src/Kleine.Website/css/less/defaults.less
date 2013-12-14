@@ -99,6 +99,14 @@ table {
     }
 }
 
+td.ranking {
+    text-decoration: line-through;
+}
+
+    td.ranking.correct {
+        color: #539032;
+        text-decoration: none;
+    }
 
 .hint {
     border: 1px solid #ddd;
@@ -223,6 +231,12 @@ table.horizontal {
     display: none;
 }
 
+table.rankings {
+    th, td {
+        .font-size(10px);
+    }
+}
+
 @media only screen and (min-width: 380px) {
     .banner {
         height: 190px;
@@ -248,10 +262,21 @@ table.horizontal {
     table.horizontal {
         display: table;
     }
+
+    table.rankings {
+    th, td {
+        .font-size(12px);
+    }
+}
 }
 
 @media only screen and (min-width: 768px) {
 
+    table.rankings {
+    th, td {
+        .font-size(14px);
+    }
+}
 
     .banner {
         height: 235px;
@@ -279,6 +304,13 @@ table.horizontal {
 }
 
 @media only screen and (min-width: 966px) {
+
+    table.rankings {
+    th, td {
+        .font-size(16px);
+    }
+}
+
     .banner {
         height: 275px;
 
@@ -352,12 +384,14 @@ table.horizontal {
 
 ul.legend {
     line-height: 24px;
+
     li {
         list-style: none;
         margin-bottom: 8px;
         .font-size(14px);
     }
 }
+
 span.legend {
     width: 18px;
     height: 18px;
@@ -366,13 +400,12 @@ span.legend {
     background-color: #ffffff;
     vertical-align: text-bottom;
 
-    &.male { 
-    background-color: #8cd5e0;
-        
+    &.male {
+        background-color: #8cd5e0;
     }
-    &.female { 
-    background-color: #fc7272;
-        
+
+    &.female {
+        background-color: #fc7272;
     }
 }
 

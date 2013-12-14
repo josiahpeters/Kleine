@@ -29,12 +29,22 @@ namespace Kleine.Website
     {
         IRepositories repo;
         INotification notify;
+        PredictionOutcome outcome;
 
         // Due Dates
         public KleineServiceApi(IRepositories repo, INotification notify)
         {
             this.repo = repo;
             this.notify = notify;
+
+            this.outcome = new PredictionOutcome
+            {
+                Gender = "Female",
+                Date = new DateTime(2013, 12, 10),
+                Time = new DateTime(2013, 12, 10, 17, 42, 0),
+                Weight = 7.2M,
+                Length = 20.75M
+            };
         }
 
 
@@ -67,14 +77,7 @@ namespace Kleine.Website
         {
             PredictionScore predictionScore = null;
 
-            PredictionOutcome outcome = new PredictionOutcome
-            {
-                Gender = "Female",
-                Date = new DateTime(2013, 12, 10),
-                Time = new DateTime(2013, 12, 10, 17, 42, 0),
-                Weight = 7.2M,
-                Length = 20.75M
-            };
+
 
             if (profile != null && prediction == null)
             {
@@ -87,29 +90,33 @@ namespace Kleine.Website
 
         private PredictionScore getScore(Prediction prediction, PredictionOutcome outcome)
         {
-            PredictionScore score = new PredictionScore();           
+            PredictionScore score = new PredictionScore();
 
-            var date = (DateTime)prediction.Date;
-            var time = ((DateTime)prediction.Time).ToLocalTime();
-            time = new DateTime(2013, 12, 10, time.Hour, time.Minute, 0);
+            if (prediction.FinishDate != null)
+            {
 
-            if (prediction.Gender == outcome.Gender)
-                score.Gender = 2;
+                var date = (DateTime)prediction.Date;
+                var time = ((DateTime)prediction.Time).ToLocalTime();
+                time = new DateTime(2013, 12, 10, time.Hour, time.Minute, 0);
 
-            if (date.Month == outcome.Date.Month && date.Day == outcome.Date.Day)
-                score.Date = 5;
+                if (prediction.Gender == outcome.Gender)
+                    score.Gender = 3;
 
-            var timedif = (outcome.Time - time);
+                if (date.Month == outcome.Date.Month && date.Day == outcome.Date.Day)
+                    score.Date = 5;
 
-            if (timedif.TotalHours <= 4 && timedif.TotalHours >= 0)
-                score.Time = 3;
+                var timedif = (outcome.Time - time);
 
-            if (prediction.Weight <= outcome.Weight && prediction.Weight <= (outcome.Weight+1.5M))
-                score.Weight = 3;
+                if (timedif.TotalHours <= 4 && timedif.TotalHours >= 0)
+                    score.Time = 4;
 
-            if (prediction.Length <= outcome.Length && prediction.Length <= outcome.Length + 2M)
-                score.Length = 2;
+                if (prediction.Weight <= outcome.Weight && prediction.Weight <= (outcome.Weight + 1.5M))
+                    score.Weight = 2;
 
+                if (prediction.Length <= outcome.Length && outcome.Length <= prediction.Length + 2M)
+                    score.Length = 1;
+
+            }
             return score;
         }
 
@@ -251,17 +258,66 @@ namespace Kleine.Website
 
             var lengthCounts = LengthCounts();
 
-            var rankings = getRankings();
 
             return new ResultsAggregate(genderResults, dateCounts, timeCounts, weightCounts, lengthCounts);
         }
 
-        private object getRankings()
+        public List<PredictionPlacement> Get(RankingsRequest request)
         {
-            var profiles = repo.Profiles.GetAll();
-            var predictions = repo.Predictions.GetAll().Where(u => u.FinishDate != null);
+            var rankings = getRankings();
 
-            return null;
+            return rankings;
+        }
+
+        private List<PredictionPlacement> getRankings()
+        {
+            var predictions = repo.Predictions.GetAll().Where(u => u.FinishDate != null).ToDictionary(t => t.ProfileId, t => t);
+            var profiles = repo.Profiles.GetAll().ToDictionary(t => t.Id, t => t);
+
+            List<PredictionPlacement> placements = new List<PredictionPlacement>();
+
+            
+
+            foreach (var key in predictions.Keys)
+            {
+                var profile = profiles[key];
+                var prediction = predictions[key];
+
+                prediction.Time = ((DateTime)prediction.Time).ToLocalTime();
+
+                string name = profile.Name ?? "";
+
+                var names = name.Split(' ');
+
+                if (name.Contains(" "))
+                    name = string.Format("{0} {1}.", names[0], names[1].Substring(0,1));
+
+
+                placements.Add(new PredictionPlacement
+                {
+                    Name = name,
+                    Prediction = prediction,
+                    Score = getScore(prediction, outcome),
+                });
+            }
+
+            placements = placements.OrderByDescending(u => u.Score.Total).ToList();
+
+            int place = 0;
+            int totalPoints = 15;
+
+            foreach (var placement in placements)
+            {
+                if (placement.Score.Total != totalPoints)
+                {
+                    place++;
+                    totalPoints = placement.Score.Total;
+                }
+
+                placement.Place = place;
+            }
+
+            return placements;
         }
 
         List<GenderResult> GenderResults()
@@ -523,19 +579,15 @@ namespace Kleine.Website
 
         [DataMember]
         public List<GenderIntegerGroupCount> LengthCounts { get; set; }
-
         public ResultsAggregate() { }
-        public ResultsAggregate(List<GenderResult> GenderResults,
-            List<GenderDateTimeCount> DateCounts,
-            List<GenderDateTimeCount> TimeCounts,
-            List<GenderIntegerGroupCount> WeightCounts,
-            List<GenderIntegerGroupCount> LengthCounts)
+
+        public ResultsAggregate(List<GenderResult> genderResults, List<GenderDateTimeCount> dateCounts, List<GenderDateTimeCount> timeCounts, List<GenderIntegerGroupCount> weightCounts, List<GenderIntegerGroupCount> lengthCounts)
         {
-            this.GenderResults = GenderResults;
-            this.DateCounts = DateCounts;
-            this.TimeCounts = TimeCounts;
-            this.WeightCounts = WeightCounts;
-            this.LengthCounts = LengthCounts;
+            this.GenderResults = genderResults;
+            this.DateCounts = dateCounts;
+            this.TimeCounts = timeCounts;
+            this.WeightCounts = weightCounts;
+            this.LengthCounts = lengthCounts;
         }
     }
 
@@ -544,6 +596,13 @@ namespace Kleine.Website
     public class ResultsRequest : IReturn<ResultsAggregate>
     {
     }
+
+    [Route("/results/rankings", "GET")]
+    public class RankingsRequest : IReturn<List<PredictionPlacement>>
+    {
+    }
+
+    
 
 
 }

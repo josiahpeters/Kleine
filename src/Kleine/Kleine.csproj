@@ -72,6 +72,7 @@
     <Compile Include="Entities\Prediction.cs" />
     <Compile Include="Entities\InviteCode.cs" />
     <Compile Include="Entities\PredictionOutcome.cs" />
+    <Compile Include="Entities\PredictionPlacement.cs" />
     <Compile Include="Entities\PredictionScore.cs" />
     <Compile Include="Entities\Profile.cs" />
     <Compile Include="Entities\CookieTracker.cs" />
