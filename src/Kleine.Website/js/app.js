@@ -9,11 +9,16 @@ var app = angular.module('kleine', modules)
         $urlRouterProvider.otherwise("/");
         $stateProvider
             .state('welcome', {
-                url: '/',
+                url: '/?auth',
                 templateUrl: '/partials/welcome.html',
-                controller: function ($scope, $state, profilePrediction)
+                controller: function ($scope, $state, $stateParams, profilePrediction)
                 {
                     $scope.profile = profilePrediction.current().Profile;
+
+                    if ($stateParams.auth != null)
+                    {
+                        $scope.message = "We were unable to verify your identity, please use the unique link from the email we sent you when you made your prediction to view your results.";
+                    }
 
                     $scope.makePrediction = function ($event)
                     {
@@ -77,18 +82,19 @@ var app = angular.module('kleine', modules)
             .state('prediction', {
                 url: '/prediction',
                 templateUrl: '/partials/prediction.html',
-                controller: function ($scope, $state, profilePrediction)
+                controller: function ($scope, $state, $stateParams, profilePrediction)
                 {
                     if (profilePrediction.current().Prediction === undefined || profilePrediction.current().Prediction.FinishDate === undefined)
-                        $state.go('start');
+                    {
+                        $state.go('welcome', { auth: false });
+                    }
+                    else
+                    {
 
-                    $scope.prediction = profilePrediction.current().Prediction;
-                    $scope.score = profilePrediction.current().PredictionScore;
-                    $scope.score = profilePrediction.current().PredictionScore;
-
-                    console.log(profilePrediction.current());
-
-
+                        $scope.prediction = profilePrediction.current().Prediction;
+                        $scope.score = profilePrediction.current().PredictionScore;
+                        $scope.score = profilePrediction.current().PredictionScore;
+                    }
                 },
                 resolve: {
                     profilePrediction: 'profilePrediction'
@@ -444,161 +450,162 @@ var app = angular.module('kleine', modules)
                 {
                     profilePrediction.fetch($stateParams.code).then(function ()
                     {
-                        $state.go('predict.start');
+                        //$state.go('predict.start'); prediction
+                        $state.go('prediction');
                     });
                 },
             })
-            .state('predict', {
-                //url: '/{name}/{id}/predict',
-                url: '/predict',
-                templateUrl: '/partials/predict/predict.html',
-                controller: function ($scope, $state, $stateParams, profilePrediction)
-                {
-                    if (profilePrediction.current().Profile === undefined || profilePrediction.current().Profile.Name === undefined)
-                        $state.go('start');
+        //.state('predict', {
+        //    //url: '/{name}/{id}/predict',
+        //    url: '/predict',
+        //    templateUrl: '/partials/predict/predict.html',
+        //    controller: function ($scope, $state, $stateParams, profilePrediction)
+        //    {
+        //        if (profilePrediction.current().Profile === undefined || profilePrediction.current().Profile.Name === undefined)
+        //            $state.go('start');
 
-                    if (profilePrediction.current().Prediction !== undefined && profilePrediction.current().Prediction.FinishDate !== undefined)
-                        $state.go('prediction');
+        //        if (profilePrediction.current().Prediction !== undefined && profilePrediction.current().Prediction.FinishDate !== undefined)
+        //            $state.go('prediction');
 
-                    $scope.prediction = profilePrediction.current().Prediction;
-                },
-                resolve: {
-                    profilePrediction: 'profilePrediction',
-                },
-                abstract: true,
-            })
-            .state('predict.start', {
-                url: '/start?code',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.start.html',
-                        controller: function ($scope, $state, $stateParams, profilePrediction)
-                        {
-                        }
-                    }
-                }
+        //        $scope.prediction = profilePrediction.current().Prediction;
+        //    },
+        //    resolve: {
+        //        profilePrediction: 'profilePrediction',
+        //    },
+        //    abstract: true,
+        //})
+        //.state('predict.start', {
+        //    url: '/start?code',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.start.html',
+        //            controller: function ($scope, $state, $stateParams, profilePrediction)
+        //            {
+        //            }
+        //        }
+        //    }
 
-            })
-            .state('predict.gender', {
-                url: '/gender',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.gender.html',
-                        controller: function ($scope, $state, $stateParams, profilePrediction)
-                        {
-                            $scope.chooseGender = function (gender)
-                            {
-                                var first = true;
+        //})
+        //.state('predict.gender', {
+        //    url: '/gender',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.gender.html',
+        //            controller: function ($scope, $state, $stateParams, profilePrediction)
+        //            {
+        //                $scope.chooseGender = function (gender)
+        //                {
+        //                    var first = true;
 
-                                if ($scope.prediction.Gender != undefined)
-                                    first = false;
+        //                    if ($scope.prediction.Gender != undefined)
+        //                        first = false;
 
-                                $scope.prediction.Gender = gender;
+        //                    $scope.prediction.Gender = gender;
 
-                                if (first)
-                                    $state.go('predict.date');
-                            }
-                        }
-                    }
-                },
-                onExit: function (profilePrediction)
-                {
-                    profilePrediction.savePrediction();
-                }
-            })
-            .state('predict.date', {
-                url: '/date',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.date.html',
-                        controller: function ($scope, $state, $stateParams, profilePrediction)
-                        {
-                            $scope.next = function ()
-                            {
-                                $state.go('predict.time');
-                            }
-                        }
-                    }
-                },
-                onExit: function (profilePrediction)
-                {
-                    profilePrediction.savePrediction();
-                }
-            })
-            .state('predict.time', {
-                url: '/time',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.time.html',
-                        controller: function ($scope, $stateParams, profilePrediction)
-                        {
-                        }
-                    }
-                },
-                onExit: function (profilePrediction)
-                {
-                    profilePrediction.savePrediction();
-                }
-            })
-            .state('predict.weight', {
-                url: '/weight',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.weight.html',
-                        controller: function ($scope, $state, profilePrediction)
-                        {
-                            //$scope.showDetails = false;
-                            //$scope.toggle = function ()
-                            //{
-                            //    $scope.showDetails = true;
-                            //};
+        //                    if (first)
+        //                        $state.go('predict.date');
+        //                }
+        //            }
+        //        }
+        //    },
+        //    onExit: function (profilePrediction)
+        //    {
+        //        profilePrediction.savePrediction();
+        //    }
+        //})
+        //.state('predict.date', {
+        //    url: '/date',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.date.html',
+        //            controller: function ($scope, $state, $stateParams, profilePrediction)
+        //            {
+        //                $scope.next = function ()
+        //                {
+        //                    $state.go('predict.time');
+        //                }
+        //            }
+        //        }
+        //    },
+        //    onExit: function (profilePrediction)
+        //    {
+        //        profilePrediction.savePrediction();
+        //    }
+        //})
+        //.state('predict.time', {
+        //    url: '/time',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.time.html',
+        //            controller: function ($scope, $stateParams, profilePrediction)
+        //            {
+        //            }
+        //        }
+        //    },
+        //    onExit: function (profilePrediction)
+        //    {
+        //        profilePrediction.savePrediction();
+        //    }
+        //})
+        //.state('predict.weight', {
+        //    url: '/weight',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.weight.html',
+        //            controller: function ($scope, $state, profilePrediction)
+        //            {
+        //                //$scope.showDetails = false;
+        //                //$scope.toggle = function ()
+        //                //{
+        //                //    $scope.showDetails = true;
+        //                //};
 
-                        },
-                    }
-                },
-                onExit: function (profilePrediction)
-                {
-                    profilePrediction.savePrediction();
-                }
-            })
-            .state('predict.length', {
-                url: '/length',
-                controller: 'predict',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.length.html',
-                        controller: function ($scope, $state, profilePrediction)
-                        {
+        //            },
+        //        }
+        //    },
+        //    onExit: function (profilePrediction)
+        //    {
+        //        profilePrediction.savePrediction();
+        //    }
+        //})
+        //.state('predict.length', {
+        //    url: '/length',
+        //    controller: 'predict',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.length.html',
+        //            controller: function ($scope, $state, profilePrediction)
+        //            {
 
-                        },
-                    }
-                },
-                onExit: function (profilePrediction)
-                {
-                    profilePrediction.savePrediction();
-                }
-            })
-            .state('predict.finish', {
-                url: '/finish',
-                controller: 'predict',
-                views: {
-                    'predict': {
-                        templateUrl: '/partials/predict/predict.finish.html',
-                        controller: function ($scope, $state, profilePrediction)
-                        {
-                            $scope.submit = function ()
-                            {
-                                $scope.prediction.FinishDate = new Date();
+        //            },
+        //        }
+        //    },
+        //    onExit: function (profilePrediction)
+        //    {
+        //        profilePrediction.savePrediction();
+        //    }
+        //})
+        //.state('predict.finish', {
+        //    url: '/finish',
+        //    controller: 'predict',
+        //    views: {
+        //        'predict': {
+        //            templateUrl: '/partials/predict/predict.finish.html',
+        //            controller: function ($scope, $state, profilePrediction)
+        //            {
+        //                $scope.submit = function ()
+        //                {
+        //                    $scope.prediction.FinishDate = new Date();
 
-                                profilePrediction.savePrediction(1).then(function ()
-                                {
-                                    $state.go('prediction');
-                                });
-                            }
-                        }
-                    }
-                }
-            });
+        //                    profilePrediction.savePrediction(1).then(function ()
+        //                    {
+        //                        $state.go('prediction');
+        //                    });
+        //                }
+        //            }
+        //        }
+        //    }
+        //});
     }])
 
     .run(function ($rootScope, $state, $stateParams, profilePrediction)

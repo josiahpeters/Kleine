@@ -116,7 +116,6 @@ app.factory('profilePrediction', ['$http', function ($http)
         {
             time = [new Date(parseInt(predict.Time.substr(6)))];
 
-            console.log("actual time", predict.Time, time);
             time.push(new Date(time[0]).addHours(4));
         }
         var weight = undefined;

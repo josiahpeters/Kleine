@@ -77,8 +77,6 @@ namespace Kleine.Website
         {
             PredictionScore predictionScore = null;
 
-
-
             if (profile != null && prediction == null)
             {
                 prediction = repo.Predictions.GetByProfileIdAndDueDateId(profile.Id, 1);

@@ -7,6 +7,7 @@ body {
   font-size: 16px;
   font-size: 1.6rem;
   color: #444444;
+  font-family: sans-serif;
 }
 h1 {
   font-size: 24px;
@@ -53,6 +54,13 @@ ul {
   padding: 0;
   margin: 0;
 }
+ul.horizontal li {
+  float: left;
+  padding: 0;
+  margin: 0;
+  margin-right: 1em;
+  list-style: none;
+}
 hr {
   border: 0;
   border-top: 2px solid #dddddd;
@@ -88,6 +96,22 @@ table thead th {
   border-color: #d3e8b2;
 }
 .success p {
+  margin-top: 1em;
+}
+.warning {
+  border: 1px solid #ddd;
+  border: 1px solid #43cee6;
+  border-radius: 8px;
+  padding: 0 12px;
+  background-color: #dddddd;
+  font-size: 12px;
+  font-size: 1.2rem;
+  margin: 1em 0;
+  color: #a8923b;
+  background-color: #fcf6d2;
+  border-color: #eadba8;
+}
+.warning p {
   margin-top: 1em;
 }
 td.ranking {
@@ -370,6 +394,7 @@ nav.navbar a {
   font-weight: bold;
   display: block;
   text-shadow: 1px 1px 1px #4b4b4b;
+  -webkit-text-shadow: 1px 1px 1px #4b4b4b;
   font-size: 18px;
   font-size: 1.8rem;
 }
@@ -513,6 +538,7 @@ nav.horizontal.right ul li {
   text-decoration: none;
   color: #444444;
   border: 1px solid #8fc54b;
+  cursor: pointer;
 }
 .button:hover {
   padding: 0 18px;

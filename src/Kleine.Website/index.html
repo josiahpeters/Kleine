@@ -30,8 +30,9 @@
             </h1>
             <nav class="horizontal animate-show-hide" ng-show="toggle">
                 <ul id=" main-nav">
-                    <li><a ui-sref="welcome"><i class="fa fa-home" title="Welcome"></i><span> Baby Peters</span></a></li>
-                    <li><a ui-sref="predict.start"><i class="fa fa-question-circle" title="Make Your Prediction"></i><span> Prediction</span></a></li>
+                    <li><a ui-sref="welcome()"><i class="fa fa-home" title="Welcome"></i><span> Baby Peters</span></a></li>
+                    <!--<li><a ui-sref="predict.start"><i class="fa fa-question-circle" title="Make Your Prediction"></i><span> Prediction</span></a></li>-->
+                    <li><a ui-sref="prediction"><i class="fa fa-question-circle" title="Your Prediction"></i><span> Prediction</span></a></li>
                     <li><a ui-sref="results"><i class="fa fa-bar-chart-o" title="Current Results"></i><span> Results</span></a></li>
                     <li><a ui-sref="reward"><i class="fa fa-trophy" title="Reward"></i><span> Reward</span></a></li>
                 </ul>

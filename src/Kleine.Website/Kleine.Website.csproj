@@ -168,10 +168,16 @@
     <Content Include="favicon.png" />
     <Content Include="Global.asax" />
     <Content Include="img\header.png" />
+    <Content Include="img\eliana_03.jpg" />
+    <Content Include="img\eliana_03_large.jpg" />
     <Content Include="img\kim-and-joey-babyp-banner-blur.jpg" />
     <Content Include="img\kim-and-joey-babyp-banner.jpg" />
     <Content Include="img\kim-and-joey-babyp-photo.jpg" />
     <Content Include="img\kim-and-joey-blessed.jpg" />
+    <Content Include="img\eliana_01.jpg" />
+    <Content Include="img\eliana_02.jpg" />
+    <Content Include="img\eliana_01_large.jpg" />
+    <Content Include="img\eliana_02_large.jpg" />
     <Content Include="img\visa-gift-card-25.jpg" />
     <Content Include="img\visa-gift-card-50.jpg" />
     <Content Include="index.html" />
@@ -207,6 +213,8 @@
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
     <Content Include="partials\confirm.html" />
+    <Content Include="partials\email.html" />
+    <Content Include="partials\gallery.html" />
     <Content Include="partials\prediction.html" />
     <Content Include="partials\predict\predict.start.html" />
     <Content Include="partials\predict\predict.length.html" />
