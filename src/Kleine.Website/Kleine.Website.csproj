@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -191,8 +190,10 @@
     <Content Include="index.html" />
     <Content Include="css\xcharts.min.css" />
     <Content Include="js\app.js" />
+    <Content Include="js\controllers.js" />
     <Content Include="js\directives.js" />
     <Content Include="js\factories.js" />
+    <Content Include="js\filters.js" />
     <Content Include="js\libs\angular\angular-ui-router-exp.js" />
     <Content Include="js\libs\angular\angular-ui-router.js" />
     <Content Include="js\libs\angular\angular-animate.js" />
@@ -327,32 +328,15 @@
       <Name>Kleine</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="js\app\app.ts" />
-    <None Include="js\app\controllers.ts" />
-    <None Include="js\app\directives.ts" />
-    <None Include="js\app\models.ts" />
-    <None Include="js\app\scope.ts" />
-    <None Include="js\app\services.ts" />
-    <TypeScriptCompile Include="js\Main.ts" />
-  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptIncludeComments>false</TypeScriptIncludeComments>
-    <TypeScriptSourceMap>false</TypeScriptSourceMap>
   </PropertyGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
   <ProjectExtensions>

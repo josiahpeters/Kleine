@@ -29,7 +29,7 @@ namespace Kleine.Website
 
             notify = new NotificationService();
 
-            var dbFactory = new OrmLiteConnectionFactory(@"Data Source=localhost;Initial Catalog=Kleine;Integrated Security=True",  SqlServerDialect.Provider);
+            var dbFactory = new OrmLiteConnectionFactory("Kleine", SqlServerDialect.Provider);
 
             container.Register<IDbConnection>(dbFactory.OpenDbConnection());
 
@@ -46,17 +46,6 @@ namespace Kleine.Website
                 EnableFeatures = Feature.Json | Feature.Metadata //Feature.Xml | Feature.Html
 
             });
-            
-            ////Configure ServiceStack Json web services to return idiomatic Json camelCase properties.
-            //JsConfig.EmitCamelCaseNames = true;
-
-            ////Register Redis factory in Funq IoC. The default port for Redis is 6379.
-            //container.Register<IRedisClientsManager>(new BasicRedisClientManager("localhost:6379"));
-
-            ////Register user-defined REST Paths using the fluent configuration API
-            //Routes
-            //  .Add<Todo>("/todos")
-            //  .Add<Todo>("/todos/{Id}");
         }
     }
 }

@@ -5,25 +5,17 @@ angular.module('kleine.directives', []).
   {
       return {
           restrict: 'E',
-          //templateUrl: 'partials/slider.html',
           template: '<div class="range-slider"><input type="hidden" ng-model="value" />' +
           '    <div class="slider">' +
           '        <label class="min">{{ (name == \'time\' ? (minValue|hours) : minValue) }} {{label}}</label>' +
           '        <label class="max">{{ (name == \'time\' ? (maxValue|hours) : maxValue) }} {{label}}</label>' +
-          //'        <label class="min">{{ (name == \'time\' ? minValue | hours : minValue) }} {{ label }}</label>' +
-          //'        <label class="max">{{ (name == \'time\' ? maxValue | hours : maxValue) }} {{ label }}</label>' +
           '    </div></div>',
           scope: {
               name: '=',
-              //update: '&',
-              //bleh: '&',
-              //targetvalue: '@',
           },
           link: function (scope, element, attr)
           {
               element = angular.element(element.children()[0]);
-
-              //scope.bleh({ val: "der" } );
 
               var startX = 0, x = 0, y = 0;
               var minValue = parseFloat(attr.min);
