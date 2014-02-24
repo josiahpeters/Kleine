@@ -77,7 +77,14 @@
     <Compile Include="Entities\Profile.cs" />
     <Compile Include="Entities\CookieTracker.cs" />
     <Compile Include="Entities\Result.cs" />
+    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\ResultsAggregate.cs" />
+    <Compile Include="Models\ProfilePrediction.cs" />
+    <Compile Include="Requests\Predictions.cs" />
+    <Compile Include="Models\BrowserIdentity.cs" />
+    <Compile Include="Requests\Profiles.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\Results.cs" />
     <Compile Include="Services\IKleineService.cs" />
     <Compile Include="Services\INotification.cs" />
   </ItemGroup>

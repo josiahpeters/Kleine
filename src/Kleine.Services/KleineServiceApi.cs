@@ -10,6 +10,7 @@ using System.Text;
 using System.Web;
 using ServiceStack.Common;
 using System.Runtime.Serialization;
+using Kleine.Requests;
 
 
 namespace Kleine.Services
@@ -24,7 +25,6 @@ namespace Kleine.Services
         public const string Identity = "Identity";
     }
 
-
     public class KleineServiceApi : Service, IKleineService
     {
         IRepositories repo;
@@ -37,6 +37,7 @@ namespace Kleine.Services
             this.repo = repo;
             this.notify = notify;
 
+            // currently static date, we'll add this in the future to be dynamic from the database
             this.outcome = new PredictionOutcome
             {
                 Gender = "Female",
@@ -47,6 +48,7 @@ namespace Kleine.Services
             };
         }
 
+    #region Private Helper Methods
 
         private string getUniqueCode()
         {
@@ -143,6 +145,251 @@ namespace Kleine.Services
             else
                 return null;
         }
+                
+        private List<PredictionPlacement> getRankings()
+        {
+            var predictions = repo.Predictions.GetAll().Where(u => u.FinishDate != null).ToDictionary(t => t.ProfileId, t => t);
+            var profiles = repo.Profiles.GetAll().ToDictionary(t => t.Id, t => t);
+
+            List<PredictionPlacement> placements = new List<PredictionPlacement>();
+
+            
+
+            foreach (var key in predictions.Keys)
+            {
+                var profile = profiles[key];
+                var prediction = predictions[key];
+
+                prediction.Time = ((DateTime)prediction.Time).ToLocalTime();
+
+                string name = profile.Name ?? "";
+
+                var names = name.Split(' ');
+
+                if (name.Contains(" "))
+                    name = string.Format("{0} {1}.", names[0], names[1].Substring(0,1));
+
+
+                placements.Add(new PredictionPlacement
+                {
+                    Name = name,
+                    Prediction = prediction,
+                    Score = getScore(prediction, outcome),
+                });
+            }
+
+            placements = placements.OrderByDescending(u => u.Score.Total).ToList();
+
+            int place = 0;
+            int totalPoints = 15;
+
+            foreach (var placement in placements)
+            {
+                if (placement.Score.Total != totalPoints)
+                {
+                    place++;
+                    totalPoints = placement.Score.Total;
+                }
+
+                placement.Place = place;
+            }
+
+            return placements;
+        }
+
+        private List<GenderResult> GenderResults()
+        {
+            var genderResults = repo.Results.GetGenderResult();
+
+            return genderResults;
+        }
+
+        private List<GenderDateTimeCount> DateCounts()
+        {
+            var femaleDates = repo.Results.GetDateCounts("Female");
+            var maleDates = repo.Results.GetDateCounts("Male");
+
+            var dates = new Dictionary<int, GenderDateTimeCount>();
+
+            foreach (var date in femaleDates)
+            {
+                var day = date.Date.DayOfYear;
+                if (dates.ContainsKey(day))
+                {
+                    dates[day].FemaleCount += date.Count;
+                }
+                else
+                {
+                    dates.Add(day, new GenderDateTimeCount
+                    {
+                        Date = date.Date,
+                        FemaleCount = date.Count
+                    });
+                }
+            }
+
+            foreach (var date in maleDates)
+            {
+                var day = date.Date.DayOfYear;
+                if (dates.ContainsKey(day))
+                {
+                    dates[day].MaleCount += date.Count;
+                }
+                else
+                {
+                    dates.Add(day, new GenderDateTimeCount
+                    {
+                        Date = date.Date,
+                        MaleCount = date.Count
+                    });
+                }
+            }
+
+            var dateCounts = dates.Values.OrderBy(u => u.Date).ToList();
+
+            return dateCounts;
+        }
+
+        private List<GenderDateTimeCount> TimeCounts()
+        {
+            var femaleTimes = repo.Results.GetTimeCounts("Female");
+            var maleTimes = repo.Results.GetTimeCounts("Male");
+
+            var times = new Dictionary<int, GenderDateTimeCount>();
+
+            foreach (var time in femaleTimes)
+            {
+                var hour = time.Date.Hour;
+                if (times.ContainsKey(hour))
+                {
+                    times[hour].FemaleCount += time.Count;
+                }
+                else
+                {
+                    times.Add(hour, new GenderDateTimeCount
+                    {
+                        Date = time.Date,
+                        FemaleCount = time.Count
+                    });
+                }
+            }
+
+            foreach (var time in maleTimes)
+            {
+                var hour = time.Date.Hour;
+                if (times.ContainsKey(hour))
+                {
+                    times[hour].MaleCount += time.Count;
+                }
+                else
+                {
+                    times.Add(hour, new GenderDateTimeCount
+                    {
+                        Date = time.Date,
+                        MaleCount = time.Count
+                    });
+                }
+            }
+            var timeCounts = times.Values.OrderBy(u => u.Date).ToList();
+
+            return timeCounts;
+        }
+
+        private List<GenderIntegerGroupCount> WeightCounts()
+        {
+            var femaleWeights = repo.Results.GetWeightCounts("Female");
+            var maleWeights = repo.Results.GetWeightCounts("Male");
+
+            var weights = new Dictionary<int, GenderIntegerGroupCount>();
+
+            foreach (var weight in femaleWeights)
+            {
+                var value = weight.Value;
+                if (weights.ContainsKey(value))
+                {
+                    weights[value].FemaleCount += weight.Count;
+                }
+                else
+                {
+                    weights.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        FemaleCount = weight.Count
+                    });
+                }
+            }
+
+            foreach (var weight in maleWeights)
+            {
+                var value = weight.Value;
+                if (weights.ContainsKey(value))
+                {
+                    weights[value].MaleCount += weight.Count;
+                }
+                else
+                {
+                    weights.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        MaleCount = weight.Count
+                    });
+                }
+            }
+            var weightCounts = weights.Values.OrderBy(u => u.Value).ToList();
+
+            return weightCounts;
+        }
+
+        private List<GenderIntegerGroupCount> LengthCounts()
+        {
+            var femaleLengths = repo.Results.GetLengthCounts("Female");
+            var maleLengths = repo.Results.GetLengthCounts("Male");
+
+            var lengths = new Dictionary<int, GenderIntegerGroupCount>();
+
+            foreach (var length in femaleLengths)
+            {
+                var value = length.Value;
+                if (lengths.ContainsKey(value))
+                {
+                    lengths[value].FemaleCount += length.Count;
+                }
+                else
+                {
+                    lengths.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        FemaleCount = length.Count
+                    });
+                }
+            }
+
+            foreach (var length in maleLengths)
+            {
+                var value = length.Value;
+                if (lengths.ContainsKey(value))
+                {
+                    lengths[value].MaleCount += length.Count;
+                }
+                else
+                {
+                    lengths.Add(value, new GenderIntegerGroupCount
+                    {
+                        Value = value,
+                        MaleCount = length.Count
+                    });
+                }
+            }
+            var lengthCounts = lengths.Values.OrderBy(u => u.Value).ToList();
+
+            return lengthCounts;
+
+        }
+
+    #endregion
+
+
+    #region Public Service Methods
 
         public ProfilePrediction Get(ProfileGet request)
         {
@@ -267,340 +514,8 @@ namespace Kleine.Services
             return rankings;
         }
 
-        private List<PredictionPlacement> getRankings()
-        {
-            var predictions = repo.Predictions.GetAll().Where(u => u.FinishDate != null).ToDictionary(t => t.ProfileId, t => t);
-            var profiles = repo.Profiles.GetAll().ToDictionary(t => t.Id, t => t);
+    #endregion
 
-            List<PredictionPlacement> placements = new List<PredictionPlacement>();
-
-            
-
-            foreach (var key in predictions.Keys)
-            {
-                var profile = profiles[key];
-                var prediction = predictions[key];
-
-                prediction.Time = ((DateTime)prediction.Time).ToLocalTime();
-
-                string name = profile.Name ?? "";
-
-                var names = name.Split(' ');
-
-                if (name.Contains(" "))
-                    name = string.Format("{0} {1}.", names[0], names[1].Substring(0,1));
-
-
-                placements.Add(new PredictionPlacement
-                {
-                    Name = name,
-                    Prediction = prediction,
-                    Score = getScore(prediction, outcome),
-                });
-            }
-
-            placements = placements.OrderByDescending(u => u.Score.Total).ToList();
-
-            int place = 0;
-            int totalPoints = 15;
-
-            foreach (var placement in placements)
-            {
-                if (placement.Score.Total != totalPoints)
-                {
-                    place++;
-                    totalPoints = placement.Score.Total;
-                }
-
-                placement.Place = place;
-            }
-
-            return placements;
-        }
-
-        List<GenderResult> GenderResults()
-        {
-            var genderResults = repo.Results.GetGenderResult();
-
-            return genderResults;
-        }
-        List<GenderDateTimeCount> DateCounts()
-        {
-            var femaleDates = repo.Results.GetDateCounts("Female");
-            var maleDates = repo.Results.GetDateCounts("Male");
-
-            var dates = new Dictionary<int, GenderDateTimeCount>();
-
-            foreach (var date in femaleDates)
-            {
-                var day = date.Date.DayOfYear;
-                if (dates.ContainsKey(day))
-                {
-                    dates[day].FemaleCount += date.Count;
-                }
-                else
-                {
-                    dates.Add(day, new GenderDateTimeCount
-                    {
-                        Date = date.Date,
-                        FemaleCount = date.Count
-                    });
-                }
-            }
-
-            foreach (var date in maleDates)
-            {
-                var day = date.Date.DayOfYear;
-                if (dates.ContainsKey(day))
-                {
-                    dates[day].MaleCount += date.Count;
-                }
-                else
-                {
-                    dates.Add(day, new GenderDateTimeCount
-                    {
-                        Date = date.Date,
-                        MaleCount = date.Count
-                    });
-                }
-            }
-
-            var dateCounts = dates.Values.OrderBy(u => u.Date).ToList();
-
-            return dateCounts;
-        }
-        List<GenderDateTimeCount> TimeCounts()
-        {
-            var femaleTimes = repo.Results.GetTimeCounts("Female");
-            var maleTimes = repo.Results.GetTimeCounts("Male");
-
-            var times = new Dictionary<int, GenderDateTimeCount>();
-
-            foreach (var time in femaleTimes)
-            {
-                var hour = time.Date.Hour;
-                if (times.ContainsKey(hour))
-                {
-                    times[hour].FemaleCount += time.Count;
-                }
-                else
-                {
-                    times.Add(hour, new GenderDateTimeCount
-                    {
-                        Date = time.Date,
-                        FemaleCount = time.Count
-                    });
-                }
-            }
-
-            foreach (var time in maleTimes)
-            {
-                var hour = time.Date.Hour;
-                if (times.ContainsKey(hour))
-                {
-                    times[hour].MaleCount += time.Count;
-                }
-                else
-                {
-                    times.Add(hour, new GenderDateTimeCount
-                    {
-                        Date = time.Date,
-                        MaleCount = time.Count
-                    });
-                }
-            }
-            var timeCounts = times.Values.OrderBy(u => u.Date).ToList();
-
-            return timeCounts;
-        }
-        List<GenderIntegerGroupCount> WeightCounts()
-        {
-            var femaleWeights = repo.Results.GetWeightCounts("Female");
-            var maleWeights = repo.Results.GetWeightCounts("Male");
-
-            var weights = new Dictionary<int, GenderIntegerGroupCount>();
-
-            foreach (var weight in femaleWeights)
-            {
-                var value = weight.Value;
-                if (weights.ContainsKey(value))
-                {
-                    weights[value].FemaleCount += weight.Count;
-                }
-                else
-                {
-                    weights.Add(value, new GenderIntegerGroupCount
-                    {
-                        Value = value,
-                        FemaleCount = weight.Count
-                    });
-                }
-            }
-
-            foreach (var weight in maleWeights)
-            {
-                var value = weight.Value;
-                if (weights.ContainsKey(value))
-                {
-                    weights[value].MaleCount += weight.Count;
-                }
-                else
-                {
-                    weights.Add(value, new GenderIntegerGroupCount
-                    {
-                        Value = value,
-                        MaleCount = weight.Count
-                    });
-                }
-            }
-            var weightCounts = weights.Values.OrderBy(u => u.Value).ToList();
-
-            return weightCounts;
-        }
-        List<GenderIntegerGroupCount> LengthCounts()
-        {
-            var femaleLengths = repo.Results.GetLengthCounts("Female");
-            var maleLengths = repo.Results.GetLengthCounts("Male");
-
-            var lengths = new Dictionary<int, GenderIntegerGroupCount>();
-
-            foreach (var length in femaleLengths)
-            {
-                var value = length.Value;
-                if (lengths.ContainsKey(value))
-                {
-                    lengths[value].FemaleCount += length.Count;
-                }
-                else
-                {
-                    lengths.Add(value, new GenderIntegerGroupCount
-                    {
-                        Value = value,
-                        FemaleCount = length.Count
-                    });
-                }
-            }
-
-            foreach (var length in maleLengths)
-            {
-                var value = length.Value;
-                if (lengths.ContainsKey(value))
-                {
-                    lengths[value].MaleCount += length.Count;
-                }
-                else
-                {
-                    lengths.Add(value, new GenderIntegerGroupCount
-                    {
-                        Value = value,
-                        MaleCount = length.Count
-                    });
-                }
-            }
-            var lengthCounts = lengths.Values.OrderBy(u => u.Value).ToList();
-
-            return lengthCounts;
-        }
 
     }
-
-
-    [Route("/info", "GET")]
-    public class BrowserIdentity { }
-
-    // PROFILE
-    [Route("/profile", "GET")]
-    public class ProfileGet : IReturn<ProfilePrediction>
-    {
-        public string code { get; set; }
-    }
-
-    [Route("/profile", "POST")]
-    public class ProfileCreate : Profile, IReturn<ProfilePrediction> { }
-
-    [Route("/profile", "PUT")]
-    public class ProfileUpdate : Profile, IReturn<ProfilePrediction> { }
-
-
-    // GUESS
-    [Route("/predict/{DueDateId}", "GET")]
-    public class PredictionGet : IReturn<Prediction>
-    {
-        public int DueDateId { get; set; }
-        //public int ProfileId { get; set; }
-    }
-
-    [Route("/predict", "PUT")]
-    public class PredictionUpdate : Prediction, IReturn<ProfilePrediction> { }
-
-    //[Route("/profile/{id}", "PATCH")]
-    //public class ProfileUpdate : Profile, IReturn<Profile> { }
-
-    public class ProfilePrediction
-    {
-        [DataMember]
-        public Profile Profile { get; set; }
-
-        [DataMember]
-        public Prediction Prediction { get; set; }
-
-        [DataMember]
-        public PredictionScore PredictionScore { get; set; }
-
-        public ProfilePrediction() { }
-        public ProfilePrediction(Profile profile)
-        {
-            this.Profile = profile;
-            this.Prediction = null;
-        }
-        public ProfilePrediction(Profile profile, Prediction prediction, PredictionScore predictionScore = null)
-        {
-            this.Profile = profile;
-            this.Prediction = prediction;
-            this.PredictionScore = predictionScore;
-        }
-    }
-
-    public class ResultsAggregate
-    {
-        [DataMember]
-        public List<GenderResult> GenderResults { get; set; }
-
-        [DataMember]
-        public List<GenderDateTimeCount> DateCounts { get; set; }
-
-        [DataMember]
-        public List<GenderDateTimeCount> TimeCounts { get; set; }
-
-        [DataMember]
-        public List<GenderIntegerGroupCount> WeightCounts { get; set; }
-
-        [DataMember]
-        public List<GenderIntegerGroupCount> LengthCounts { get; set; }
-        public ResultsAggregate() { }
-
-        public ResultsAggregate(List<GenderResult> genderResults, List<GenderDateTimeCount> dateCounts, List<GenderDateTimeCount> timeCounts, List<GenderIntegerGroupCount> weightCounts, List<GenderIntegerGroupCount> lengthCounts)
-        {
-            this.GenderResults = genderResults;
-            this.DateCounts = dateCounts;
-            this.TimeCounts = timeCounts;
-            this.WeightCounts = weightCounts;
-            this.LengthCounts = lengthCounts;
-        }
-    }
-
-
-    [Route("/results", "GET")]
-    public class ResultsRequest : IReturn<ResultsAggregate>
-    {
-    }
-
-    [Route("/results/rankings", "GET")]
-    public class RankingsRequest : IReturn<List<PredictionPlacement>>
-    {
-    }
-
-    
-
-
 }

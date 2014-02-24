@@ -1,5 +1,6 @@
 ﻿using Funq;
 using Kleine.Data;
+using Kleine.Services;
 using ServiceStack.Common.Web;
 using ServiceStack.Logging;
 using ServiceStack.Logging.EventLog;
