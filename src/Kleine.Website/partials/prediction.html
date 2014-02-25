@@ -1,7 +1,5 @@
 <div class="banner">
-    <div class="image">
-        <img src="/img/kim-and-joey-blessed.jpg" />
-    </div>
+    <div class="image" ng-class=" { start: !$state.completed, complete: $state.completed }"></div>
     <div class="subtitle">
         <div class="row">
             <div class="twelve column"><h1>My Prediction</h1></div>
@@ -28,32 +26,32 @@
                     <tr>
                         <td>Gender</td>
                         <td>{{ prediction.Gender }}</td>
-                        <td>{{ score.Gender }} pts</td>
+                        <td ng-show="$state.completed">{{ score.Gender }} pts</td>
                     </tr>
                     <tr>
                         <td>Date</td>
                         <td>{{ prediction.Date|date }}</td>
-                        <td>{{ score.Date }} pts</td>
+                        <td ng-show="$state.completed">{{ score.Date }} pts</td>
                     </tr>
                     <tr>
                         <td>Time</td>
                         <td> {{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }}</td>
-                        <td>{{ score.Time }} pts</td>
+                        <td ng-show="$state.completed">{{ score.Time }} pts</td>
                     </tr>
                     <tr>
                         <td>Weight</td>
                         <td>{{ (prediction.Weight.length > 0 ? prediction.Weight[0] + ' lbs - ' + prediction.Weight[1] + ' lbs' : '') }}</td>
-                        <td>{{ score.Weight }} pts</td>
+                        <td ng-show="$state.completed">{{ score.Weight }} pts</td>
                     </tr>
                     <tr>
                         <td>Length</td>
                         <td>{{ (prediction.Length.length > 0 ? prediction.Length[0] + ' in - ' + prediction.Length[1] + ' in' : '') }}</td>
-                        <td>{{ score.Length }} pts</td>
+                        <td ng-show="$state.completed">{{ score.Length }} pts</td>
                     </tr>
                     <tr>
                         <td>Total Points</td>
                         <td></td>
-                        <td>{{ score.Total }} pts</td>
+                        <td ng-show="$state.completed">{{ score.Total }} pts</td>
                     </tr>
                 </table>
             </p>

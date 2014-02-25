@@ -1,11 +1,10 @@
-﻿form {
+form {
   line-height: 1.5em;
 }
 form p {
   vertical-align: middle;
   display: block;
   /*margin: 0;*/
-
 }
 form p label {
   font-weight: bold;
@@ -14,7 +13,6 @@ form p label {
 form p > input,
 form p > textarea {
   /*, dd > select {*/
-
   display: block;
   font-family: Helvetica, arial;
   padding: 7px 8px;
@@ -47,3 +45,4 @@ form p > span {
   display: block;
   min-height: 1em;
 }
+/*# sourceMappingURL=form.css.map */

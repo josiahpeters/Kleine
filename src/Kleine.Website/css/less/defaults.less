@@ -193,22 +193,28 @@ td.ranking {
     position: relative;
     overflow: hidden;
     height: 165px;
-    /*margin-bottom: 10px;*/
+
     .image {
         width: 100%;
-        background-image: url(/img/eliana_banner.jpg);
-        /*background-image: url(/img/kim-and-joey-blessed.jpg);*/
         background-repeat: no-repeat;
-        background-size: 100%;
-        background-position: center bottom;
-        /*height: 300px;*/
-        height: 855px;
-        bottom: 0;
+        height: 300px;
         position: absolute;
+        background-size: 100%;
 
+        &.start {
+            background-image: url(/img/kim-and-joey-blessed.jpg);
+            top: 0;
+            background-position: center top;
+        }
+
+        &.complete {
+            background-image: url(/img/eliana-basket.jpg);
+            top: 0;
+            background-position: center top;
+        }
 
         img {
-            margin-top: -15px;
+            margin-top: -15px; 
             width: 90%;
             height: 90%;
             display: none;
@@ -328,7 +334,7 @@ table.rankings {
 
 @media only screen and (min-width: 480px) {
     .banner {
-        height: 265px;
+        height: 250px;
     }
 
     img.scale {
@@ -383,13 +389,14 @@ table.rankings {
     }
 
     .banner {
-        height: 325px;
+        height: 300px;
 
         .image {
-            /*background-image: url(/img/eliana_banner.jpg);*/
-            /*background-image: url(/img/kim-and-joey-blessed.jpg);*/
-            margin-bottom: -25px;
-            background-size: 100%;
+            
+            &.complete { 
+                margin-bottom: -25px;
+                background-size: 100%;
+            }
             background-color: #333333;
         }
     }
@@ -414,7 +421,10 @@ table.rankings {
     .banner {
 
         .image {
-            margin-bottom: -50px;
+
+            &.complete { 
+                margin-bottom: -50px;
+            }
         }
     }
 }
@@ -422,6 +432,10 @@ table.rankings {
 @media only screen and (min-width: 1150px) {
     .banner {
         height: 350px;
+
+        .image {
+            height: 350px;
+        }
     }
 }
 

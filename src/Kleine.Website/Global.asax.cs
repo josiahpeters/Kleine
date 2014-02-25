@@ -22,7 +22,9 @@ namespace Kleine.Website
 
         protected void Application_BeginRequest(object sender, EventArgs e)
         {
+            string baseUri = string.Format("{0}://{1}{2}/", HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, (HttpContext.Current.Request.Url.IsDefaultPort ? "" : ":" + HttpContext.Current.Request.Url.Port));
 
+            NotificationService.BaseUri = baseUri;
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

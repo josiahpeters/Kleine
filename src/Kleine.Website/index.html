@@ -1,5 +1,4 @@
 ﻿<!DOCTYPE html>
-<!--<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="Kleine">-->
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="kleine">
 <head>
     <meta charset="utf-8">
@@ -31,11 +30,11 @@
             <nav class="horizontal animate-show-hide" ng-show="toggle">
                 <ul id=" main-nav">
                     <li><a ui-sref="welcome()"><i class="fa fa-home" title="Welcome"></i><span> Baby Peters</span></a></li>
-                    <!--<li><a ui-sref="predict.start"><i class="fa fa-question-circle" title="Make Your Prediction"></i><span> Prediction</span></a></li>-->
-                    <li><a ui-sref="prediction"><i class="fa fa-question-circle" title="Your Prediction"></i><span> Prediction</span></a></li>
+                    <li ng-show="!$state.completed"><a ui-sref="predict.start"><i class="fa fa-question-circle" title="Make Your Prediction"></i><span> Prediction</span></a></li>
+                    <li ng-show="$state.completed"><a ui-sref="prediction"><i class="fa fa-question-circle" title="Your Prediction"></i><span> Prediction</span></a></li>
                     <li><a ui-sref="results"><i class="fa fa-bar-chart-o" title="Current Results"></i><span> Results</span></a></li>
-                    <!--<li><a ui-sref="reward"><i class="fa fa-trophy" title="Reward"></i><span> Reward</span></a></li>-->
-                    <li><a ui-sref="rankings"><i class="fa fa-trophy" title="Reward"></i><span> Rankings</span></a></li>
+                    <li ng-show="!$state.completed"><a ui-sref="reward"><i class="fa fa-trophy" title="Reward"></i><span> Reward</span></a></li>
+                    <li ng-show="$state.completed"><a ui-sref="rankings"><i class="fa fa-trophy" title="Reward"></i><span> Rankings</span></a></li>
                 </ul>
             </nav>
         </div>

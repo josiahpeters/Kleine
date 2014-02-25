@@ -10,6 +10,7 @@ using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web;
@@ -30,7 +31,9 @@ namespace Kleine.Website
 
             notify = new NotificationService();
 
-            var dbFactory = new OrmLiteConnectionFactory("Kleine", SqlServerDialect.Provider);
+            string connectionString = ConfigurationManager.ConnectionStrings["Kleine"].ConnectionString;
+
+            var dbFactory = new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider);
 
             container.Register<IDbConnection>(dbFactory.OpenDbConnection());
 

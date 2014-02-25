@@ -1,85 +1,20 @@
 <div class="banner">
-    <div class="image">
-        <!--<img src="/img/kim-and-joey-blessed.jpg" />-->
-    </div>
+    <div class="image" ng-class=" { start: !$state.completed, complete: $state.completed }"></div>
     <div class="subtitle">
         <div class="row">
-            <div class="twelve column"><h1>Eliana Marie Peters - Born December 10th, 2013</h1></div>
-            <div class="twelve column"><h1><!--Baby Peters - Due December 16th, 2013--></h1></div>
+            <div class="twelve column"><h1>Baby Peters - Due December 16th, 2013</h1></div>
         </div>
     </div>
 </div>
 <div class="wrapper">
-    <section class="row" ng-show="message">
-        <div class="twelve column">
-            <div class="warning">
-                <p>
-                    <strong>Oops!</strong>
-                    {{ message }}
-                </p>
-            </div>
-        </div>
-    </section>
     <section class="row">
         <article class="twelve columns ">
-
-            <p>Kim and Joey want to thank you for taking the time to be a part of their first pregnancy. They're happy that you made your predictions and hope that you enjoyed playing along with their little surprise.</p>
-            <!--<p>Kim and Joey are expecting a baby soon. They have invited you to take part in a game to predict when <strong>Baby Peters</strong> will be born.</p>-->
-            <ul class="horizontal">
-                <!--<li><a class="button" ui-sref="gallery">View Pictures</a></li>-->
-                <li><a class="button" ui-sref="results">View Final Results</a></li>
-                <li><a class="button" ui-sref="rankings">View Prediction Rankings</a></li>
-            </ul>
-
-            <!--<p>
-                <a href="/#/start" class="button" ng-click="makePrediction($event)">Make Prediction</a>
-            </p>
+            <p>Kim and Joey are expecting a baby soon. They have invited you to take part in a game to predict when <strong>Baby Peters</strong> will be born.</p>
             <p>
                 <a href="/#/start" class="button" ng-click="makePrediction($event)">Make Prediction</a>
-            </p>-->
-
+            </p>
         </article>
     </section>
-</div>
-<div class="wrapper">
-    <section class="row">
-        <article class="twelve columns ">
-            
-            <div id="slider" class="flexslider">
-                <ul class="slides">
-                    <li>
-                        <img src="/img/eliana/eliana_01_medium.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_02_medium.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_03_medium.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_04_medium.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_05_medium.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_06_medium.jpg" /></li>
-                    <li>
-                        <img src="/img/eliana/eliana_07.jpg" />
-                    </li>
-                </ul>
-            </div>
-            <div id="carousel" class="flexslider">
-                <ul class="slides">
-                    <li>
-                        <img src="/img/eliana/eliana_01_thumb.jpg" />
-                    </li>
-                    <li><img src="/img/eliana/eliana_02_thumb.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_03_thumb.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_04_thumb.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_05_thumb.jpg" /></li>
-                    <li><img src="/img/eliana/eliana_06_thumb.jpg" /></li>
-                    <li>
-                        <img src="/img/eliana/eliana_07_thumb.jpg" />
-                    </li>
-                </ul>
-            </div>
-
-        </article>
-    </section>
-
-</div>
-<div class="wrapper">
     <section class="row">
         <article class="twelve columns">
             <h2>How does this work?</h2>

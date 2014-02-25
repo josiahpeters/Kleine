@@ -3,124 +3,127 @@
         <h1>Results</h1>
     </section>
 </div>
-<div class="wrapper">
-    <section class="row">
-        <article class="six column">
-            <img src="/img/eliana/eliana_01_small.jpg" style="width: 100%" />
+<div ng-show="$state.completed">
+    <div class="wrapper">
+        <section class="row">
+            <article class="six column">
+                <img src="/img/eliana/eliana_01_small.jpg" style="width: 100%" />
 
-        </article>
-        <article class="six column">
-            <h2>Eliana Marie Peters</h2>
-            <p>
-                <table style="margin-top: 1em;">
-                    <tr>
-                        <th>Gender</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Weight</th>
-                        <th>Length</th>
-                    </tr>
-                    <tr>
-                        <td>Female</td>
-                        <td>12/10/13</td>
-                        <td>5:42 PM</td>
-                        <td>7.2 lbs (7 lbs 3 oz) </td>
-                        <td>20.75 in</td>
-                    </tr>
-                </table>
+            </article>
+            <article class="six column">
+                <h2>Eliana Marie Peters</h2>
+                <p>
+                    <table style="margin-top: 1em;">
+                        <tr>
+                            <th>Gender</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Weight</th>
+                            <th>Length</th>
+                        </tr>
+                        <tr>
+                            <td>Female</td>
+                            <td>12/10/13</td>
+                            <td>5:42 PM</td>
+                            <td>7.2 lbs (7 lbs 3 oz) </td>
+                            <td>20.75 in</td>
+                        </tr>
+                    </table>
 
-            </p>
-        </article>
-    </section>
+                </p>
+            </article>
+        </section>
+    </div>
+    <div class="wrapper">
+        <section class="row">
+            <article class="twelve column">
+                <h2>Winners</h2>
+                <p>Our first place winner and second place winners were the only ones to guess the actual birth date of Baby Peters.</p>
+                <p>If you want to see where you are against the rest of the votes, <a ui-sref="rankings">check out the overall rankings</a>.</p>
+            </article>
+        </section>
+        <section class="row">
+            <article class="six column">
+                <h3>Heather K. - First Place</h3>
+                <p>
+                    <table style="margin-top: 1em;">
+                        <tr>
+                            <td>Gender</td>
+                            <td class="ranking">Male</td>
+                            <td>0 pts</td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td class="ranking correct">12/10/13</td>
+                            <td><strong>5 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td class="ranking correct">3:34 pm - 7:34 pm</td>
+                            <td><strong>3 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td class="ranking correct">6.8 lbs - 8.3 lbs</td>
+                            <td><strong>3 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Length</td>
+                            <td class="ranking correct">18.8 in - 22.8 in</td>
+                            <td><strong>2 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Points</strong></td>
+                            <td class="ranking correct"></td>
+                            <td><strong>12 pts</strong></td>
+                        </tr>
+                    </table>
+                </p>
+            </article>
+            <article class="six column">
+
+                <h3>Dottie B. - Second Place</h3><p>
+                    <table style="margin-top: 1em;">
+                        <tr>
+                            <td>Gender</td>
+                            <td class="ranking correct">Female</td>
+                            <td><strong>3 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td class="ranking">12/20/2013</td>
+                            <td>0 pts</td>
+                        </tr>
+                        <tr>
+                            <td>Time</td>
+                            <td class="ranking correct">5:40 pm - 9:40 pm</td>
+                            <td><strong>4 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Weight</td>
+                            <td class="ranking correct">6 lbs - 7.5 lbs</td>
+                            <td><strong>3 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Length</td>
+                            <td class="ranking correct">19.5 in - 21.5 in</td>
+                            <td><strong>1 pts</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Points</strong></td>
+                            <td></td>
+                            <td><strong>10 pts</strong></td>
+                    </table>
+                </p>
+            </article>
+        </section>
+    </div>
 </div>
 <div class="wrapper">
     <section class="row">
         <article class="twelve column">
-            <h2>Winners</h2>
-            <p>Our first place winner and second place winners were the only ones to guess the actual birth date of Baby Peters.</p>
-            <p>If you want to see where you are against the rest of the votes, <a ui-sref="rankings">check out the overall rankings</a>.</p>
-        </article>
-    </section>
-    <section class="row">
-        <article class="six column">
-            <h3>Heather K. - First Place</h3>
-            <p>
-                <table style="margin-top: 1em;">
-                    <tr>
-                        <td>Gender</td>
-                        <td class="ranking">Male</td>
-                        <td>0 pts</td>
-                    </tr>
-                    <tr>
-                        <td>Date</td>
-                        <td class="ranking correct">12/10/13</td>
-                        <td><strong>5 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Time</td>
-                        <td class="ranking correct">3:34 pm - 7:34 pm</td>
-                        <td><strong>3 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Weight</td>
-                        <td class="ranking correct">6.8 lbs - 8.3 lbs</td>
-                        <td><strong>3 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td class="ranking correct">18.8 in - 22.8 in</td>
-                        <td><strong>2 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Points</strong></td>
-                        <td class="ranking correct"></td>
-                        <td><strong>12 pts</strong></td>
-                    </tr>
-                </table>
-            </p>
-        </article>
-        <article class="six column">
-
-            <h3>Dottie B. - Second Place</h3><p>
-                <table style="margin-top: 1em;">
-                    <tr>
-                        <td>Gender</td>
-                        <td class="ranking correct">Female</td>
-                        <td><strong>3 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Date</td>
-                        <td class="ranking">12/20/2013</td>
-                        <td>0 pts</td>
-                    </tr>
-                    <tr>
-                        <td>Time</td>
-                        <td class="ranking correct">5:40 pm - 9:40 pm</td>
-                        <td><strong>4 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Weight</td>
-                        <td class="ranking correct">6 lbs - 7.5 lbs</td>
-                        <td><strong>3 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td class="ranking correct">19.5 in - 21.5 in</td>
-                        <td><strong>1 pts</strong></td>
-                    </tr>
-                    <tr>
-                        <td><strong>Total Points</strong></td>
-                        <td></td>
-                        <td><strong>10 pts</strong></td>
-                </table>
-            </p>
-        </article>
-    </section>
-</div>
-<div class="wrapper">
-    <section class="row">
-        <article class="twelve column">
-            <h2>{{ PredictionCount }} Predictions were made.</h2>
+            <h2 ng-show="$state.completed">{{ PredictionCount }} Predictions were made.</h2>
+            <h2 ng-show="!$state.completed">{{ PredictionCount }} Predictions have been made so far.</h2>
         </article>
     </section>
     <section class="row">

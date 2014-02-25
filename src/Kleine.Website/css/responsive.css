@@ -1,4 +1,4 @@
-﻿/*@color-calm: #83d6e5;*/
+/*@color-calm: #83d6e5;*/
 html {
   font-size: 62.5%;
 }
@@ -127,7 +127,6 @@ td.ranking.correct {
   padding: 0 12px;
   background-color: #dddddd;
   /*background-color: @color-calm;*/
-
   color: #3085d6;
   color: #000;
   font-size: 12px;
@@ -172,22 +171,23 @@ td.ranking.correct {
   position: relative;
   overflow: hidden;
   height: 165px;
-  /*margin-bottom: 10px;*/
-
 }
 .banner .image {
   width: 100%;
-  background-image: url(/img/eliana_banner.jpg);
-  /*background-image: url(/img/kim-and-joey-blessed.jpg);*/
-
   background-repeat: no-repeat;
-  background-size: 100%;
-  background-position: center bottom;
-  /*height: 300px;*/
-
-  height: 855px;
-  bottom: 0;
+  height: 300px;
   position: absolute;
+  background-size: 100%;
+}
+.banner .image.start {
+  background-image: url(/img/kim-and-joey-blessed.jpg);
+  top: 0;
+  background-position: center top;
+}
+.banner .image.complete {
+  background-image: url(/img/eliana-basket.jpg);
+  top: 0;
+  background-position: center top;
 }
 .banner .image img {
   margin-top: -15px;
@@ -291,7 +291,7 @@ table.rankings th {
 }
 @media only screen and (min-width: 480px) {
   .banner {
-    height: 265px;
+    height: 250px;
   }
   img.scale {
     width: auto;
@@ -332,16 +332,14 @@ table.rankings th {
     display: block;
   }
   .banner {
-    height: 325px;
+    height: 300px;
   }
   .banner .image {
-    /*background-image: url(/img/eliana_banner.jpg);*/
-  
-    /*background-image: url(/img/kim-and-joey-blessed.jpg);*/
-  
+    background-color: #333333;
+  }
+  .banner .image.complete {
     margin-bottom: -25px;
     background-size: 100%;
-    background-color: #333333;
   }
   .predict .row {
     display: block;
@@ -356,12 +354,15 @@ table.rankings th {
     font-size: 16px;
     font-size: 1.6rem;
   }
-  .banner .image {
+  .banner .image.complete {
     margin-bottom: -50px;
   }
 }
 @media only screen and (min-width: 1150px) {
   .banner {
+    height: 350px;
+  }
+  .banner .image {
     height: 350px;
   }
 }
@@ -399,7 +400,6 @@ table.rankings th {
 .view-leave {
   opacity: 1;
   /*padding-left: 0px;*/
-
   -webkit-transform: translate3d(0, 0, 0);
   -moz-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
@@ -407,7 +407,6 @@ table.rankings th {
 .view-leave-active {
   opacity: 0;
   /*padding-left: 100px;*/
-
   -webkit-transform: translate3d(100px, 0, 0);
   -moz-transform: translate3d(100px, 0, 0);
   transform: translate3d(100px, 0, 0);
@@ -484,7 +483,6 @@ nav.navbar button.toggle i.fa {
 }
 nav.navbar .row {
   /*position: relative;*/
-
 }
 nav.horizontal {
   margin: .25em;
@@ -639,7 +637,6 @@ nav.horizontal.right ul li {
 .twelve {
   width: 100%;
   /*display: block;*/
-
 }
 .wrapper {
   padding: 10px 0;
@@ -668,7 +665,7 @@ nav.horizontal.right ul li {
 }
 @media only screen and (min-width: 768px) {
   .column {
-    margin-left: 1.7543859649122806%;
+    margin-left: 1.75438596%;
     margin-bottom: 10px;
     float: left;
     min-height: 1px;
@@ -677,37 +674,37 @@ nav.horizontal.right ul li {
     box-sizing: border-box;
   }
   .one {
-    width: 6.7251461988304095%;
+    width: 6.7251462%;
   }
   .two {
-    width: 15.2046783625731%;
+    width: 15.20467836%;
   }
   .three {
-    width: 23.68421052631579%;
+    width: 23.68421053%;
   }
   .four {
-    width: 32.16374269005848%;
+    width: 32.16374269%;
   }
   .five {
-    width: 40.643274853801174%;
+    width: 40.64327485%;
   }
   .six {
-    width: 49.12280701754386%;
+    width: 49.12280702%;
   }
   .seven {
-    width: 57.60233918128655%;
+    width: 57.60233918%;
   }
   .eight {
-    width: 66.08187134502924%;
+    width: 66.08187135%;
   }
   .nine {
-    width: 74.56140350877193%;
+    width: 74.56140351%;
   }
   .ten {
-    width: 83.04093567251462%;
+    width: 83.04093567%;
   }
   .eleven {
-    width: 91.52046783625731%;
+    width: 91.52046784%;
   }
   .twelve {
     width: 100%;
@@ -777,7 +774,6 @@ nav.horizontal.right ul li {
   width: 60px;
   border-radius: 4px;
   /*border: 1px solid @handleBackgroundColor;*/
-
   background-color: #428bca;
   color: #fff;
   font-size: 12px;
@@ -883,7 +879,6 @@ nav.horizontal.right ul li {
 .list .list-item span.result {
   float: right;
   /*min-width: 10px;*/
-
   padding: 3px 7px;
   font-size: 12px;
   font-weight: bold;
@@ -914,7 +909,6 @@ nav.horizontal.right ul li {
   background-color: #dddddd;
   font-weight: bold;
   /*color: #fff;*/
-
 }
 .list .list-item.active {
   background-color: #3085d6;
@@ -924,7 +918,6 @@ nav.horizontal.right ul li {
 }
 .list .list-item.active span.result {
   /*color: #eee;*/
-
 }
 /*@media only screen and (min-width: 600px) {
     
@@ -966,14 +959,14 @@ nav.horizontal.right ul li {
 
 @media only screen and (min-width: 1150px) {
 
-}*/form {
+}*/
+form {
   line-height: 1.5em;
 }
 form p {
   vertical-align: middle;
   display: block;
   /*margin: 0;*/
-
 }
 form p label {
   font-weight: bold;
@@ -982,7 +975,6 @@ form p label {
 form p > input,
 form p > textarea {
   /*, dd > select {*/
-
   display: block;
   font-family: Helvetica, arial;
   padding: 7px 8px;
@@ -1015,3 +1007,4 @@ form p > span {
   display: block;
   min-height: 1em;
 }
+/*# sourceMappingURL=responsive.css.map */

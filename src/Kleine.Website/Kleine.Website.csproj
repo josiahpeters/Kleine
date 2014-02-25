@@ -116,7 +116,7 @@
       <DependentUpon>form.less</DependentUpon>
     </Content>
     <Content Include="css\less\functions.css">
-      <DependentUpon>grid.less</DependentUpon>
+      <DependentUpon>functions.less</DependentUpon>
     </Content>
     <Content Include="css\less\functions.min.css">
       <DependentUpon>grid.less</DependentUpon>
@@ -166,6 +166,7 @@
     </Content>
     <Content Include="favicon.png" />
     <Content Include="Global.asax" />
+    <Content Include="img\eliana-basket.jpg" />
     <Content Include="img\eliana\eliana_01.jpg" />
     <Content Include="img\eliana\eliana_01_thumb.jpg" />
     <Content Include="img\eliana\eliana_02.JPG" />
@@ -180,7 +181,6 @@
     <Content Include="img\eliana\eliana_06_thumb.jpg" />
     <Content Include="img\eliana\eliana_07.JPG" />
     <Content Include="img\eliana\eliana_07_thumb.jpg" />
-    <Content Include="img\eliana_banner.jpg" />
     <Content Include="img\header.png" />
     <Content Include="img\kim-and-joey-babyp-banner.jpg" />
     <Content Include="img\kim-and-joey-babyp-photo.jpg" />
@@ -233,6 +233,7 @@
     <Content Include="js\libs\jquery.flot.min.js" />
     <Content Include="js\libs\jquery.mobile.custom.min.js" />
     <Content Include="js\libs\modernizr-2.6.2.min.js" />
+    <Content Include="partials\birthed.html" />
     <Content Include="partials\confirm.html" />
     <Content Include="partials\email.html" />
     <Content Include="partials\gallery.html" />
@@ -262,7 +263,18 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <None Include="KleineServiceApi.cs.old" />
+    <Content Include="css\less\breakpoints.css.map">
+      <DependentUpon>breakpoints.css</DependentUpon>
+    </Content>
+    <Content Include="css\less\form.css.map">
+      <DependentUpon>form.css</DependentUpon>
+    </Content>
+    <Content Include="css\less\theme.css.map">
+      <DependentUpon>theme.css</DependentUpon>
+    </Content>
+    <Content Include="css\responsive.css.map">
+      <DependentUpon>responsive.css</DependentUpon>
+    </Content>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
