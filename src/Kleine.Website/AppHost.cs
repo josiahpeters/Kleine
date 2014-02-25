@@ -37,7 +37,11 @@ namespace Kleine.Website
 
             container.Register<IDbConnection>(dbFactory.OpenDbConnection());
 
-            container.Register<IRepositories>(new SqlRepositories(dbFactory));
+            var repo = new SqlRepositories(dbFactory);
+
+            repo.SetUp();
+
+            container.Register<IRepositories>(repo);
             container.Register<INotification>(notify);
 
             Plugins.Add(new SessionFeature());

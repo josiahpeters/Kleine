@@ -15,16 +15,6 @@ using Kleine.Requests;
 
 namespace Kleine.Services
 {
-    public class SessionKeys
-    {
-        public const string ProfileId = "ProfileId";
-    }
-
-    public class CookieKeys
-    {
-        public const string Identity = "Identity";
-    }
-
     public class KleineServiceApi : Service, IKleineService
     {
         IRepositories repo;
@@ -48,7 +38,128 @@ namespace Kleine.Services
             };
         }
 
-    #region Private Helper Methods
+        #region Public Service Methods
+
+        public ProfilePrediction Get(ProfileGet request)
+        {
+            if (!string.IsNullOrWhiteSpace(request.code))
+            {
+                var profile = repo.Profiles.GetByEmailCode(request.code);
+
+                setProfileSession(profile);
+
+                return getAggregate(profile);
+            }
+            return getAggregate(getCurrentProfileFromSession());
+        }
+
+        public ProfilePrediction Post(ProfileCreate request)
+        {
+            var dueDate = repo.DueDates.GetById(1);
+
+            string emailCode = getUniqueCode();
+
+            // determine if they have already signed up
+            Profile profile = repo.Profiles.GetByEmailAddress(request.EmailAddress);
+            // if they have send them an email telling them how to 
+            if (profile != null)
+            {
+                notify.SendAuth(profile, dueDate);
+                Response.StatusCode = 401;
+                return null;
+            }
+
+            // if they are a new person, lets create a new profile for them
+            profile = repo.Profiles.Create(new Profile { EmailCode = emailCode }.PopulateWithNonDefaultValues(request));
+
+            repo.Predictions.Create(new Prediction { ProfileId = profile.Id, DueDateId = dueDate.Id });
+
+            //notify.SendAuth(profile, dueDate);
+
+            // store profile Id in session and set a long lasting cookie associated with the profile
+            setProfileSession(profile);
+
+            return getAggregate(profile);
+        }
+
+        public ProfilePrediction Put(ProfileUpdate request)
+        {
+            var dueDate = repo.DueDates.GetById(1);
+
+            var profile = getCurrentProfileFromSession();
+
+            if (profile != null)
+            {
+                profile.Name = request.Name ?? profile.Name;
+
+                repo.Profiles.Update(profile);
+
+                return getAggregate(profile);
+            }
+            else
+            {
+
+
+            }
+            return null;
+        }
+
+        public ProfilePrediction Put(PredictionUpdate request)
+        {
+            var profile = getCurrentProfileFromSession();
+
+            Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
+
+            if (request.Gender != null && !(request.Gender == "Male" || request.Gender == "Female"))
+                throw new Exception("Gender is incorrect");
+
+            if (request.Date != null && (request.Date < new DateTime(2013, 11, 25) || request.Date > new DateTime(2014, 1, 4)))
+                throw new Exception("Date is not valid range.");
+
+            if (request.Weight != null && request.Weight != 0 && (request.Weight < 1 || request.Weight > 13))
+                throw new Exception("Weight is not valid range.");
+
+            if (request.Length != null && request.Length != 0 && (request.Length < 15 || request.Length > 41))
+                throw new Exception("Length is not valid range.");
+
+            prediction.PopulateWithNonDefaultValues(request);
+
+            prediction = repo.Predictions.Update(prediction);
+
+            if (prediction.FinishDate != null && prediction.FinishDate > DateTime.MinValue)
+            {
+                notify.SendGuessToKim(profile, prediction);
+            }
+
+            return getAggregate(profile, prediction);
+        }
+
+        public ResultsAggregate Get(ResultsRequest request)
+        {
+            var genderResults = GenderResults();
+
+            var dateCounts = DateCounts();
+
+            var timeCounts = TimeCounts();
+
+            var weightCounts = WeightCounts();
+
+            var lengthCounts = LengthCounts();
+
+
+            return new ResultsAggregate(genderResults, dateCounts, timeCounts, weightCounts, lengthCounts);
+        }
+
+        public List<PredictionPlacement> Get(RankingsRequest request)
+        {
+            var rankings = getRankings();
+
+            return rankings;
+        }
+
+        #endregion
+
+        #region Private Helper Methods
 
         private string getUniqueCode()
         {
@@ -145,7 +256,7 @@ namespace Kleine.Services
             else
                 return null;
         }
-                
+
         private List<PredictionPlacement> getRankings()
         {
             var predictions = repo.Predictions.GetAll().Where(u => u.FinishDate != null).ToDictionary(t => t.ProfileId, t => t);
@@ -153,7 +264,7 @@ namespace Kleine.Services
 
             List<PredictionPlacement> placements = new List<PredictionPlacement>();
 
-            
+
 
             foreach (var key in predictions.Keys)
             {
@@ -167,7 +278,7 @@ namespace Kleine.Services
                 var names = name.Split(' ');
 
                 if (name.Contains(" "))
-                    name = string.Format("{0} {1}.", names[0], names[1].Substring(0,1));
+                    name = string.Format("{0} {1}.", names[0], names[1].Substring(0, 1));
 
 
                 placements.Add(new PredictionPlacement
@@ -386,136 +497,18 @@ namespace Kleine.Services
 
         }
 
-    #endregion
+        #endregion
+
+    }
 
 
-    #region Public Service Methods
+    public class SessionKeys
+    {
+        public const string ProfileId = "ProfileId";
+    }
 
-        public ProfilePrediction Get(ProfileGet request)
-        {
-            if (!string.IsNullOrWhiteSpace(request.code))
-            {
-                if (request.code == "kizzlefoshizzle")
-                {
-                    //repo.SetUp();
-                    return new ProfilePrediction();
-                }
-
-                var profile = repo.Profiles.GetByEmailCode(request.code);
-
-                setProfileSession(profile);
-
-                return getAggregate(profile);
-            }
-            return getAggregate(getCurrentProfileFromSession());
-        }
-
-        public ProfilePrediction Post(ProfileCreate request)
-        {
-            var dueDate = repo.DueDates.GetById(1);
-
-            string emailCode = getUniqueCode();
-
-            // determine if they have already signed up
-            Profile profile = repo.Profiles.GetByEmailAddress(request.EmailAddress);
-            // if they have send them an email telling them how to 
-            if (profile != null)
-            {
-                notify.SendAuth(profile, dueDate);
-                Response.StatusCode = 401;
-                return null;
-            }
-
-            // if they are a new person, lets create a new profile for them
-            profile = repo.Profiles.Create(new Profile { EmailCode = emailCode }.PopulateWithNonDefaultValues(request));
-
-            repo.Predictions.Create(new Prediction { ProfileId = profile.Id, DueDateId = dueDate.Id });
-
-            //notify.SendAuth(profile, dueDate);
-
-            // store profile Id in session and set a long lasting cookie associated with the profile
-            setProfileSession(profile);
-
-            return getAggregate(profile);
-        }
-
-        public ProfilePrediction Put(ProfileUpdate request)
-        {
-            var dueDate = repo.DueDates.GetById(1);
-
-            var profile = getCurrentProfileFromSession();
-
-            if (profile != null)
-            {
-                profile.Name = request.Name ?? profile.Name;
-
-                repo.Profiles.Update(profile);
-
-                return getAggregate(profile);
-            }
-            else
-            {
-
-
-            }
-            return null;
-        }
-
-        public ProfilePrediction Put(PredictionUpdate request)
-        {
-            var profile = getCurrentProfileFromSession();
-
-            Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
-
-            if (request.Gender != null && !(request.Gender == "Male" || request.Gender == "Female"))
-                throw new Exception("Gender is incorrect");
-
-            if (request.Date != null && (request.Date < new DateTime(2013, 11, 25) || request.Date > new DateTime(2014, 1, 4)))
-                throw new Exception("Date is not valid range.");
-
-            if (request.Weight != null && request.Weight != 0 && (request.Weight < 1 || request.Weight > 13))
-                throw new Exception("Weight is not valid range.");
-
-            if (request.Length != null && request.Length != 0 && (request.Length < 15 || request.Length > 41))
-                throw new Exception("Length is not valid range.");
-
-            prediction.PopulateWithNonDefaultValues(request);
-
-            prediction = repo.Predictions.Update(prediction);
-
-            if (prediction.FinishDate != null && prediction.FinishDate > DateTime.MinValue)
-            {
-                notify.SendGuessToKim(profile, prediction);
-            }
-
-            return getAggregate(profile, prediction);
-        }
-
-        public ResultsAggregate Get(ResultsRequest request)
-        {
-            var genderResults = GenderResults();
-
-            var dateCounts = DateCounts();
-
-            var timeCounts = TimeCounts();
-
-            var weightCounts = WeightCounts();
-
-            var lengthCounts = LengthCounts();
-
-
-            return new ResultsAggregate(genderResults, dateCounts, timeCounts, weightCounts, lengthCounts);
-        }
-
-        public List<PredictionPlacement> Get(RankingsRequest request)
-        {
-            var rankings = getRankings();
-
-            return rankings;
-        }
-
-    #endregion
-
-
+    public class CookieKeys
+    {
+        public const string Identity = "Identity";
     }
 }

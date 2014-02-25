@@ -33,16 +33,19 @@ namespace Kleine.Data
         public void SetUp()
         {
             using (var db = dbFactory.OpenDbConnection())
-            {
-                db.DropTable<CookieTracker>();
-                db.DropTable<Prediction>();
-                db.DropTable<Profile>();
-                db.DropTable<DueDate>();
+            {               
 
-                db.CreateTable<DueDate>();
-                db.CreateTable<Profile>();
-                db.CreateTable<Prediction>();
-                db.CreateTable<CookieTracker>();
+                if (!db.TableExists("DueDates"))
+                    db.CreateTable<DueDate>();
+
+                if (!db.TableExists("Profiles"))
+                    db.CreateTable<Profile>();
+
+                if (!db.TableExists("Predictions"))
+                    db.CreateTable<Prediction>();
+
+                if (!db.TableExists("CookieTrackers"))
+                    db.CreateTable<CookieTracker>();
 
                 var dueDate = dueDates.Create(new DueDate
                 {
