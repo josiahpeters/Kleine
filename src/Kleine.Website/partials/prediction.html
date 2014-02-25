@@ -13,8 +13,8 @@
             <div class="success">
                 <p>
                     <strong>Prediction Complete:</strong>
-                    <!--Your prediction has been saved and you have been entered into the pool for a chance to win a <a ui-sref="reward">reward</a>!-->
-                    Thanks for making your prediction, you can see the <a ui-sref="results">results</a> and checkout the <a ui-sref="rankings">rankings</a> for all predictions!
+                    <span ng-show="!$state.completed">Your prediction has been saved and you have been entered into the pool for a chance to win a <a ui-sref="reward">reward</a>. You can checkout the you can see the <a ui-sref="results">results</a> to see how others have voted.</span>
+                    <span ng-show="$state.completed">Thanks for making your prediction, you can see the <a ui-sref="results">results</a> and checkout the <a ui-sref="rankings">rankings</a> for all predictions!</span>
 </p>
             </div>
         </div>

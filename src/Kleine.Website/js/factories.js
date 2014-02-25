@@ -1,5 +1,6 @@
 ﻿'use strict';
 
+angular.module('kleine.services', []).factory('predict', [function () { }]);
 
 app.factory('profilePrediction', ['$http', function ($http)
 {
