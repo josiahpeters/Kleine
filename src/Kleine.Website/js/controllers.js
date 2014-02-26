@@ -170,8 +170,10 @@ angular.module('kleine.controllers', [])
                 var male = response.data.GenderResults[1];
                 var female = response.data.GenderResults[0];
 
-                $scope.MaleCount = male.Count;
-                $scope.FemaleCount = female.Count;
+                // default values if there are no votes yet! - should have realized this but I built results after 70+ votes.
+                var male = response.data.GenderResults[1] || { Count: 0, Date: "123456", Time: "123456", Weight: 0, Length: 0 };
+                var female = response.data.GenderResults[0] || { Count: 0, Date: "123456", Time: "123456", Weight: 0, Length: 0 };
+
                 $scope.PredictionCount = $scope.MaleCount + $scope.FemaleCount;
 
                 $scope.Results.push(getData(female, $scope.PredictionCount, 'girl'));

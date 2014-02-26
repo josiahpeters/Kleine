@@ -74,7 +74,7 @@ namespace Kleine.Services
 
             repo.Predictions.Create(new Prediction { ProfileId = profile.Id, DueDateId = dueDate.Id });
 
-            //notify.SendAuth(profile, dueDate);
+            notify.SendAuth(profile, dueDate);
 
             // store profile Id in session and set a long lasting cookie associated with the profile
             setProfileSession(profile);

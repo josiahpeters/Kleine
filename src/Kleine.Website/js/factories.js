@@ -130,7 +130,7 @@ app.factory('profilePrediction', ['$http', function ($http)
         if (predict !== undefined && predict.Length > 0)
         {
             length = [predict.Length.toFixed(1)];
-            length.push((predict.Length + 4).toFixed(1));
+            length.push((predict.Length + 2).toFixed(1));
         }
 
         var gender = undefined;
