@@ -1,6 +1,6 @@
 # PreggoPredict
 
-Kleine is the project codename for [preggopredict.com](http://preggopredict.com).
+### Kleine is the project codename for the website [preggopredict.com](http://preggopredict.com).
 
 I created [PreggoPredict](http://preggopredict.com) as a fun little side project to try out some new technologies. It was also a way to engage our friends and family members during our pregnancy by guessing what gender, weight, length they thought the baby would be. And also allowing them to guess the date and time they thought the baby would be born.
 
