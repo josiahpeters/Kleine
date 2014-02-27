@@ -1,10 +1,19 @@
-# Kleine
+# PreggoPredict
 
-This project is what runs http://preggopredict.com. I created PreggoPredict as a fun little side project to try out some new technologies. It was also a way to engage our friends and family members during our pregnancy by guessing what gender, weight, length they thought the baby would be. And also allowing them to guess the date and time they thought the baby would be born.
+Kleine is the project codename for [preggopredict.com](http://preggopredict.com).
+
+I created [PreggoPredict](http://preggopredict.com) as a fun little side project to try out some new technologies. It was also a way to engage our friends and family members during our pregnancy by guessing what gender, weight, length they thought the baby would be. And also allowing them to guess the date and time they thought the baby would be born.
+
+If you want to see what the contest portion of the website looked like, check out [http://demo.preggopredict.com](http://demo.preggopredict.com). To see the final results you can see the finished contest page at [http://preggopredict.com](http://preggopredict.com)
+
 
 ## Technologies / Libraries 
+I approached this project as an opportunity to build a single page web application from top to bottom. I knew a few things going into this project. I know I wanted to learn AngularJS, I wanted to write the backend web api with ServiceStack, and I knew I wanted to make a responsive design and not be tied to the un-usable markup that one produces when relying on twitter bootstrap if they try to switch away mid project.
+
+### The libraries I used are:
  - [ServiceStack](https://servicestack.net/) - Back end API
  - [AngularJS](http://angularjs.org/) - Front end MVVM framework
+ - ~~TypeScript~~ - Decided learning AngularJS while learning TypeScript at the same time was insane
  - [UI-Router](https://github.com/angular-ui/ui-router) - Nested Angular Routing
  - [Font-Awesome](http://fortawesome.github.io/Font-Awesome/) - Icons
  - [LESS](http://lesscss.org/) - Simplified CSS creation and maintenance
@@ -12,16 +21,24 @@ This project is what runs http://preggopredict.com. I created PreggoPredict as a
  - [Visual Studio 2013](http://visualstudio.com/) - IDE
   - [Web Essentials 2013 Extension](http://vswebessentials.com/)
 
-I'd like to explain why I chose each framework and any feelings I about them since completing the project. 
- 
-## ServiceStack - Back end API
+### ServiceStack - Back end API
 
-### What is ServiceStack? 
- - "ServiceStack started development in 2008 with the mission of creating a best-practices services framework with an emphasis on simplicity and speed, reducing the effort in creating and maintaining resilient message-based SOA Services and rich web apps." - ServiceStack.net
- - [Why ServiceStack?](https://github.com/ServiceStack/ServiceStack/wiki/Why-Servicestack)	
+#### What is ServiceStack? 
+[ServiceStack](https://servicestack.net/) is an open source framework that has been created as a complete replacement for [WCF, WebAPI.](http://stackoverflow.com/questions/15927475/servicestack-request-dto-design/15941229#15941229) EntityFramework, and now even Asp.NET MVC. 
 
-Here is my web API service interface:
+It has quite a few wonderful gems baked into it that makes your life much easier, the list is very long but the notable ones I used are:
+- Insanely Easy http API implementation, with a focus on [building a message based web service](https://github.com/ServiceStack/ServiceStack/wiki/What-is-a-message-based-web-service%3F).
+- Custom url routing
+- [IOC / Dependency Injection](https://github.com/ServiceStack/ServiceStack/wiki/The-IoC-container)
+- [OrmLite + Dapper.Net](https://github.com/ServiceStack/ServiceStack.OrmLite) - POCO ORM with simple database helper methods that allow you to write a clean and abstracted data layer with minimal work with no XML configuration files!
+- [Other reasons for ServiceStack?](https://github.com/ServiceStack/ServiceStack/wiki/Why-Servicestack)	
 
+#### Sample ServiceStack web API code for preggopredit.com
+ServiceStack automatically generates a page that documents your web api. It's served from /metadata by default. You can see the [PreggoPredict metadata page](http://preggopredict.com/api/metadata) and see the methods below listed on the self documenting page.
+
+Here is my web API service interface [IKleineService.cs](/src/Kleine/Services/IKleineService.cs):
+
+```csharp
     public interface IKleineService
     {
         ProfilePrediction Get(ProfileGet request);
@@ -31,9 +48,11 @@ Here is my web API service interface:
         ResultsAggregate Get(ResultsRequest request);
         List<PredictionPlacement> Get(RankingsRequest request);
     }
-	
-And my profile Request objects:
+```	
 
+And my profile Request objects, route attributes on the request classes define the api method's url:
+
+```csharp
     [Route("/profile", "GET")]
     public class ProfileGet : IReturn<ProfilePrediction>
     {
@@ -45,26 +64,32 @@ And my profile Request objects:
 
     [Route("/profile", "PUT")]
     public class ProfileUpdate : Profile, IReturn<ProfilePrediction> { }    	
-	
-Besides the implementation of each IKleineService method, these few lines help me define the shape of my web API. 
+```
 
-My KleineServiceApi.cs file implements IKleineService and inherits from ServiceStack.Service which does all of the heavy lifting.
+Besides the actual implementation of each IKleineService method, these few lines help me define the shape of my web API.
 
-How did I come to use ServiceStack?
-- A couple years ago I was getting annoyed with System.Json including object type data in the serialized JSON for object graphs. I decided we needed better JSON serialization for an ASP.NET MVC3 product we were building. I came across a Stack Overflow response someone made with benchmarks for different JSON serialization libraries. I saw the benchmarks for ServiceStack.Text and how fast and easy it was to use and immediately decided to use them with ServiceStack.Text. I used nuget to "install-package ServiceStack.Text" and was immediately sold from then on based on how easy and fast it was to use. After that project was completed I begin to look into this "ServiceStack" framework and saw that they had other offerings including a full stack replacement for WCF! I started experimenting with their framework and have been hooked since then.
+My [KleineServiceApi.cs](/src/Kleine.Services/KleineServiceApi.cs) file implements IKleineService and inherits from ServiceStack.Service which does all of the heavy lifting.
 
-## AngularJS - Front end MVVM framework
+### AngularJS - Front end MVVM framework
+I intially made the terrible mistake of trying to learn two technologies at the same time. I was trying to use TypeScript along with AngularJS. As a fairly new framework, Angular's documentation isn't the most complete. Of course there is an even smaller subset of users or even documentation for those trying to write an Angular site with TypeScript.
 
-## UI-Router - Nested Angular Routing
+Angular is a very neat framework. It has a ton of features, many of which I didn't touch. I ended up side stepping Angular's built in routing and templating engine in favor of ui-router to help implement the nesting of views, nested states, and nested routing that I was planning on doing.
 
-## Font-Awesome - Icons
+### UI-Router - Nested Angular Routing
+~~More information coming soon.~~
 
-## LESS - Simplified CSS creation and maintenance
+### Font-Awesome - Icons
+~~More information coming soon.~~
 
-## Hand Rolled Responsive CSS
+### LESS - Simplified CSS creation and maintenance
+~~More information coming soon.~~
 
-## Visual Studio 2013 - IDE
+### Hand Rolled Responsive CSS
+~~More information coming soon.~~
 
-### Web Essentials 2013 Plugin
+### Visual Studio 2013 - IDE
+~~More information coming soon.~~
 
-[Download Page](http://visualstudiogallery.msdn.microsoft.com/56633663-6799-41d7-9df7-0f2a504ca361)
+#### Web Essentials 2013 Plugin
+[Web Essentials 2013 - Download Page](http://visualstudiogallery.msdn.microsoft.com/56633663-6799-41d7-9df7-0f2a504ca361)
+~~More information coming soon.~~
