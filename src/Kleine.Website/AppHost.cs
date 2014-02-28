@@ -1,4 +1,7 @@
-﻿using Funq;
+﻿// determines whether we use SqlServer or in-memory storage - useful for running locally without SqlServer installed
+#define MEMORYSTORAGE
+
+using Funq;
 using Kleine.Data;
 using Kleine.Data.Memory;
 using Kleine.Data.Sql;
@@ -10,18 +13,22 @@ using ServiceStack.OrmLite;
 using ServiceStack.ServiceHost;
 using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Web;
 
 namespace Kleine.Website
 {
     public class AppHost : AppHostBase
     {
-        public static INotification notify;
+        // used to store the proper url for sending links in email, we need to store data after Application_BeginRequest
+        private static EnvironmentSettings environmentSettings = new EnvironmentSettings();
+        public static EnvironmentSettings EnvironmentSettings
+        {
+            get { return AppHost.environmentSettings; }
+            set { AppHost.environmentSettings = value; }
+        }
+
+        // singleton for in memory data storage
         public static InMemoryData data;
 
         // Initializes a new instance of your ServiceStack application, with the specified name and assembly containing the services.
@@ -30,14 +37,19 @@ namespace Kleine.Website
         // Configure the container with the necessary routes for your ServiceStack application.
         public override void Configure(Container container)
         {
-            LogManager.LogFactory = new EventLogFactory("Kleine", "Application");
+            // setup event logger
+            registerEventLogLogging(container);
 
+            // setup email notifications with defaults
             registerNotifications(container);
-            
-            // comment out one of the below to swap data stores
-            //registerInMemoryStore(container);
+
+            // determine datastore method
+#if MEMORYSTORAGE
+            registerInMemoryStore(container);
+#else
             registerSqlDataStore(container);
 
+#endif
             // setup repositories with defaults if they don't exist
             container.Resolve<IRepositories>().SetUp();
 
@@ -53,11 +65,19 @@ namespace Kleine.Website
             });
         }
 
+        private void registerEventLogLogging(Funq.Container container)
+        {
+            string eventLogName = "Kleine.Website";
+            string eventLogSource = "Application";
+
+            LogManager.LogFactory = new EventLogFactory(eventLogName, eventLogSource);
+            container.Register<ILog>(c => LogManager.LogFactory.GetLogger(""));
+        }
+
         private void registerNotifications(Funq.Container container)
         {
-            notify = new NotificationService();
-            // register static "singleton" services
-            container.Register<INotification>(notify);
+            container.Register<EnvironmentSettings>(environmentSettings);
+            container.RegisterAutoWiredAs<NotificationService, INotification>();
         }
 
         private void registerInMemoryStore(Funq.Container container)
@@ -78,7 +98,7 @@ namespace Kleine.Website
             container.RegisterAutoWiredAs<MemoryRepositories, MemoryRepositories>();
             container.RegisterAutoWiredAs<MemoryRepositories, IRepositories>();
         }
-
+        
         private void registerSqlDataStore(Funq.Container container)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Kleine"].ConnectionString;

@@ -24,7 +24,7 @@ namespace Kleine.Website
         {
             string baseUri = string.Format("{0}://{1}{2}/", HttpContext.Current.Request.Url.Scheme, HttpContext.Current.Request.Url.Host, (HttpContext.Current.Request.Url.IsDefaultPort ? "" : ":" + HttpContext.Current.Request.Url.Port));
 
-            NotificationService.BaseUri = baseUri;
+            AppHost.EnvironmentSettings.ApplicationUrl = baseUri;
         }
 
         protected void Application_AuthenticateRequest(object sender, EventArgs e)

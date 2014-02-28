@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\EnvironmentSettings.cs" />
     <Compile Include="Data\IRepositories.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Entities\DateTimeCount.cs" />

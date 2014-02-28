@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Kleine.Data;
+using ServiceStack.Logging;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -9,35 +11,42 @@ namespace Kleine
 {
     public class NotificationService : INotification
     {
-        private static string baseUri = "http://preggopredict.com/";
+        private ILog logger;
+        private EnvironmentSettings settings;
 
-        public static string BaseUri
+        private string smtpServer;
+        private string fromEmailAddress;
+        private string fromEmailDisplay;
+
+        private string dueDateCreatorEmailAddress;
+
+        public NotificationService(ILog logger, EnvironmentSettings settings)
         {
-          get { return NotificationService.baseUri; }
-          set { NotificationService.baseUri = value; }
-        } 
+            this.logger = logger;
+            this.settings = settings;
 
-        public static bool BaseUriSet = false;
+            smtpServer = ConfigurationManager.AppSettings["SmtpServer"];
+            fromEmailAddress = ConfigurationManager.AppSettings["FromEmailAddress"] ?? "p@preggopredict.com";
+            fromEmailDisplay = ConfigurationManager.AppSettings["FromDisplayName"] ?? "PreggoPredict";
+
+            dueDateCreatorEmailAddress = ConfigurationManager.AppSettings["CreatorEmailAddress"] ?? "creator@preggopredict.com";
+        }
 
         public void SendNotification(string to, string subject, string message)
         {
             try
             {
-                sendEmail(new MailAddress("p@preggopredict.com", "PreggoPredict"), new MailAddress(to), String.Format("{0}", subject), subject, message);
+                sendEmail(new MailAddress(fromEmailAddress, fromEmailDisplay), new MailAddress(to), String.Format("{0}", subject), subject, message);
             }
             catch(Exception ex)
             {
-
+                logger.Error("Error sending notification.", ex);
             }
         }
 
         private void sendEmail(MailAddress fromAddress, MailAddress toAddress, string subject, string title, string body, Attachment attachment = null)
         {
-            //this.smtpIp = "blacksmith";
-            //SmtpServer
-            string ipAddress = ConfigurationManager.AppSettings["SmtpServer"];
-
-            body = string.Format(defaultBody, title, body, baseUri);
+            body = string.Format(defaultBody, title, body, settings.ApplicationUrl);
 
             MailMessage message = new MailMessage(fromAddress, toAddress);
 
@@ -48,7 +57,7 @@ namespace Kleine
             if (attachment != null)
                 message.Attachments.Add(attachment);
 
-            SmtpClient client = new SmtpClient(ipAddress);
+            SmtpClient client = new SmtpClient(smtpServer);
 
             client.Send(message);
         }
@@ -60,13 +69,13 @@ namespace Kleine
             StringBuilder sb = new StringBuilder();
 
             sb.AppendFormat("Dear {0},<br /><br />\n", profile.Name ?? "Friend");
-            sb.AppendFormat("<a href=\"{0}#/invite?code={1}\">Make Prediction</a>", baseUri, profile.EmailCode);
+            sb.AppendFormat("<a href=\"{0}#/invite?code={1}\">Make Prediction</a>", settings.ApplicationUrl, profile.EmailCode);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            SendNotification("josiahpeters@gmail.com", "Baby Peters - You are invited to make a prediction", sb.ToString());
+            SendNotification(dueDateCreatorEmailAddress, "Baby Peters - You are invited to make a prediction", sb.ToString());
         }
 
-        public void SendGuessToKim(Profile profile, Prediction prediction)
+        public void SendCompletedGuessResultToContestCreator(Profile profile, Prediction prediction)
         {
             try
             {
@@ -85,10 +94,12 @@ namespace Kleine
                 sb.AppendFormat("</table>");
                 //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-                SendNotification("kimmedinepeters@gmail.com", string.Format("Baby Peters - {0} Made a Guess!", profile.Name), sb.ToString());
+                SendNotification(dueDateCreatorEmailAddress, string.Format("Baby Peters - {0} Made a Guess!", profile.Name), sb.ToString());
             }
             catch (Exception ex)
-            { }
+            {
+                logger.Error("Error sending notification.", ex);            
+            }
         }
 
         public void SendAuth(Profile profile, DueDate dueDate)
@@ -99,7 +110,7 @@ namespace Kleine
             sb.AppendFormat("<p>Kim and Joey are expecting a baby soon. They have invited you to take part in a game to predict when Baby P will be born.</p>");
             sb.AppendFormat("<p>Use the link below to make your prediction or view the results as people continue to vote.</p>");
 
-            string link = string.Format("{0}invitation?code={1}", baseUri, profile.EmailCode);
+            string link = string.Format("{0}invitation?code={1}", settings.ApplicationUrl, profile.EmailCode);
 
             sb.AppendFormat("<p><a href=\"{0}\">{0}</a></p>", link);
             //sb.AppendFormat("<p><a href=\"{0}#/results/start?code={1}\">View Results</a></p>", baseUri, profile.EmailCode);

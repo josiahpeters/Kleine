@@ -128,7 +128,7 @@ namespace Kleine.Services
 
             if (prediction.FinishDate != null && prediction.FinishDate > DateTime.MinValue)
             {
-                notify.SendGuessToKim(profile, prediction);
+                notify.SendCompletedGuessResultToContestCreator(profile, prediction);
             }
 
             return getAggregate(profile, prediction);
