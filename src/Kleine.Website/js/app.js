@@ -1,5 +1,5 @@
 ﻿'use strict';
-var complete = true;
+var complete = false;
 var modules = ['ngRoute', 'ui.router', 'ngResource', 'ngAnimate', 'kleine.controllers', 'kleine.directives', 'kleine.filters', 'kleine.services'];
 
 var app = angular.module('kleine', modules)

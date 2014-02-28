@@ -8,14 +8,14 @@ using ServiceStack.Common;
 namespace Kleine.Data
 {
     // Why did we add new() at the end? BECAUSE JON SKEET MAKES IT SO - http://stackoverflow.com/questions/3056863/class-mapping-error-t-must-be-a-non-abstract-type-with-a-public-parameterless
-    public class BaseRepository<T> : IRepository<T> where T : Entity, new()
+    public class BaseMemoryRepository<T> : IRepository<T> where T : Entity, new()
     {
-        Dictionary<int, T> data = new Dictionary<int, T>();
+        Dictionary<int, T> data;
         int id = 1;
 
-        public BaseRepository()
+        public BaseMemoryRepository(Dictionary<int, T> data)
         {
-            
+            this.data = data;
         }
 
         public T GetById(int Id)

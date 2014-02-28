@@ -5,11 +5,19 @@ using System.Text;
 
 namespace Kleine.Data.Memory
 {
-    public class CookieTrackerRepository : BaseRepository<CookieTracker>, ICookieTrackerRepository
+    public class CookieTrackerRepository : BaseMemoryRepository<CookieTracker>, ICookieTrackerRepository
     {
+        private InMemoryData data;
+
+        public CookieTrackerRepository(InMemoryData data)
+            : base(data.CookieTrackerData)
+        {
+            this.data = data;
+        }
+
         public CookieTracker GetByUniqueKey(string unique)
         {
-            throw new NotImplementedException();
+            return data.CookieTrackerData.Values.FirstOrDefault(p => p.Unique == unique.ToLower());
         }
     }
 }

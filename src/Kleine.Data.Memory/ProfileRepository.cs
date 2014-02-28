@@ -5,17 +5,24 @@ using System.Text;
 
 namespace Kleine.Data.Memory
 {
-    public class ProfileRepository : BaseRepository<Profile>, IProfileRepository
+    public class ProfileRepository : BaseMemoryRepository<Profile>, IProfileRepository
     {
-        public Profile GetByEmailAddress(string p)
+        private InMemoryData data;
+
+        public ProfileRepository(InMemoryData data)
+            : base(data.ProfileData)
         {
-            throw new NotImplementedException();
+            this.data = data;
         }
 
+        public Profile GetByEmailAddress(string emailAddress)
+        {
+            return data.ProfileData.Values.FirstOrDefault(p => p.EmailAddress == emailAddress.ToLower());
+        }
 
         public Profile GetByEmailCode(string code)
         {
-            throw new NotImplementedException();
+            return data.ProfileData.Values.FirstOrDefault(p => p.EmailCode == code.ToLower());
         }
     }
 }

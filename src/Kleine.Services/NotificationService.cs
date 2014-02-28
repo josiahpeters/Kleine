@@ -21,7 +21,14 @@ namespace Kleine
 
         public void SendNotification(string to, string subject, string message)
         {
-            sendEmail(new MailAddress("p@preggopredict.com", "PreggoPredict"), new MailAddress(to), String.Format("{0}", subject), subject, message);            
+            try
+            {
+                sendEmail(new MailAddress("p@preggopredict.com", "PreggoPredict"), new MailAddress(to), String.Format("{0}", subject), subject, message);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         private void sendEmail(MailAddress fromAddress, MailAddress toAddress, string subject, string title, string body, Attachment attachment = null)

@@ -67,10 +67,12 @@
   <ItemGroup>
     <Compile Include="BaseRepository.cs" />
     <Compile Include="CookieTrackerRepository.cs" />
+    <Compile Include="InMemoryData.cs" />
     <Compile Include="PredictionRepository.cs" />
     <Compile Include="ProfileRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories.cs" />
+    <Compile Include="MemoryRepositories.cs" />
+    <Compile Include="ResultsRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kleine\Kleine.csproj">
