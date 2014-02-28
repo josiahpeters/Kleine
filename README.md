@@ -4,6 +4,14 @@
 
 I created [PreggoPredict](http://preggopredict.com) as a fun little side project to try out some new technologies. It was also a way to engage our friends and family members during our pregnancy by guessing what gender, weight, length they thought the baby would be. And also allowing them to guess the date and time they thought the baby would be born.
 
+**Site Preview:**
+
+[![](http://i.imgur.com/atWFBBP.png)](http://demo.preggopredict.com)
+
+**Responsive Preview:**
+
+[![](http://i.imgur.com/QZvUCsS.png)](http://demo.preggopredict.com)
+
 If you want to see what the contest portion of the website looked like, check out [http://demo.preggopredict.com](http://demo.preggopredict.com). To see the final results you can see the finished contest page at [http://preggopredict.com](http://preggopredict.com)
 
 Keep in mind this project is no-where near complete. There a few little hacks here and there in order to get the site shipped before the baby arrived.
