@@ -19,24 +19,33 @@ namespace Kleine.Data
 
         OrmLiteConnectionFactory dbFactory;
 
-        public SqlRepositories(OrmLiteConnectionFactory dbFactory)
+        public SqlRepositories(OrmLiteConnectionFactory dbFactory, IRepository<DueDate> dueDates, IProfileRepository profile, IPredictionRepository predictions, ICookieTrackerRepository cookieTrackers, IResultsRepository results)
         {
             this.dbFactory = dbFactory;
-            //IDbConnection db
-            this.dueDates = new BaseSqlRepository<DueDate>(this.dbFactory);
-            this.profile = new ProfileSqlRepository(this.dbFactory);
-            this.predictions = new PredictionSqlRepository(this.dbFactory);
-            this.cookieTrackers = new CookieTrackerSqlRepository(this.dbFactory);
-            this.results = new ResultsSqlRepository(this.dbFactory);
+            
+            this.dueDates = dueDates;
+            this.profile = profile;
+            this.predictions = predictions;
+            this.cookieTrackers = cookieTrackers;
+            this.results = results;
         }
 
         public void SetUp()
         {
             using (var db = dbFactory.OpenDbConnection())
-            {               
-
+            {
                 if (!db.TableExists("DueDates"))
+                {
                     db.CreateTable<DueDate>();
+
+                    var dueDate = dueDates.Create(new DueDate
+                    {
+                        Name = "BabyP",
+                        Title = "BabyP",
+                        ExpectedDate = new DateTime(2013, 12, 16),
+                        Description = "Baby P is coming soon!"
+                    });
+                }
 
                 if (!db.TableExists("Profiles"))
                     db.CreateTable<Profile>();
@@ -45,15 +54,7 @@ namespace Kleine.Data
                     db.CreateTable<Prediction>();
 
                 if (!db.TableExists("CookieTrackers"))
-                    db.CreateTable<CookieTracker>();
-
-                var dueDate = dueDates.Create(new DueDate
-                {
-                    Name = "BabyP",
-                    Title = "BabyP",
-                    ExpectedDate = new DateTime(2013, 12, 16),
-                    Description = "Baby P is coming soon!"
-                });
+                    db.CreateTable<CookieTracker>();                
             }
         }
         

@@ -1,6 +1,7 @@
 ﻿using Funq;
 using Kleine.Data;
 using Kleine.Data.Memory;
+using Kleine.Data.Sql;
 using Kleine.Services;
 using ServiceStack.Common.Web;
 using ServiceStack.Logging;
@@ -23,8 +24,6 @@ namespace Kleine.Website
         public static INotification notify;
         public static InMemoryData data;
 
-        private OrmLiteConnectionFactory dbFactory;
-
         // Initializes a new instance of your ServiceStack application, with the specified name and assembly containing the services.
         public AppHost() : base("Project Kleine", typeof(KleineServiceApi).Assembly) { }
 
@@ -36,9 +35,10 @@ namespace Kleine.Website
             registerNotifications(container);
             
             // comment out one of the below to swap data stores
-            registerInMemoryStore(container);
-            //registerSqlDataStore(container);
+            //registerInMemoryStore(container);
+            registerSqlDataStore(container);
 
+            // setup repositories with defaults if they don't exist
             container.Resolve<IRepositories>().SetUp();
 
             Plugins.Add(new SessionFeature());
@@ -74,6 +74,7 @@ namespace Kleine.Website
             container.RegisterAutoWiredAs<PredictionRepository, IPredictionRepository>();
             container.RegisterAutoWiredAs<CookieTrackerRepository, ICookieTrackerRepository>();
             container.RegisterAutoWiredAs<ResultsRepository, IResultsRepository>();
+
             container.RegisterAutoWiredAs<MemoryRepositories, MemoryRepositories>();
             container.RegisterAutoWiredAs<MemoryRepositories, IRepositories>();
         }
@@ -81,10 +82,17 @@ namespace Kleine.Website
         private void registerSqlDataStore(Funq.Container container)
         {
             string connectionString = ConfigurationManager.ConnectionStrings["Kleine"].ConnectionString;
-            dbFactory = new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider);
-            container.Register<IDbConnection>(dbFactory.OpenDbConnection());
-            container.RegisterAutoWired<SqlRepositories>();
-            //container.RegisterAutoWiredAs<SqlRepositories, IRepositories>();
+
+            container.Register<OrmLiteConnectionFactory>(c => new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider));
+
+            // register each individual repository
+            container.RegisterAutoWiredAs<BaseSqlRepository<DueDate>, IRepository<DueDate>>();
+            container.RegisterAutoWiredAs<ProfileSqlRepository, IProfileRepository>();
+            container.RegisterAutoWiredAs<PredictionSqlRepository, IPredictionRepository>();
+            container.RegisterAutoWiredAs<CookieTrackerSqlRepository, ICookieTrackerRepository>();
+            container.RegisterAutoWiredAs<ResultsSqlRepository, IResultsRepository>();
+            // register the main repository that has a reference to each repository
+            container.RegisterAutoWiredAs<SqlRepositories, IRepositories>();
         }
     }
 }
