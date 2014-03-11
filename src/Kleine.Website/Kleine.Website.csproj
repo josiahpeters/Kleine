@@ -182,6 +182,7 @@
     <Content Include="img\eliana\eliana_07.JPG" />
     <Content Include="img\eliana\eliana_07_thumb.jpg" />
     <Content Include="img\header.png" />
+    <Content Include="img\kanaparti_fam.jpg" />
     <Content Include="img\kim-and-joey-babyp-banner.jpg" />
     <Content Include="img\kim-and-joey-babyp-photo.jpg" />
     <Content Include="img\kim-and-joey-blessed.jpg" />
@@ -286,7 +287,7 @@
     <None Include="css\less\defaults.less" />
     <None Include="css\less\functions.less" />
     <None Include="css\less\navigation.less" />
-    <Content Include="packages.config" />
+    <None Include="packages.config" />
     <Content Include="js\libs\angular\angular-animate.min.js.map" />
     <Content Include="js\libs\angular\angular-cookies.min.js.map" />
     <Content Include="js\libs\angular\angular-loader.min.js.map" />
@@ -308,9 +309,10 @@
     <Content Include="js\libs\flexslider\fonts\flexslider-icon.ttf" />
     <Content Include="js\libs\flexslider\fonts\flexslider-icon.woff" />
     <Content Include="js\libs\flexslider\images\Thumbs.db" />
+    <None Include="Properties\PublishProfiles\kanaparti.pubxml" />
     <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\pugna.pubxml" />
-    <Content Include="README.md" />
+    <None Include="README.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
