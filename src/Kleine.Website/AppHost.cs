@@ -1,5 +1,5 @@
 ﻿// determines whether we use SqlServer or in-memory storage - useful for running locally without SqlServer installed
-#define MEMORYSTORAGE
+//#define MEMORYSTORAGE
 
 using Funq;
 using Kleine.Data;
