@@ -1,14 +1,13 @@
 ﻿using Kleine.Data;
 using Kleine.Services;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.ServiceInterface.Auth;
+using ServiceStack;
+using ServiceStack.Auth;
+using ServiceStack.Web;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-using ServiceStack.Common;
 using System.Runtime.Serialization;
 using Kleine.Requests;
 
@@ -170,7 +169,7 @@ namespace Kleine.Services
         {
             if (profile != null)
             {
-                this.Session.Set<int>(SessionKeys.ProfileId, profile.Id);
+                this.SessionBag.Set<int>(SessionKeys.ProfileId, profile.Id);
                 trackCookieForProfile(profile);
             }
         }
@@ -183,7 +182,8 @@ namespace Kleine.Services
                 Unique = getUniqueCode()
             });
 
-            Response.Cookies.AddPermanentCookie(CookieKeys.Identity, cookieTracker.Unique, false);
+
+            Response.SetPermanentCookie(CookieKeys.Identity, cookieTracker.Unique);
         }
 
         private ProfilePrediction getAggregate(Profile profile, Prediction prediction = null)
@@ -233,9 +233,10 @@ namespace Kleine.Services
 
         private Profile getCurrentProfileFromSession()
         {
-            if (Session[SessionKeys.ProfileId] != null)
+
+            if (this.SessionBag[SessionKeys.ProfileId] != null)
             {
-                int profileId = Session.Get<int>(SessionKeys.ProfileId);
+                int profileId = this.SessionBag.Get<int>(SessionKeys.ProfileId);
 
                 return repo.Profiles.GetById(profileId);
             }
@@ -249,7 +250,7 @@ namespace Kleine.Services
                     return repo.Profiles.GetById(tracker.ProfileId);
                 else
                 {
-                    Response.Cookies.DeleteCookie(CookieKeys.Identity);
+                    Response.DeleteCookie(CookieKeys.Identity);
                     return null;
                 }
             }

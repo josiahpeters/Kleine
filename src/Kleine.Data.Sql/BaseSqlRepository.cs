@@ -22,7 +22,7 @@ namespace Kleine.Data
         {
             using (var db = dbFactory.OpenDbConnection())
             {
-                return db.GetById<T>(Id);
+                return db.SingleById<T>(Id);
             }
         }
 
@@ -38,9 +38,7 @@ namespace Kleine.Data
         {
             using (var db = dbFactory.OpenDbConnection())
             {
-                db.Insert<T>(entity);
-
-                entity.Id = (int)db.GetLastInsertId();
+                db.Save<T>(entity);
                 return entity;
             }
         }
@@ -49,8 +47,7 @@ namespace Kleine.Data
         {
             using (var db = dbFactory.OpenDbConnection())
             {
-                db.Update<T>(entity);
-
+                db.Save<T>(entity);
                 return entity;
             }
         }

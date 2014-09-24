@@ -1,20 +1,18 @@
 ﻿// determines whether we use SqlServer or in-memory storage - useful for running locally without SqlServer installed
-//#define MEMORYSTORAGE
+#define MEMORYSTORAGE
 
 using Funq;
 using Kleine.Data;
 using Kleine.Data.Memory;
 using Kleine.Data.Sql;
 using Kleine.Services;
-using ServiceStack.Common.Web;
+using ServiceStack;
 using ServiceStack.Logging;
 using ServiceStack.Logging.EventLog;
 using ServiceStack.OrmLite;
-using ServiceStack.ServiceHost;
-using ServiceStack.ServiceInterface;
-using ServiceStack.WebHost.Endpoints;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Net.Mime;
 
 namespace Kleine.Website
 {
@@ -55,13 +53,21 @@ namespace Kleine.Website
 
             Plugins.Add(new SessionFeature());
 
-            SetConfig(new EndpointHostConfig
+            //SetConfig(new EndpointHostConfig
+            //{
+            //    // only serve api requests from /api/
+            //    ServiceStackHandlerFactoryPath = "api",
+            //    ReturnsInnerException = true,
+            //    DefaultContentType = ContentType.Json,
+            //    EnableFeatures = Feature.Json | Feature.Metadata //Feature.Xml | Feature.Html
+            //});
+
+            SetConfig(new HostConfig
             {
-                // only serve api requests from /api/
-                ServiceStackHandlerFactoryPath = "api",
                 ReturnsInnerException = true,
-                DefaultContentType = ContentType.Json,
-                EnableFeatures = Feature.Json | Feature.Metadata //Feature.Xml | Feature.Html
+                DebugMode = true,
+                DefaultContentType = "application/json",
+                EnableFeatures = Feature.Json | Feature.Metadata
             });
         }
 

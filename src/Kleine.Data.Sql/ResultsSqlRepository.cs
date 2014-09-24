@@ -29,7 +29,7 @@ FROM Predictions
 	WHERE finishdate is not null
     GROUP BY gender
 ";
-                var results = db.Query<GenderResult>(query);
+                var results = db.Select<GenderResult>(query);
 
                 return results;
             }    
@@ -60,7 +60,7 @@ ORDER BY
                 if (!string.IsNullOrWhiteSpace(gender))
                     genderFilter = " GENDER = @Gender AND ";
 
-                var results = db.Query<DateTimeCount>(string.Format(query, genderFilter), new { Gender = gender });
+                var results = db.Select<DateTimeCount>(string.Format(query, genderFilter), new { Gender = gender });
 
                 return results;
             } 
@@ -98,7 +98,7 @@ GROUP BY
                 if(!string.IsNullOrWhiteSpace(gender))
                     genderFilter = " GENDER = @Gender AND ";
 
-                var results = db.Query<DateTimeCount>(string.Format(query, genderFilter), new { Gender = gender });
+                var results = db.Select<DateTimeCount>(string.Format(query, genderFilter), new { Gender = gender });
 
                 return results;
             } 
@@ -129,7 +129,7 @@ group by weight
                 if (!string.IsNullOrWhiteSpace(gender))
                     genderFilter = " GENDER = @Gender AND ";
 
-                var results = db.Query<IntegerGroupCount>(string.Format(query, genderFilter), new { Gender = gender });
+                var results = db.Select<IntegerGroupCount>(string.Format(query, genderFilter), new { Gender = gender });
 
                 return results;
             }
@@ -160,7 +160,7 @@ group by Length
                 if (!string.IsNullOrWhiteSpace(gender))
                     genderFilter = " GENDER = @Gender AND ";
 
-                var results = db.Query<IntegerGroupCount>(string.Format(query, genderFilter), new { Gender = gender });
+                var results = db.Select<IntegerGroupCount>(string.Format(query, genderFilter), new { Gender = gender });
 
                 return results;
             }
