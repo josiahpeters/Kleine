@@ -1,6 +1,6 @@
 
 <div class="id=" length">
-    <h2>Choose the length range you think Baby Peters will be born in:</h2>
+    <h2>Choose the length range you think {{ $state.client.babyAlias }} will be born in:</h2>
     <div>
         <p>
             <slider name="length" target="prediction.Length" label="in" min="15" max="25" range="2"></slider>
@@ -9,7 +9,7 @@
         <div class="hint">
             <p>
                 <strong>Interesting Fact:</strong>
-                According to the <a href="http://www.cdc.gov/growthcharts/html_charts/lenageinf.htm">CDC</a>, the average length of a newborn baby is 19.54 inches.
+                {{ $state.client.facts.lengthfact }}
             </p>
         </div>
 

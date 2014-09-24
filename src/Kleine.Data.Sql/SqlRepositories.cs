@@ -40,10 +40,13 @@ namespace Kleine.Data
 
                     var dueDate = dueDates.Create(new DueDate
                     {
-                        Name = "BabyP",
-                        Title = "BabyP",
-                        ExpectedDate = new DateTime(2013, 12, 16),
-                        Description = "Baby P is coming soon!"
+                        CouplesNames = "Katie and Zack",
+                        CouplesEmailAddress = "kt.r.roberts@gmail.com,josiahpeters@gmail.com",
+                        Name = "Baby Roberts",
+                        BabyAlias = "Baby Roberts",
+                        Title = "Baby  Roberts",
+                        ExpectedDate = new DateTime(2014, 10, 16),
+                        Description = "Baby  Roberts is coming soon!"
                     });
                 }
 

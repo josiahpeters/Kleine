@@ -18,8 +18,6 @@ namespace Kleine
         private string fromEmailAddress;
         private string fromEmailDisplay;
 
-        private string dueDateCreatorEmailAddress;
-
         public NotificationService(ILog logger, EnvironmentSettings settings)
         {
             this.logger = logger;
@@ -28,8 +26,6 @@ namespace Kleine
             smtpServer = ConfigurationManager.AppSettings["SmtpServer"];
             fromEmailAddress = ConfigurationManager.AppSettings["FromEmailAddress"] ?? "p@preggopredict.com";
             fromEmailDisplay = ConfigurationManager.AppSettings["FromDisplayName"] ?? "PreggoPredict";
-
-            dueDateCreatorEmailAddress = ConfigurationManager.AppSettings["CreatorEmailAddress"] ?? "creator@preggopredict.com";
         }
 
         public void SendNotification(string to, string subject, string message)
@@ -72,10 +68,10 @@ namespace Kleine
             sb.AppendFormat("<a href=\"{0}#/invite?code={1}\">Make Prediction</a>", settings.ApplicationUrl, profile.EmailCode);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            SendNotification(dueDateCreatorEmailAddress, "Baby Peters - You are invited to make a prediction", sb.ToString());
+            SendNotification(profile.EmailAddress, string.Format("{0} - You are invited to make a prediction", dueDate.BabyAlias), sb.ToString());
         }
 
-        public void SendCompletedGuessResultToContestCreator(Profile profile, Prediction prediction)
+        public void SendCompletedGuessResultToContestCreator(Profile profile, Prediction prediction, DueDate dueDate)
         {
             try
             {
@@ -94,7 +90,7 @@ namespace Kleine
                 sb.AppendFormat("</table>");
                 //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-                SendNotification(dueDateCreatorEmailAddress, string.Format("Baby Peters - {0} Made a Guess!", profile.Name), sb.ToString());
+                SendNotification(dueDate.CouplesEmailAddress, string.Format("{0} - {1} Made a Guess!", dueDate.BabyAlias, profile.Name), sb.ToString());
             }
             catch (Exception ex)
             {
@@ -107,7 +103,7 @@ namespace Kleine
             StringBuilder sb = new StringBuilder();
 
             //sb.AppendFormat("Dear {0},<br /><br />\n", profile.Name ?? "Friend");
-            sb.AppendFormat("<p>Kim and Joey are expecting a baby soon. They have invited you to take part in a game to predict when Baby P will be born.</p>");
+            sb.AppendFormat("<p>{0} are expecting a baby soon. They have invited you to take part in a game to predict when {1} will be born.</p>", dueDate.CouplesNames, dueDate.BabyAlias);
             sb.AppendFormat("<p>Use the link below to make your prediction or view the results as people continue to vote.</p>");
 
             string link = string.Format("{0}invitation?code={1}", settings.ApplicationUrl, profile.EmailCode);
@@ -116,7 +112,7 @@ namespace Kleine
             //sb.AppendFormat("<p><a href=\"{0}#/results/start?code={1}\">View Results</a></p>", baseUri, profile.EmailCode);
             //sb.AppendFormat("Thanks for signing up to make guesses. To keep things simple, you don't need a username or password, just an email account. We've included this link: {0} that you can use to make guesses or check on the statistics of other guessers. If you lose this email and need access again just enter your email address in again.", "");
 
-            SendNotification(profile.EmailAddress, "Baby Peters - Make Your Prediction", sb.ToString());
+            SendNotification(profile.EmailAddress, string.Format("{0} - Make Your Prediction", dueDate.BabyAlias), sb.ToString());
         }
     }
 }

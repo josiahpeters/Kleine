@@ -38,7 +38,7 @@
         <section class="row">
             <article class="twelve column">
                 <h2>Winners</h2>
-                <p>Our first place winner and second place winners were the only ones to guess the actual birth date of Baby Peters.</p>
+                <p>Our first place winner and second place winners were the only ones to guess the actual birth date of {{ $state.client.babyAlias }}.</p>
                 <p>If you want to see where you are against the rest of the votes, <a ui-sref="rankings">check out the overall rankings</a>.</p>
             </article>
         </section>
@@ -172,7 +172,7 @@
     </section>
     <!--<section class="row" ng-repeat="result in Results">
         <div class="twelve column">
-            <h2>Of the {{ result.GenderPercent }}% that think Baby Peters is a {{ result.Gender }}:</h2>
+            <h2>Of the {{ result.GenderPercent }}% that think {{ $state.client.babyAlias }} is a {{ result.Gender }}:</h2>
             <ul class="legend">
                 <li>Their average predicited delivery date is: <strong>{{ result.Date|day }} </strong>.</li>
                 <li>Their average predicited delivery time range is: <strong>{{ result.Time[0]|hours }} to {{ result.Time[1]|hours }} </strong>.</li>

@@ -105,6 +105,8 @@ namespace Kleine.Services
 
         public ProfilePrediction Put(PredictionUpdate request)
         {
+            var dueDate = repo.DueDates.GetById(1);
+
             var profile = getCurrentProfileFromSession();
 
             Prediction prediction = repo.Predictions.GetByProfileIdAndDueDateId(request.ProfileId, 1);
@@ -127,7 +129,7 @@ namespace Kleine.Services
 
             if (prediction.FinishDate != null && prediction.FinishDate > DateTime.MinValue)
             {
-                notify.SendCompletedGuessResultToContestCreator(profile, prediction);
+                notify.SendCompletedGuessResultToContestCreator(profile, prediction, dueDate);
             }
 
             return getAggregate(profile, prediction);

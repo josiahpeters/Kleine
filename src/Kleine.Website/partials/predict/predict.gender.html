@@ -1,6 +1,6 @@
 
 <div class="" id="Gender">
-    <h2>Choose the gender do you think Baby Peters will be:</h2>
+    <h2>Choose the gender do you think {{ $state.client.babyAlias }} will be:</h2>
     <div>        
         <p>
             <button type="button" class="button" ng-class="{'light':prediction.Gender != 'Male'}" ng-click="chooseGender('Male')"> Male</button> or
@@ -10,7 +10,7 @@
         <div class="hint">
             <p>
                 <strong>Interesting Fact:</strong>
-                In the United States, boys make up 51.2% of the birth rate.
+                {{ $state.client.facts.genderfact }}
             </p>
         </div>
 

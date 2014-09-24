@@ -2,15 +2,15 @@
     <div class="image" ng-class=" { start: !$state.completed, complete: $state.completed }"></div>
     <div class="subtitle">
         <div class="row">
-            <div class="twelve column" ng-show="!$state.completed"><h1>Baby Peters - Due December 16th, 2013</h1></div>
-            <div class="twelve column" ng-show="$state.completed"><h1>Eliana Marie Peters - Born December 10th, 2013</h1></div>
+            <div class="twelve column" ng-show="!$state.completed"><h1>{{ $state.client.babyAlias }} - Due {{ $state.client.dueDateString }}</h1></div>
+            <div class="twelve column" ng-show="$state.completed"><h1>{{ $state.client.babyName }} - Born {{ $state.client.deliveredDateString }}</h1></div>
         </div>
     </div>
 </div>
 <div class="wrapper">
     <section class="row" ng-show="!$state.completed">
         <article class="twelve columns ">
-            <p>Kim and Joey are expecting a baby soon. They have invited you to take part in a game to predict when <strong>Baby Peters</strong> will be born.</p>
+            <p>{{ $state.client.couplesNames }} are expecting a baby soon. They have invited you to take part in a game to predict when <strong>{{ $state.client.babyAlias }}</strong> will be born.</p>
             <p>
                 <a href="/#/start" class="button" ng-click="makePrediction($event)">Make Prediction</a>
             </p>
@@ -19,7 +19,7 @@
     <section class="row" ng-show="$state.completed">
         <article class="twelve columns ">
 
-            <p>Kim and Joey want to thank you for taking the time to be a part of their first pregnancy. They're happy that you made your predictions and hope that you enjoyed playing along with their little surprise.</p>
+            <p>{{ $state.client.couplesNames }} want to thank you for taking the time to be a part of their first pregnancy. They're happy that you made your predictions and hope that you enjoyed playing along with their little surprise.</p>
             <ul class="horizontal">
                 <li><a class="button" ui-sref="results">View Final Results</a></li>
                 <li><a class="button" ui-sref="rankings">View Prediction Rankings</a></li>
@@ -29,7 +29,7 @@
     <section class="row">
         <article class="twelve columns">
             <h2>How does this work?</h2>
-            <p>Family members and friends of Kim and Joey will make their best prediction about the birth of Baby Peters. There are five categories to make predictions about:</p>
+            <p>Family members and friends of Kim and Joey will make their best prediction about the birth of {{ $state.client.babyAlias }}. There are five categories to make predictions about:</p>
             <p>
                 <ul>
                     <li>Gender</li>
@@ -39,7 +39,7 @@
                     <li>Length</li>
                 </ul>
             </p>
-            <p>Each prediction category is worth a certain amount of points. Once Baby Peters is born the two people with the most points will earn a <a ui-sref="reward">reward</a>.</p>
+            <p>Each prediction category is worth a certain amount of points. Once {{ $state.client.babyAlias }} is born the two people with the most points will earn a <a ui-sref="reward">reward</a>.</p>
         </article>
     </section>
     <section class="row">
