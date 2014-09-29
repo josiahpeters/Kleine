@@ -164,6 +164,7 @@
     </Content>
     <Content Include="favicon.png" />
     <Content Include="Global.asax" />
+    <Content Include="img\client\baby_roberts_banner.jpg" />
     <Content Include="img\eliana-basket.jpg" />
     <Content Include="img\eliana\eliana_01.jpg" />
     <Content Include="img\eliana\eliana_01_medium.jpg" />

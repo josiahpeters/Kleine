@@ -10,7 +10,7 @@
     <div class="row">
         <div class="four column categories">
             <ul class="list">
-                <li class="list-item header">Prediction: {{ $state.client.babyAlias }}</li>
+                <li class="list-item header">Prediction: {{ $state.client.BabyAlias }}</li>
                 <li class="list-item" ng-class="{ active: $state.includes('predict.gender') }"><a ui-sref="predict.gender"><i class="fa fa-user"></i> Gender <span class="result" ng-show="(prediction.Gender !== undefinied)">{{ prediction.Gender }} <i class="fa fa-check-square"></i></span></a> </li>
                 <li class="list-item" ng-class="{ active: $state.includes('predict.date') }"><a ui-sref="predict.date"><i class="fa fa-calendar"></i> Date <span class="result" ng-show="(prediction.Date !== undefinied)">{{ prediction.Date|date }} <i class="fa fa-check-square"></i></span></a></li>
                 <li class="list-item" ng-class="{ active: $state.includes('predict.time') }"><a ui-sref="predict.time"><i class="fa fa-clock-o"></i> Time <span class="result" ng-show="(prediction.Time !== undefinied)">{{ (prediction.Time.length > 0 ? (prediction.Time[0]|hours) + ' - ' + (prediction.Time[1]|hours) : '') }} <i class="fa fa-check-square"></i></span></a></li>

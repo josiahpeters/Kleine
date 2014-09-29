@@ -1,0 +1,123 @@
+<h1>PreggoPredict</h1>
+
+<h3>Kleine is the project codename for the website <a href="http://preggopredict.com">preggopredict.com</a>.</h3>
+
+<p>I created <a href="http://preggopredict.com">PreggoPredict</a> as a fun little side project to try out some new technologies. It was also a way to engage our friends and family members during our pregnancy by guessing what gender, weight, length they thought the baby would be. And also allowing them to guess the date and time they thought the baby would be born.</p>
+
+<p>If you want to see what the contest portion of the website looked like, check out <a href="http://demo.preggopredict.com">http://demo.preggopredict.com</a>. To see the final results you can see the finished contest page at <a href="http://preggopredict.com">http://preggopredict.com</a></p>
+
+<p>Keep in mind this project is no-where near complete. There a few little hacks here and there in order to get the site shipped before the baby arrived.</p>
+
+<h2>Technologies / Libraries</h2>
+
+<p>I approached this project as an opportunity to build a single page web application from top to bottom. I knew a few things going into this project. I know I wanted to learn AngularJS, I wanted to write the backend web api with ServiceStack, and I knew I wanted to make a responsive design and not be tied to the un-usable markup that one produces when relying on twitter bootstrap if they try to switch away mid project.</p>
+
+<h3>The libraries I used are:</h3>
+
+<ul>
+<li><a href="https://servicestack.net/">ServiceStack</a> - Back end API</li>
+<li><a href="http://angularjs.org/">AngularJS</a> - Front end MVVM framework</li>
+<li>~~TypeScript~~ - Decided learning AngularJS while learning TypeScript at the same time was insane</li>
+<li><a href="https://github.com/angular-ui/ui-router">UI-Router</a> - Nested Angular Routing</li>
+<li><a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> - Icons</li>
+<li><a href="http://lesscss.org/">LESS</a> - Simplified CSS creation and maintenance</li>
+<li>Hand Rolled Responsive CSS</li>
+<li><a href="http://visualstudio.com/">Visual Studio 2013</a> - IDE
+<ul>
+<li><a href="http://vswebessentials.com/">Web Essentials 2013 Extension</a></li>
+</ul></li>
+</ul>
+
+<h3>ServiceStack - Back end API</h3>
+
+<h4>What is ServiceStack?</h4>
+
+<p><a href="https://servicestack.net/">ServiceStack</a> is an open source framework that has been created as a complete replacement for <a href="http://stackoverflow.com/questions/15927475/servicestack-request-dto-design/15941229#15941229">WCF, WebAPI.</a> EntityFramework, and now even Asp.NET MVC. </p>
+
+<p>It has quite a few wonderful gems baked into it that makes your life much easier, the list is very long but the notable ones I used are:
+- Insanely Easy http API implementation, with a focus on <a href="https://github.com/ServiceStack/ServiceStack/wiki/What-is-a-message-based-web-service%3F">building a message based web service</a>.
+- Custom url routing
+- <a href="https://github.com/ServiceStack/ServiceStack/wiki/The-IoC-container">IOC / Dependency Injection</a>
+- <a href="https://github.com/ServiceStack/ServiceStack.OrmLite">OrmLite + Dapper.Net</a> - POCO ORM with simple database helper methods that allow you to write a clean and abstracted data layer with minimal work with no XML configuration files!
+- <a href="https://github.com/ServiceStack/ServiceStack/wiki/Why-Servicestack">Other reasons for ServiceStack?</a> </p>
+
+<h4>Sample ServiceStack web API code for preggopredit.com</h4>
+
+<p>ServiceStack automatically generates a page that documents your web api. It's served from /metadata by default. You can see the <a href="http://preggopredict.com/api/metadata">PreggoPredict metadata page</a> and see the methods below listed on the self documenting page.</p>
+
+<p>Here is my web API service interface <a href="/src/Kleine/Services/IKleineService.cs">IKleineService.cs</a>:</p>
+
+<p><code>csharp
+    public interface IKleineService
+    {
+        ProfilePrediction Get(ProfileGet request);
+        ProfilePrediction Post(ProfileCreate request);
+        ProfilePrediction Put(ProfileUpdate request);
+        ProfilePrediction Put(PredictionUpdate request);
+        ResultsAggregate Get(ResultsRequest request);
+        List&lt;PredictionPlacement&gt; Get(RankingsRequest request);
+    }
+</code> </p>
+
+<p>And my profile Request objects, route attributes on the request classes define the api method's url:</p>
+
+<p>```csharp
+    [Route("/profile", "GET")]
+    public class ProfileGet : IReturn<ProfilePrediction>
+    {
+        public string code { get; set; }
+    }</p>
+
+<pre><code>[Route("/profile", "POST")]
+public class ProfileCreate : Profile, IReturn&lt;ProfilePrediction&gt; { }
+
+[Route("/profile", "PUT")]
+public class ProfileUpdate : Profile, IReturn&lt;ProfilePrediction&gt; { }        
+</code></pre>
+
+<p>```</p>
+
+<p>Besides the actual implementation of each IKleineService method, these few lines help me define the shape of my web API.</p>
+
+<p>My <a href="/src/Kleine.Services/KleineServiceApi.cs">KleineServiceApi.cs</a> file implements IKleineService and inherits from ServiceStack.Service which does all of the heavy lifting.</p>
+
+<h4>ServiceStack - IOC / Dependency Injection using Funq</h4>
+
+<p>When I shipped the project I was using dependency injection, but not completely. I've refactored <a href="/src/Kleine.Website/AppHost.cs">AppHost.cs</a> to take full advantage of IOC using Funq. Now with a simple preprocessory flip, the site can be made to run against a SqlServer database or a simple in memory implementation of the data repositories.</p>
+
+<pre><code>#define MEMORYSTORAGE
+</code></pre>
+
+<p>Can be removed to run against a Microsoft SQL Server database.</p>
+
+<h3>AngularJS - Front end MVVM framework</h3>
+
+<p>I intially made the terrible mistake of trying to learn two technologies at the same time. I was trying to use TypeScript along with AngularJS. As a fairly new framework, Angular's documentation isn't the most complete. Of course there is an even smaller subset of users or even documentation for those trying to write an Angular site with TypeScript.</p>
+
+<p>Angular is a very neat framework. It has a ton of features, many of which I didn't touch. I ended up side stepping Angular's built in routing and templating engine in favor of ui-router to help implement the nesting of views, nested states, and nested routing that I was planning on doing.</p>
+
+<h3>UI-Router - Nested Angular Routing</h3>
+
+<p><em>More information coming soon.</em></p>
+
+<h3>Font-Awesome - Icons</h3>
+
+<p><em>More information coming soon.</em></p>
+
+<h3>LESS - Simplified CSS creation and maintenance</h3>
+
+<p><em>More information coming soon.</em></p>
+
+<h3>Hand Rolled Responsive CSS</h3>
+
+<p><em>More information coming soon.</em></p>
+
+<h3>Visual Studio 2013 - IDE</h3>
+
+<p><em>More information coming soon.</em></p>
+
+<h4>Web Essentials 2013 Plugin</h4>
+
+<p><a href="http://visualstudiogallery.msdn.microsoft.com/56633663-6799-41d7-9df7-0f2a504ca361">Web Essentials 2013 - Download Page</a></p>
+
+<p><em>More information coming soon.</em></p>

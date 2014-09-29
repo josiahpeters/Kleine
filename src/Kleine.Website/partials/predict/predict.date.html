@@ -1,12 +1,12 @@
 <div class="" id="Date">
-    <h2>Choose the date you think {{ $state.client.babyAlias }} will be born on. (Expecting on {{ $state.client.dueDateShortString }})</h2>
+    <h2>Choose the date you think {{ $state.client.BabyAlias }} will be born on. (Expecting on {{ $state.client.dueDateShortString }})</h2>
     <div>
         <calendar target="prediction.Date" click="next()"></calendar>
         <div class="hint">
             <p>
                 <strong>Interesting Fact:</strong>
 
-                {{ $state.client.facts.datefact }}
+                {{ $state.client.DateFact }}
                 
             </p>
         </div>

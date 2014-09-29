@@ -33,7 +33,7 @@
     <p>If you are happy with your choices, you can submit your predictions and be entered into the pool for a chance at winning the reward.</p>
     <form ng-submit="submit()">
         <p>
-            <label>Leave a private message for Kim and Joey:</label>
+            <label>Leave a private message for {{ $state.client.CouplesNames }}:</label>
             <textarea ng-model="prediction.Message" tabindex="1" autofocus></textarea>
         </p>
         <p>

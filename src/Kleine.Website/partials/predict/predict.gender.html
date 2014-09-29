@@ -1,6 +1,6 @@
 
 <div class="" id="Gender">
-    <h2>Choose the gender do you think {{ $state.client.babyAlias }} will be:</h2>
+    <h2>Choose the gender do you think {{ $state.client.BabyAlias }} will be:</h2>
     <div>        
         <p>
             <button type="button" class="button" ng-class="{'light':prediction.Gender != 'Male'}" ng-click="chooseGender('Male')"> Male</button> or
@@ -10,7 +10,7 @@
         <div class="hint">
             <p>
                 <strong>Interesting Fact:</strong>
-                {{ $state.client.facts.genderfact }}
+                {{ $state.client.GenderFact }}
             </p>
         </div>
 
