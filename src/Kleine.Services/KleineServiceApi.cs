@@ -17,23 +17,32 @@ namespace Kleine.Services
     public class KleineServiceApi : Service, IKleineService
     {
         IRepositories repo;
+        public IRepositories Repo
+        {
+            get { return repo; }
+            set { repo = value; }
+        }
+
         INotification notify;
+        public INotification Notify
+        {
+            get { return notify; }
+            set { notify = value; }
+        }
+
         PredictionOutcome outcome;
 
         // Due Dates
-        public KleineServiceApi(IRepositories repo, INotification notify)
+        public KleineServiceApi()
         {
-            this.repo = repo;
-            this.notify = notify;
-
             // currently static date, we'll add this in the future to be dynamic from the database
             this.outcome = new PredictionOutcome
             {
                 Gender = "Female",
-                Date = new DateTime(2013, 12, 10),
-                Time = new DateTime(2013, 12, 10, 17, 42, 0),
-                Weight = 7.2M,
-                Length = 20.75M
+                Date = new DateTime(2014, 10, 16),
+                Time = new DateTime(2015, 1, 1, 0, 0, 0),
+                Weight = 0,
+                Length = 0
             };
         }
 
@@ -54,6 +63,9 @@ namespace Kleine.Services
 
         public ProfilePrediction Post(ProfileCreate request)
         {
+            if (string.IsNullOrWhiteSpace(request.EmailAddress))
+                throw new Exception("Not enough information to register to predict.");
+
             var dueDate = repo.DueDates.GetById(1);
 
             string emailCode = getUniqueCode();

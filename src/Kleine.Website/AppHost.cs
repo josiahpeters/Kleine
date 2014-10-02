@@ -1,5 +1,5 @@
 ﻿// determines whether we use SqlServer or in-memory storage - useful for running locally without SqlServer installed
-#define MEMORYSTORAGE
+//#define MEMORYSTORAGE
 
 using Funq;
 using Kleine.Data;
@@ -30,26 +30,32 @@ namespace Kleine.Website
         public static InMemoryData data;
 
         // Initializes a new instance of your ServiceStack application, with the specified name and assembly containing the services.
-        public AppHost() : base("Project Kleine", typeof(KleineServiceApi).Assembly) { }
+        public AppHost() : base("Project Kleine", typeof(AppHost).Assembly) { }
 
         // Configure the container with the necessary routes for your ServiceStack application.
         public override void Configure(Container container)
         {
             // setup event logger
-            registerEventLogLogging(container);
+            //registerEventLogLogging(container);
 
             // setup email notifications with defaults
             registerNotifications(container);
 
             // determine datastore method
 #if MEMORYSTORAGE
-            registerInMemoryStore(container);
+            // used for mocking database from dictionaries - need single "source" of each data type
+            data = new InMemoryData();
+            // register our data instance
+            container.Register<InMemoryData>(data);
+            container.Register<Dictionary<int, DueDate>>(data.DueDateData);
 #else
-            registerSqlDataStore(container);
-
+            string connectionString = ConfigurationManager.ConnectionStrings["Kleine"].ConnectionString;
+            container.Register<OrmLiteConnectionFactory>(c => new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider));
 #endif
+            Plugins.Add(new KleinePlugin());
+
             // setup repositories with defaults if they don't exist
-            container.Resolve<IRepositories>().SetUp();
+
 
             Plugins.Add(new SessionFeature());
 
@@ -76,7 +82,7 @@ namespace Kleine.Website
             string eventLogName = "Kleine.Website";
             string eventLogSource = "Application";
 
-            LogManager.LogFactory = new EventLogFactory(eventLogName, eventLogSource);
+            LogManager.LogFactory = new EventLogFactory(eventLogSource, eventLogName);
             container.Register<ILog>(c => LogManager.LogFactory.GetLogger(""));
         }
 
@@ -86,39 +92,6 @@ namespace Kleine.Website
             container.RegisterAutoWiredAs<NotificationService, INotification>();
         }
 
-        private void registerInMemoryStore(Funq.Container container)
-        {
-            // used for mocking database from dictionaries - need single "source" of each data type
-            data = new InMemoryData();
-            // register our data instance
-            container.Register<InMemoryData>(data);            
-            container.Register<Dictionary<int, DueDate>>(data.DueDateData);
-
-            // register repositories and autowire their dependencies
-            container.RegisterAutoWiredAs<BaseMemoryRepository<DueDate>, IRepository<DueDate>>();
-            container.RegisterAutoWiredAs<ProfileRepository, IProfileRepository>();
-            container.RegisterAutoWiredAs<PredictionRepository, IPredictionRepository>();
-            container.RegisterAutoWiredAs<CookieTrackerRepository, ICookieTrackerRepository>();
-            container.RegisterAutoWiredAs<ResultsRepository, IResultsRepository>();
-
-            container.RegisterAutoWiredAs<MemoryRepositories, MemoryRepositories>();
-            container.RegisterAutoWiredAs<MemoryRepositories, IRepositories>();
-        }
         
-        private void registerSqlDataStore(Funq.Container container)
-        {
-            string connectionString = ConfigurationManager.ConnectionStrings["Kleine"].ConnectionString;
-
-            container.Register<OrmLiteConnectionFactory>(c => new OrmLiteConnectionFactory(connectionString, SqlServerDialect.Provider));
-
-            // register each individual repository
-            container.RegisterAutoWiredAs<BaseSqlRepository<DueDate>, IRepository<DueDate>>();
-            container.RegisterAutoWiredAs<ProfileSqlRepository, IProfileRepository>();
-            container.RegisterAutoWiredAs<PredictionSqlRepository, IPredictionRepository>();
-            container.RegisterAutoWiredAs<CookieTrackerSqlRepository, ICookieTrackerRepository>();
-            container.RegisterAutoWiredAs<ResultsSqlRepository, IResultsRepository>();
-            // register the main repository that has a reference to each repository
-            container.RegisterAutoWiredAs<SqlRepositories, IRepositories>();
-        }
     }
 }

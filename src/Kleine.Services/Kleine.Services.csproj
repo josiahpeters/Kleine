@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KleinePlugin.cs" />
     <Compile Include="KleineServiceApi.cs" />
     <Compile Include="NotificationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +65,10 @@
     <ProjectReference Include="..\Kleine.Data.Memory\Kleine.Data.Memory.csproj">
       <Project>{2f4070f4-1593-4444-b1e8-e7039dbeb942}</Project>
       <Name>Kleine.Data.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Kleine.Data.Sql\Kleine.Data.Sql.csproj">
+      <Project>{a3b84f83-0720-4eaa-8b22-bcfcb6d38ba3}</Project>
+      <Name>Kleine.Data.Sql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Kleine\Kleine.csproj">
       <Project>{bf23e156-50f9-4851-922e-a50b7322e42d}</Project>

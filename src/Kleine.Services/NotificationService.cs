@@ -12,13 +12,25 @@ namespace Kleine
     public class NotificationService : INotification
     {
         private ILog logger;
+
+        public ILog Logger
+        {
+            get { return logger; }
+            set { logger = value; }
+        }
         private EnvironmentSettings settings;
+
+        public EnvironmentSettings Settings
+        {
+            get { return settings; }
+            set { settings = value; }
+        }
 
         private string smtpServer;
         private string fromEmailAddress;
         private string fromEmailDisplay;
 
-        public NotificationService(ILog logger, EnvironmentSettings settings)
+        public NotificationService()
         {
             this.logger = logger;
             this.settings = settings;

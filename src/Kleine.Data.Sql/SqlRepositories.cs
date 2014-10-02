@@ -46,6 +46,7 @@ namespace Kleine.Data
                         BabyAlias = "Baby Roberts",
                         Title = "Baby  Roberts",
                         ExpectedDate = new DateTime(2014, 10, 16),
+                        DeliveredDate = new DateTime(2014, 11, 16),                        
                         Description = "Baby  Roberts is coming soon!"
                     });
                 }
